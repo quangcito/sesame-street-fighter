@@ -12,9 +12,6 @@ nvm use
 # install node packages
 npm i
 
-# create local `.env` file
-cp .env_example .env
-
 # start code
 npm start
 
