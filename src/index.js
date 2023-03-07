@@ -1,5 +1,7 @@
 import Phaser from "phaser";
 
+let keyV
+let keyB
 let keyW;
 let keyA;
 let keyS;
@@ -19,6 +21,8 @@ class Background extends Phaser.Scene {
     this.load.image("cloud", "src/assets/cloud.png");
     this.load.image("elmo", "src/assets/elmo.png");
     this.load.image("cookieMonster", "src/assets/cookiemonster.png");
+    this.load.spritesheet("elmoPunch","src/assets/elmo_punching_full.png", {frameWidth:300, frameHeight:300})
+    this.load.spritesheet("elmoKick","src/assets/elmo_kicking_full.png", {frameWidth:300, frameHeight:300})
   }
 
   create() {
@@ -27,6 +31,16 @@ class Background extends Phaser.Scene {
     this.createElmo();
     this.createCookieMonster();
     this.createKeys();
+    this.anims.create({
+      key:'punch',
+      frames: this.anims.generateFrameNames('elmoPunch', { frames:[0,1,2,1,0]}),
+      frameRate:12
+    })
+    this.anims.create({
+      key:'kick',
+      frames: this.anims.generateFrameNames('elmoKick', { frames:[0,1,2,1,0]}),
+      frameRate:10
+    })
   }
 
   update() {
@@ -56,10 +70,8 @@ class Background extends Phaser.Scene {
   createElmo() {
     this.elmo = this.physics.add
       .sprite(100, 200, "elmo")
-      .setScale(0.2)
       .setOrigin(1)
-      .setFlipX(true);
-
+    
     this.elmo.setCollideWorldBounds(true);
   }
 
@@ -73,9 +85,12 @@ class Background extends Phaser.Scene {
 
   createKeys() {
     keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+    keyB = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.B);
+    
     keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
     keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
     keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+    keyV = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.V);
 
     keyUp = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
     keyDown = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
@@ -83,13 +98,27 @@ class Background extends Phaser.Scene {
     keyRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
   }
 
+  punch(){
+    this.elmo.play('punch')
+  }
+
+  kick(){
+    this.elmo.play('kick')
+  }
+  
   handleControls() {
+    if(keyB.isDown){
+      this.kick()
+    }
+    if(keyV.isDown) {
+      this.punch()
+    }
     if (keyW.isDown && this.elmo.y == config.height) {
       this.elmo.body.velocity.y = -600;
     }
 
     if (keyA.isDown) {
-      this.elmo.setX((this.elmo.x -= 3)).setFlipX(false);
+      this.elmo.setX((this.elmo.x -= 3)).setFlipX(true);
     }
 
     if (keyS.isDown) {
@@ -97,7 +126,7 @@ class Background extends Phaser.Scene {
     }
 
     if (keyD.isDown) {
-      this.elmo.setX((this.elmo.x += 3)).setFlipX(true);
+      this.elmo.setX((this.elmo.x += 3)).setFlipX(false);
     }
 
     if (keyUp.isDown && this.cookieMonster.y == config.height) {
@@ -126,7 +155,7 @@ const config = {
   physics: {
     default: "arcade",
     arcade: {
-      gravity: { y: 900 },
+      gravity: { y: 900 }
     },
   },
   scene: Background,
