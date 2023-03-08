@@ -75,7 +75,7 @@ class Background extends Phaser.Scene {
       .sprite(100, 200, "elmo")
       .setOrigin(0,1)
 
-    this.elmo.setSize(100,2d00)
+    // this.elmo.setSize(100,200)
     
     this.elmo.setCollideWorldBounds(true);
   }
