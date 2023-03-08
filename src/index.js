@@ -73,9 +73,9 @@ class Background extends Phaser.Scene {
   createElmo() {
     this.elmo = this.physics.add
       .sprite(100, 200, "elmo")
-      .setOrigin(1,0)
+      .setOrigin(0,1)
 
-    this.elmo.setSize(100,200)
+    this.elmo.setSize(100,2d00)
     
     this.elmo.setCollideWorldBounds(true);
   }
