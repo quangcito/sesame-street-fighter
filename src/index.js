@@ -34,7 +34,7 @@ class Background extends Phaser.Scene {
     this.anims.create({
       key:'punch',
       frames: this.anims.generateFrameNames('elmoPunch', { frames:[0,1,2,1,0]}),
-      frameRate:12
+      frameRate:5
     })
     this.anims.create({
       key:'kick',
@@ -46,6 +46,9 @@ class Background extends Phaser.Scene {
   update() {
     this.cloud.tilePositionX += 0.5;
     this.handleControls();
+    // if(this.punch.currentFrame.index == 2) {
+    //   this.elmo.setSize(200,220)
+    // }
   }
 
   createCloud() {
@@ -70,7 +73,9 @@ class Background extends Phaser.Scene {
   createElmo() {
     this.elmo = this.physics.add
       .sprite(100, 200, "elmo")
-      .setOrigin(1)
+      .setOrigin(1,0)
+
+    this.elmo.setSize(100,200)
     
     this.elmo.setCollideWorldBounds(true);
   }
@@ -155,7 +160,8 @@ const config = {
   physics: {
     default: "arcade",
     arcade: {
-      gravity: { y: 900 }
+      gravity: { y: 900 },
+      debug:true
     },
   },
   scene: Background,
