@@ -34,7 +34,7 @@ class Background extends Phaser.Scene {
     this.anims.create({
       key:'punch',
       frames: this.anims.generateFrameNames('elmoPunch', { frames:[0,1,2,1,0]}),
-      frameRate:5
+      frameRate:10
     })
     this.anims.create({
       key:'kick',
