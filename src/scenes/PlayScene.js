@@ -1,15 +1,8 @@
 import Phaser from 'phaser';
+import HandleInputs from '../mixin/HandleInputs';
 
 let keyV
 let keyB
-let keyW;
-let keyA;
-let keyS;
-let keyD;
-let keyUp;
-let keyLeft;
-let keyDown;
-let keyRight;
 
 class PlayScene extends Phaser.Scene{
     constructor(config){
@@ -65,6 +58,7 @@ class PlayScene extends Phaser.Scene{
           .setOrigin(1)
         
         this.elmo.setCollideWorldBounds(true);
+        this.leftCharControl = new HandleInputs(this, charLeft, this.elmo);
       }
     
       createCookieMonster() {
@@ -73,21 +67,12 @@ class PlayScene extends Phaser.Scene{
           .setScale(0.2)
           .setOrigin(1);
         this.cookieMonster.setCollideWorldBounds(true);
+        this.rightCharControl = new HandleInputs(this, charRight, this.cookieMonster);
       }
     
       createKeys() {
-        keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
-        keyB = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.B);
-        
-        keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
-        keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
-        keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         keyV = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.V);
-    
-        keyUp = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
-        keyDown = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
-        keyLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
-        keyRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+        keyB = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.B);
       }
     
       punch(){
@@ -105,38 +90,23 @@ class PlayScene extends Phaser.Scene{
         if(keyV.isDown) {
           this.punch()
         }
-        if (keyW.isDown && this.elmo.y == this.config.height) {
-          this.elmo.body.velocity.y = -600;
-        }
-    
-        if (keyA.isDown) {
-          this.elmo.setX((this.elmo.x -= 3)).setFlipX(true);
-        }
-    
-        if (keyS.isDown) {
-          this.elmo.setY((this.elmo.y += 20));
-        }
-    
-        if (keyD.isDown) {
-          this.elmo.setX((this.elmo.x += 3)).setFlipX(false);
-        }
-    
-        if (keyUp.isDown && this.cookieMonster.y == this.config.height) {
-          this.cookieMonster.body.velocity.y = -600;
-        }
-    
-        if (keyLeft.isDown) {
-          this.cookieMonster.setX((this.cookieMonster.x -= 3)).setFlipX(false);
-        }
-    
-        if (keyDown.isDown) {
-          this.cookieMonster.setY((this.cookieMonster.y += 20));
-        }
-    
-        if (keyRight.isDown) {
-          this.cookieMonster.setX((this.cookieMonster.x += 3)).setFlipX(true);
-        }
+        this.leftCharControl.characterControls();
+        this.rightCharControl.characterControls();
     }
 }
 
-export default PlayScene
+const charRight = {
+  up: Phaser.Input.Keyboard.KeyCodes.UP,
+  left: Phaser.Input.Keyboard.KeyCodes.LEFT,
+  down: Phaser.Input.Keyboard.KeyCodes.DOWN,
+  right: Phaser.Input.Keyboard.KeyCodes.RIGHT,
+};
+
+const charLeft = {
+  up: Phaser.Input.Keyboard.KeyCodes.W,
+  left: Phaser.Input.Keyboard.KeyCodes.A,
+  down: Phaser.Input.Keyboard.KeyCodes.S,
+  right: Phaser.Input.Keyboard.KeyCodes.D,
+};
+
+export default PlayScene;
