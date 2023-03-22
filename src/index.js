@@ -7,9 +7,16 @@ let keyA;
 let keyS;
 let keyD;
 let keyUp;
-let keyLeft;
+let keyLeft; 
 let keyDown;
 let keyRight;
+var cookiePunchingHand;
+let elmoPunchingLocation;
+let cookiePunchingLocation;
+let elmoX;
+let elmoY;
+let cookieX;
+let cookieY;
 
 class Background extends Phaser.Scene {
   constructor() {
@@ -34,18 +41,58 @@ class Background extends Phaser.Scene {
     this.anims.create({
       key:'punch',
       frames: this.anims.generateFrameNames('elmoPunch', { frames:[0,1,2,1,0]}),
-      frameRate:12
+      frameRate:3
     })
     this.anims.create({
       key:'kick',
       frames: this.anims.generateFrameNames('elmoKick', { frames:[0,1,2,1,0]}),
-      frameRate:10
+      frameRate:3
     })
+
+    cookiePunchingHand = this.physics.add.image();
+    cookiePunchingHand.body.setCircle(50);
+    cookiePunchingHand.setDebugBodyColor(0xffffff);
+    cookiePunchingHand.setPosition(this.cookieMonster.x, this.cookieMonster.y);
+    cookiePunchingHand.setCollideWorldBounds(true);
+    cookiePunchingHand.body.setGravityY(0);
+
+    var cookieContainer = this.add.container(200, 200);
+    cookieContainer.add(cookiePunchingHand, this.cookieMonster); 
+
+    
+    // cookieContainer.setInteractive(new Phaser.Geom.circle(0, 0, radius), Phaser.Geom.Circle.Contains);   
+    // cookieContainer.add(cookieMonster);
+
+    // secondCircle = this.physics.add.image();
+    // secondCircle.setDebugBodyColor(0xffffff);
+    // secondCircle.setCollideWorldBounds(true);
+    // secondCircle.body.setGravityY(0);
+
+    
+
+    // elmoPunchingHand = this.physics.add.image();
+    // elmoPunchingHand.body.setCircle(200);
+    // elmoPunchingHand.setBounce(1, 1);
+    // elmoPunchingHand.setDebugBodyColor(0xffffff);
+    // elmoPunchingHand.setPosition(elmo.x, elmo.y);
+    // elmoPunchingHand.setCollideWorldBounds(true);
+
+    // this.physics.add.overlap(elmo, this.cookieMonster, function (elmo, cookieMonster) {
+    //   if (!collision) {
+    //     cookieMonster.destroy();
+    //   }
+    //   collision = true;
+    // });
+    
+    
   }
 
   update() {
     this.cloud.tilePositionX += 0.5;
     this.handleControls();
+    this.punchingHand(cookiePunchingHand, this.cookieMonster);
+    // this.punchingHand(secondCircle, this.elmo);
+    this.detectPunch();
   }
 
   createCloud() {
@@ -71,6 +118,7 @@ class Background extends Phaser.Scene {
     this.elmo = this.physics.add
       .sprite(100, 200, "elmo")
       .setOrigin(1)
+      // .setBodySize(175, 210)
     
     this.elmo.setCollideWorldBounds(true);
   }
@@ -96,6 +144,27 @@ class Background extends Phaser.Scene {
     keyDown = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
     keyLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
     keyRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+  }
+
+  punchingHand(circle, player) {
+    // circle.setOrigin(player.x, player.y);
+    circle.body.reset(player.x - 250, player.y - 250);
+  }
+
+  detectPunch() {
+    elmoX = this.elmo.x;
+    elmoY = this.elmo.y;
+    cookieX = this.cookieMonster.x;
+    cookieY = this.cookieMonster.y;
+    //console.log(cookieY)
+    // elmoPunchingLocation.setPosition(200, 200);
+    // cookiePunchingLocation.setPosition(200, 200);
+    // if (cookiePunchingHand.x === elmoPunchingLocation.x) {
+    //   console.log("punch has occurred!!");
+    // }
+    // console.log("x var is:" + elmoPunchingLocation.x);
+
+
   }
 
   punch(){
@@ -155,6 +224,7 @@ const config = {
   physics: {
     default: "arcade",
     arcade: {
+      debug: true,
       gravity: { y: 900 }
     },
   },
