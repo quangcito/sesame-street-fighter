@@ -16,6 +16,7 @@ class PlayScene extends Phaser.Scene{
         this.createElmo();
         this.createCookieMonster();
         this.createKeys();
+
         this.anims.create({
           key:'punch',
           frames: this.anims.generateFrameNames('elmoPunch', { frames:[0,1,2,1,0]}),
@@ -56,8 +57,22 @@ class PlayScene extends Phaser.Scene{
         this.elmo = this.physics.add
           .sprite(100, 200, 'elmo')
           .setOrigin(1)
+          .setCollideWorldBounds(true);
         
-        this.elmo.setCollideWorldBounds(true);
+        // this.elmoPunch = this.physics.add
+        //   .image(100, 200)
+        //   .setCollideWorldBounds(true)
+        //   .setDebugBodyColor("#000000");
+         
+        // this.elmoPunch.body.setCircle(50);
+
+        // this.elmoGroup = this.add.container(100, 200);
+        // this.elmoGroup.add(this.elmo)
+        // this.elmoGroup.setSize(200, 300);
+      
+        // this.physics.world.enable(this.elmoGroup);
+        // this.elmoGroup.body.setCollideWorldBounds(true);
+
         this.leftCharControl = new HandleInputs(this, charLeft, this.elmo);
       }
     
