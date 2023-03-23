@@ -1,6 +1,5 @@
 import Phaser from 'phaser';
 import HandleInputs from '../mixin/HandleInputs';
-import Punch from "../attack/Punch";
 
 let keyV
 let keyB
@@ -19,13 +18,19 @@ class PlayScene extends Phaser.Scene{
         this.createCookieMonster();
         this.createKeys();
 
-        this.physics.add.collider(this.elmo, this.cookieMonster, this.attack);
+        // this.collider = this.physics.add.collider(this.elmo, this.cookieMonster);
+
+        this.physics.world.collide(this.elmo, this.cookieMonster);
 
         this.anims.create({
           key:'punch',
           frames: this.anims.generateFrameNames('elmoPunch', { frames:[0,1,2,1,0]}),
           frameRate:12
         })
+
+        this.elmo.on(Phaser.Animations.Events.ANIMATION_START, () => {this.elmo.setSize(300, 300)});
+        this.elmo.on(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {this.elmo.setSize(100, 230)
+          .setOffset(100, 40);});
 
         this.anims.create({
           key:'kick',
@@ -72,9 +77,6 @@ class PlayScene extends Phaser.Scene{
           .setCollideWorldBounds(true)
           .setSize(100, 230)
           .setOffset(100, 40);     
-
-        this.elmoPunch = new Punch(this, this.elmo.x, this.elmo.y, 'punch');
-
         this.leftCharControl = new HandleInputs(this, charLeft, this.elmo);
       }
     
@@ -95,11 +97,11 @@ class PlayScene extends Phaser.Scene{
     
       punch(){
         isAttacking = true;
-        // this.elmo.play('punch');
-        this.elmoPunch.attack(this.elmo);
+        this.elmo.play('punch')
       }
     
       kick(){
+        isAttacking = true;
         this.elmo.play('kick')
       }
       
