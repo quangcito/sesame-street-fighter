@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import HandleInputs from '../mixin/HandleInputs';
+import Punch from "../attack/Punch";
 
 let keyV
 let keyB
@@ -25,6 +26,7 @@ class PlayScene extends Phaser.Scene{
           frames: this.anims.generateFrameNames('elmoPunch', { frames:[0,1,2,1,0]}),
           frameRate:12
         })
+
         this.anims.create({
           key:'kick',
           frames: this.anims.generateFrameNames('elmoKick', { frames:[0,1,2,1,0]}),
@@ -64,37 +66,14 @@ class PlayScene extends Phaser.Scene{
       }
     
       createElmo() {
-        this.elmoGroup = this.physics.add.group();
         this.elmo = this.physics.add
           .sprite(100, 200, 'elmo')
           .setOrigin(1)
           .setCollideWorldBounds(true)
-          .setSize(100, 270)
-          .setOffset(100, 40);
+          .setSize(100, 230)
+          .setOffset(100, 40);     
 
-        // this.elmoPunch = this.physics.add
-        //   .image(100, 200)
-        //   .setCollideWorldBounds(true)
-        //   .setDebugBodyColor("#000000");        
-
-        
-        // this.elmoGroup.add(this.elmo);
-        // this.elmoGroup.add(this.elmoPunch);
-        
-
-        // this.elmoPunch = this.physics.add
-        //   .image(100, 200)
-        //   .setCollideWorldBounds(true)
-        //   .setDebugBodyColor("#000000");
-         
-        // this.elmoPunch.body.setCircle(50);
-
-        // this.elmoGroup = this.add.container(100, 200);
-        // this.elmoGroup.add(this.elmo)
-        // this.elmoGroup.setSize(200, 300);
-      
-        // this.physics.world.enable(this.elmoGroup);
-        // this.elmoGroup.body.setCollideWorldBounds(true);
+        this.elmoPunch = new Punch(this, this.elmo.x, this.elmo.y, 'punch');
 
         this.leftCharControl = new HandleInputs(this, charLeft, this.elmo);
       }
@@ -116,7 +95,8 @@ class PlayScene extends Phaser.Scene{
     
       punch(){
         isAttacking = true;
-        this.elmo.play('punch');
+        // this.elmo.play('punch');
+        this.elmoPunch.attack(this.elmo);
       }
     
       kick(){

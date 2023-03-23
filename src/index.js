@@ -16,8 +16,8 @@ const SHARED_CONFIG ={
   height: HEIGHT
 }
 
-const Scenes= [PreloadScene,MainMenuScene,CharacterSelectScene,MapSelectScene,PlayScene,PauseScene,ResumeScene,ResultsScene]
-
+// const Scenes= [PreloadScene,MainMenuScene,CharacterSelectScene,MapSelectScene,PlayScene,PauseScene,ResumeScene,ResultsScene]
+const Scenes = [PreloadScene, PlayScene];
 const createScene = (Scene) => new Scene(SHARED_CONFIG)  
 
 const initScenes = () => Scenes.map(createScene)
