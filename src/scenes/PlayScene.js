@@ -3,6 +3,7 @@ import HandleInputs from '../mixin/HandleInputs';
 
 let keyV
 let keyB
+let isAttacking = false;
 
 class PlayScene extends Phaser.Scene{
     constructor(config){
@@ -16,6 +17,8 @@ class PlayScene extends Phaser.Scene{
         this.createElmo();
         this.createCookieMonster();
         this.createKeys();
+
+        this.physics.add.collider(this.elmo, this.cookieMonster, this.attack);
 
         this.anims.create({
           key:'punch',
@@ -32,6 +35,13 @@ class PlayScene extends Phaser.Scene{
       update() {
         this.cloud.tilePositionX += 0.5;
         this.handleControls();
+      }
+
+      attack() {
+        if (isAttacking) {
+          console.log("hit!");
+          isAttacking = false;
+        }
       }
     
       createCloud() {
@@ -54,11 +64,24 @@ class PlayScene extends Phaser.Scene{
       }
     
       createElmo() {
+        this.elmoGroup = this.physics.add.group();
         this.elmo = this.physics.add
           .sprite(100, 200, 'elmo')
           .setOrigin(1)
-          .setCollideWorldBounds(true);
+          .setCollideWorldBounds(true)
+          .setSize(100, 270)
+          .setOffset(100, 40);
+
+        // this.elmoPunch = this.physics.add
+        //   .image(100, 200)
+        //   .setCollideWorldBounds(true)
+        //   .setDebugBodyColor("#000000");        
+
         
+        // this.elmoGroup.add(this.elmo);
+        // this.elmoGroup.add(this.elmoPunch);
+        
+
         // this.elmoPunch = this.physics.add
         //   .image(100, 200)
         //   .setCollideWorldBounds(true)
@@ -92,7 +115,8 @@ class PlayScene extends Phaser.Scene{
       }
     
       punch(){
-        this.elmo.play('punch')
+        isAttacking = true;
+        this.elmo.play('punch');
       }
     
       kick(){
