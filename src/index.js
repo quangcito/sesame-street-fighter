@@ -26,9 +26,9 @@ class Background extends Phaser.Scene {
   preload() {
     this.load.image("background", "src/assets/background.png");
     this.load.image("cloud", "src/assets/cloud.png");
-    this.load.image("elmo", "src/assets/elmo.png");
+    //this.load.image("elmo", "src/assets/elmo.png");
     this.load.image("cookieMonster", "src/assets/cookiemonster.png");
-    this.load.spritesheet("elmoPunch","src/assets/elmo_punching_full.png", {frameWidth:300, frameHeight:300})
+    this.load.spritesheet("elmo","src/assets/elmo_punching_full.png", {frameWidth:300, frameHeight:300})
     this.load.spritesheet("elmoKick","src/assets/elmo_kicking_full.png", {frameWidth:300, frameHeight:300})
   }
 
@@ -38,11 +38,11 @@ class Background extends Phaser.Scene {
     this.createElmo();
     this.createCookieMonster();
     this.createKeys();
-    this.anims.create({
-      key:'punch',
-      frames: this.anims.generateFrameNames('elmoPunch', { frames:[0,1,2,1,0]}),
-      frameRate:3
-    })
+    // this.anims.create({
+    //   key:'punch',
+    //   frames: this.anims.generateFrameNames('elmoPunch', { frames:[0,1,2,1,0]}),
+    //   frameRate:3
+    // })
     this.anims.create({
       key:'kick',
       frames: this.anims.generateFrameNames('elmoKick', { frames:[0,1,2,1,0]}),
@@ -56,9 +56,12 @@ class Background extends Phaser.Scene {
     cookiePunchingHand.setCollideWorldBounds(true);
     cookiePunchingHand.body.setGravityY(0);
 
-    var cookieContainer = this.add.container(200, 200);
-    cookieContainer.add(cookiePunchingHand, this.cookieMonster); 
-
+    this.anims.create({
+      key: 'punch',
+      frames: this.anims.generateFrameNumbers('elmo', {frames:[0,1,2,1,0]}),
+      frameRate: 10,
+      repeat: -1,
+    })
     
     // cookieContainer.setInteractive(new Phaser.Geom.circle(0, 0, radius), Phaser.Geom.Circle.Contains);   
     // cookieContainer.add(cookieMonster);
@@ -93,6 +96,7 @@ class Background extends Phaser.Scene {
     this.punchingHand(cookiePunchingHand, this.cookieMonster);
     // this.punchingHand(secondCircle, this.elmo);
     this.detectPunch();
+    this.hit(); //maybe set state / set effect for this function so that it only does it once 
   }
 
   createCloud() {
@@ -121,6 +125,12 @@ class Background extends Phaser.Scene {
       // .setBodySize(175, 210)
     
     this.elmo.setCollideWorldBounds(true);
+    //this.elmo.setFrame(2);
+
+    this.elmo.setSize(100, 270);
+    this.elmo.setOffset(100, 40);
+    // punching change bound box
+
   }
 
   createCookieMonster() {
@@ -174,13 +184,29 @@ class Background extends Phaser.Scene {
   kick(){
     this.elmo.play('kick')
   }
+
+  hit(){
+    this.physics.add.collider(this.cookieMonster, this.elmo, () => console.log("hit"))
+
+    //change this.cookiemonster and this.elmo to the circles
+    //console.log can be a function that changes the state of the hp
+  }
   
   handleControls() {
     if(keyB.isDown){
       this.kick()
     }
     if(keyV.isDown) {
-      this.punch()
+      this.elmo.setSize(100, 270);
+      this.elmo.setOffset(150, 40);
+      this.elmo.anims.play('punch', true);
+      //this.elmo.setFrame(0);
+      //this.elmo.setSize(200, 270);
+      //this.elmo.setOffset(100, 40);
+    }
+    if(keyV.isUp) {
+      this.elmo.setSize(100, 270);
+      this.elmo.setOffset(100, 40);
     }
     if (keyW.isDown && this.elmo.y == config.height) {
       this.elmo.body.velocity.y = -600;
