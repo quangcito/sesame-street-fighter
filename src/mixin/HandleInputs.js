@@ -3,6 +3,8 @@ class HandleInputs {
         this.scene = scene;
         this.createKeys(charKey);
         this.character = character;
+        this.maxJump = 1;
+        this.jumpCount = 0;
     }
 
     createKeys(charKey) {
@@ -13,20 +15,23 @@ class HandleInputs {
     }
 
     characterControls() {
-        if (this.keyUp.isDown && this.character.y == this.scene.config.height) {
-            this.character.body.velocity.y = -600;
-        }
-    
         if (this.keyLeft.isDown) {
-            this.character.setX((this.character.x -= 3)).setFlipX(true);
-        }
+            this.character.setVelocityX(-150).setFlipX(true);
+        } else if (this.keyRight.isDown) {
+            this.character.setVelocityX(150).setFlipX(false);
+        } else(this.character.setVelocityX(0))
 
         if (this.keyDown.isDown) {
-            this.character.setY((this.character.y += 20));
+            this.character.setVelocityY(800);
         }
 
-        if (this.keyRight.isDown) {
-            this.character.setX((this.character.x += 3)).setFlipX(false);
+        if (this.keyUp.isDown && this.jumpCount < this.maxJump) {
+            this.jumpCount++
+            this.character.setVelocityY(-700);
+        }
+        
+        if(this.character.body.onFloor()){
+            this.jumpCount = 0;
         }
     }
 };
