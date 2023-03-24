@@ -20,13 +20,14 @@ class HandleInputs {
         } else if (this.keyRight.isDown) {
             this.character.setVelocityX(150).setFlipX(false);
         } else(this.character.setVelocityX(0))
-
         if (this.keyDown.isDown) {
             this.character.setVelocityY(800);
         }
 
         if (this.keyUp.isDown && this.jumpCount < this.maxJump) {
+            
             this.jumpCount++
+            console.log(this.jumpCount)
             this.character.setVelocityY(-700);
         }
         

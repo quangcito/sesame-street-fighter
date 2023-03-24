@@ -16,7 +16,7 @@ class PlayScene extends Phaser.Scene{
         this.createElmo();
         this.createCookieMonster();
         this.createKeys();
-        this.physics.add.collider(this.elmo, this.cookieMonster, this.attack);
+        this.physics.add.collider(this.elmo, this.cookieMonster);
 
         this.anims.create({
           key:'punch',
@@ -33,6 +33,13 @@ class PlayScene extends Phaser.Scene{
       update() {
         this.cloud.tilePositionX += 0.5;
         this.handleControls();
+      }
+
+      attack() {
+        if (isAttacking) {
+          console.log("hit!");
+          isAttacking = false;
+        }
       }
     
       createCloud() {
