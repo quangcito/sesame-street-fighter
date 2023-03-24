@@ -16,6 +16,8 @@ class PlayScene extends Phaser.Scene{
         this.createElmo();
         this.createCookieMonster();
         this.createKeys();
+        this.physics.add.collider(this.elmo, this.cookieMonster, this.attack);
+
         this.anims.create({
           key:'punch',
           frames: this.anims.generateFrameNames('elmoPunch', { frames:[0,1,2,1,0]}),
