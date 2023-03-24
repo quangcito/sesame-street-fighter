@@ -8,9 +8,9 @@ import PreloadScene from './scenes/PreloadScene';
 import ResultsScene from './scenes/ResultsScene';
 import ResumeScene from './scenes/ResumeScene';
 
-const WIDTH = 1050;
-const HEIGHT = 750; 
-
+const WIDTH = 1024;
+const HEIGHT = 576; 
+  
 const SHARED_CONFIG ={
   width: WIDTH,
   height: HEIGHT
@@ -25,10 +25,12 @@ const initScenes = () => Scenes.map(createScene)
 const config = {
   type: Phaser.AUTO,
   ...SHARED_CONFIG,
+  autoCenter:true,
   backgroundColor:'#ADD8E6',
   physics: {
     default: 'arcade',
     arcade: {
+      debug:true,
       gravity: { y: 1000 }
     },
   },
