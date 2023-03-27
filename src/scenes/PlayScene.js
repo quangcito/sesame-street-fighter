@@ -17,7 +17,7 @@ class PlayScene extends Phaser.Scene{
         this.createElmo();
         this.createCookieMonster();
         this.createKeys();
-        this.physics.add.collider(this.elmo, this.cookieMonster, this.attack);
+        this.physics.add.collider(this.elmo, this.cookieMonster, () => this.attack());
 
         this.anims.create({
           key:'punch',
@@ -39,6 +39,12 @@ class PlayScene extends Phaser.Scene{
       attack() {
         if (isAttacking) {
           console.log("Hit!");
+          // this.scene.cookieMonster;
+          //char.setVelocityX(300);
+          console.log(this.cookieMonster);
+          this.cookieMonster.setPosition(this.cookieMonster.x + 50);
+          //this.elmo.setAccelerationX(this.elmo.x - 25);
+          //this.cookieMonster.setBounceX = 1;
           isAttacking = false;
         }
       }
@@ -69,10 +75,10 @@ class PlayScene extends Phaser.Scene{
           .setSize(100, 230)
           .setOffset(100, 40);
         
-        this.elmo.on(Phaser.Animations.Events.ANIMATION_START, () => {this.elmo.setSize(300, 300)});
+        this.elmo.on(Phaser.Animations.Events.ANIMATION_START, () => {this.elmo.setSize(150, 230)});
         this.elmo.on(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {this.elmo.setSize(100, 230)
             .setOffset(100, 40);});
-
+        
         this.elmo.setCollideWorldBounds(true);
         this.leftCharControl = new HandleInputs(this, charLeft, this.elmo);
       }
@@ -81,6 +87,8 @@ class PlayScene extends Phaser.Scene{
         this.cookieMonster = this.physics.add
           .sprite(1050, 200, 'cookieMonster')
           .setScale(0.2)
+          .setSize(600, 1000)
+          .setOffset(200, 600)
           .setOrigin(1)
           .setFlipX(true);
         this.cookieMonster.setCollideWorldBounds(true);
@@ -93,12 +101,12 @@ class PlayScene extends Phaser.Scene{
       }
     
       punch(){
-        isAttacking = true;
         this.elmo.play('punch')
+        isAttacking = true;
       }
     
       kick(){
-        isAttacking = false;
+        isAttacking = true;
         this.elmo.play('kick')
       }
       
