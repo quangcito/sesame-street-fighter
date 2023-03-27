@@ -3,6 +3,7 @@ import HandleInputs from '../mixin/HandleInputs';
 
 let keyV
 let keyB
+let isAttacking = false;
 
 class PlayScene extends Phaser.Scene{
     constructor(config){
@@ -16,7 +17,7 @@ class PlayScene extends Phaser.Scene{
         this.createElmo();
         this.createCookieMonster();
         this.createKeys();
-        this.physics.add.collider(this.elmo, this.cookieMonster, attack());
+        this.physics.add.collider(this.elmo, this.cookieMonster, this.attack);
 
         this.anims.create({
           key:'punch',
@@ -68,6 +69,10 @@ class PlayScene extends Phaser.Scene{
           .setSize(100, 230)
           .setOffset(100, 40);
         
+        this.elmo.on(Phaser.Animations.Events.ANIMATION_START, () => {this.elmo.setSize(300, 300)});
+        this.elmo.on(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {this.elmo.setSize(100, 230)
+            .setOffset(100, 40);});
+
         this.elmo.setCollideWorldBounds(true);
         this.leftCharControl = new HandleInputs(this, charLeft, this.elmo);
       }
