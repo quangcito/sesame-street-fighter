@@ -16,7 +16,7 @@ class PlayScene extends Phaser.Scene{
         this.createElmo();
         this.createCookieMonster();
         this.createKeys();
-        this.physics.add.collider(this.elmo, this.cookieMonster);
+        this.physics.add.collider(this.elmo, this.cookieMonster, attack());
 
         this.anims.create({
           key:'punch',
@@ -37,7 +37,7 @@ class PlayScene extends Phaser.Scene{
 
       attack() {
         if (isAttacking) {
-          console.log("hit!");
+          console.log("Hit!");
           isAttacking = false;
         }
       }
@@ -86,10 +86,12 @@ class PlayScene extends Phaser.Scene{
       }
     
       punch(){
+        isAttacking = true;
         this.elmo.play('punch')
       }
     
       kick(){
+        isAttacking = false;
         this.elmo.play('kick')
       }
       
