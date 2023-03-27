@@ -65,6 +65,8 @@ class PlayScene extends Phaser.Scene{
         this.elmo = this.physics.add
           .sprite(100, 200, 'elmo')
           .setOrigin(1)
+          .setSize(100, 230)
+          .setOffset(100, 40);
         
         this.elmo.setCollideWorldBounds(true);
         this.leftCharControl = new HandleInputs(this, charLeft, this.elmo);
