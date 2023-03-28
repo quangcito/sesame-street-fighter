@@ -64,7 +64,7 @@ class PlayScene extends Phaser.Scene{
       }
     
       createElmo() {
-        this.elmo = new Player(this, 100, 200, 'elmo')
+        this.elmo = new Player(this, 100, 200, 'elmo', 'punch', 'kick')
           .setOrigin(1)
           .setSize(100, 230)
           .setOffset(100, 40);
@@ -93,12 +93,12 @@ class PlayScene extends Phaser.Scene{
     
       punch(){
         isAttacking = true;
-        this.elmo.play('punch')
+        this.elmo.punch()
       }
     
       kick(){
-        isAttacking = false;
-        this.elmo.play('kick')
+        isAttacking = true;
+        this.elmo.kick()
       }
       
       handleControls() {
