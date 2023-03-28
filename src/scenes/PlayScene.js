@@ -20,12 +20,12 @@ class PlayScene extends Phaser.Scene{
         this.physics.add.collider(this.elmo, this.cookieMonster, () => this.attack());
 
         this.anims.create({
-          key:'punch',
+          key:'elmoPunching',
           frames: this.anims.generateFrameNames('elmoPunch', { frames:[0,1,2,1,0]}),
           frameRate:12
         })
         this.anims.create({
-          key:'kick',
+          key:'elmoKicking',
           frames: this.anims.generateFrameNames('elmoKick', { frames:[0,1,2,1,0]}),
           frameRate:10
         })
@@ -41,12 +41,18 @@ class PlayScene extends Phaser.Scene{
           console.log("Hit!");
           // this.scene.cookieMonster;
           //char.setVelocityX(300);
-          console.log(this.cookieMonster);
-          this.cookieMonster.setPosition(this.cookieMonster.x + 50);
+          //console.log(this.cookieMonster);
+          if (this.cookieMonster.x > this.elmo.x) {
+            this.cookieMonster.setPosition(this.cookieMonster.x + 50, this.cookieMonster.y);
+          }
+          else {
+            this.cookieMonster.setPosition(this.cookieMonster.x - 50, this.cookieMonster.y);
+          }
           //this.elmo.setAccelerationX(this.elmo.x - 25);
           //this.cookieMonster.setBounceX = 1;
-          isAttacking = false;
         }
+        // isAttacking = false;
+
       }
     
       createCloud() {
@@ -75,9 +81,13 @@ class PlayScene extends Phaser.Scene{
           .setSize(100, 230)
           .setOffset(100, 40);
         
-        this.elmo.on(Phaser.Animations.Events.ANIMATION_START, () => {this.elmo.setSize(150, 230)});
-        this.elmo.on(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {this.elmo.setSize(100, 230)
-            .setOffset(100, 40);});
+        this.elmo.on(Phaser.Animations.Events.ANIMATION_START, () => {this.elmo.setSize(140, 230), this.elmo.setOffset(100, 40)});
+        this.elmo.on(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
+          this.elmo.setSize(100, 230)
+            .setOffset(100, 40);
+          isAttacking = false});
+
+          
         
         this.elmo.setCollideWorldBounds(true);
         this.leftCharControl = new HandleInputs(this, charLeft, this.elmo);
@@ -100,22 +110,23 @@ class PlayScene extends Phaser.Scene{
         keyB = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.B);
       }
     
-      punch(){
-        this.elmo.play('punch')
+      elmoPunching(){
         isAttacking = true;
+        this.elmo.play('elmoPunching')
+        // isAttacking = false;
       }
     
-      kick(){
+      elmoKicking(){
         isAttacking = true;
-        this.elmo.play('kick')
+        this.elmo.play('elmoKicking')
       }
       
       handleControls() {
         if(keyB.isDown){
-          this.kick()
+          this.elmoKicking()
         }
         if(keyV.isDown) {
-          this.punch()
+          this.elmoPunching()
         }
         this.leftCharControl.characterControls();
         this.rightCharControl.characterControls();

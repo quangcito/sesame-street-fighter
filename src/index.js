@@ -10,7 +10,7 @@ import ResumeScene from './scenes/ResumeScene';
 
 const WIDTH = 1024;
 const HEIGHT = 576; 
-  
+
 const SHARED_CONFIG ={
   width: WIDTH,
   height: HEIGHT
@@ -31,7 +31,7 @@ const config = {
     default: 'arcade',
     arcade: {
       debug:false,
-      gravity: { y: 1000 }
+      gravity: { y: 1500 }
     },
   },
   scene: initScenes()
