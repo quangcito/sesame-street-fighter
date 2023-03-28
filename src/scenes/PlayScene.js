@@ -23,7 +23,6 @@ class PlayScene extends Phaser.Scene {
     this.createElmo();
     this.createCookieMonster();
     this.createKeys();
-    this.createHealthbar();
     this.physics.add.collider(this.elmo, this.cookieMonster, this.attack);
 
     this.anims.create({
@@ -40,63 +39,6 @@ class PlayScene extends Phaser.Scene {
       }),
       frameRate: 10,
     });
-  }
-
-  createHealthbar() {
-    this.vertices = [
-      45,
-      14,
-      45 + this.initialWidth,
-      14,
-      60 + this.initialWidth,
-      35,
-      60,
-      35,
-    ];
-    this.elmoGraphic = this.add.graphics();
-    this.elmoHealth = this.add.image(0, 0, "healthbar").setOrigin(0);
-    this.add.text(
-      this.elmoHealth.x + 70,
-      this.elmoHealth.y + 45,
-      "Elmo",
-      this.style
-    );
-    this.draw();
-  }
-
-  draw() {
-    if (this.healthValue >= 0) {
-      this.elmoGraphic.clear();
-      this.elmoGraphic.beginPath();
-      for (let i = 0; i < this.vertices.length; i += 2) {
-        this.elmoGraphic.lineTo(this.vertices[i], this.vertices[i + 1]);
-      }
-      if (this.currentWidth <= this.initialWidth / 3) {
-        this.elmoGraphic.fillStyle(0xff0000);
-      } else if (this.currentWidth <= (this.initialWidth / 3) * 2) {
-        this.elmoGraphic.fillStyle(0xffff00);
-      } else {
-        this.elmoGraphic.fillStyle(0x00ff00);
-      }
-      this.elmoGraphic.closePath();
-      this.elmoGraphic.fill();
-    }
-  }
-
-  decreaseHealth(amount) {
-    this.currentWidth -= (this.initialWidth / 100) * amount;
-    this.healthValue -= amount;
-    this.vertices = [
-      45,
-      14,
-      45 + this.currentWidth,
-      14,
-      60 + this.currentWidth,
-      35,
-      60,
-      35,
-    ];
-    this.draw();
   }
 
   update() {
