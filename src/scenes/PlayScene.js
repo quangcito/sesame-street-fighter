@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import HandleInputs from '../mixin/HandleInputs';
+import Player from '../characters/Player';
 
 let keyV
 let keyB
@@ -63,8 +64,7 @@ class PlayScene extends Phaser.Scene{
       }
     
       createElmo() {
-        this.elmo = this.physics.add
-          .sprite(100, 200, 'elmo')
+        this.elmo = new Player(this, 100, 200, 'elmo')
           .setOrigin(1)
           .setSize(100, 230)
           .setOffset(100, 40);
@@ -78,8 +78,7 @@ class PlayScene extends Phaser.Scene{
       }
     
       createCookieMonster() {
-        this.cookieMonster = this.physics.add
-          .sprite(1050, 200, 'cookieMonster')
+        this.cookieMonster = new Player(this, 1050, 200, 'cookieMonster')
           .setScale(0.2)
           .setOrigin(1)
           .setFlipX(true);
