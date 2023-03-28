@@ -28,7 +28,7 @@ class HandleInputs {
             
             this.jumpCount++
             console.log(this.jumpCount)
-            this.character.setVelocityY(-850);
+            this.character.setVelocityY(-2500);
         }
         
         if(this.character.body.onFloor()){
