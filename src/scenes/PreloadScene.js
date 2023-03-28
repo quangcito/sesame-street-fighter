@@ -11,6 +11,7 @@ class PreloadScene extends Phaser.Scene {
     this.load.image("cookieMonster", "src/assets/cookiemonster.png");
     this.load.image("placeholderButton", "src/assets/placeholderButton.png");
     this.load.image("healthbar", "src/assets/HealthbarV1.png");
+    this.load.image('pixel', 'src/assets/pixel.png');
     this.load.spritesheet("elmoPunch", "src/assets/elmo_punching_full.png", {
       frameWidth: 300,
       frameHeight: 300,
