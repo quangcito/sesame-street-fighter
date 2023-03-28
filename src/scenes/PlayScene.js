@@ -39,6 +39,15 @@ class PlayScene extends Phaser.Scene {
       }),
       frameRate: 10,
     });
+
+    let particles = this.add.particles('pixel');
+    this.emitter = particles.createEmitter({
+      quantity: 15,
+      speed: { min: -150, max: 150 },
+      scale: { start: 2, end: 0.1 },
+      lifespan: 800,
+      on: false,
+    });
   }
 
   update() {
@@ -113,11 +122,15 @@ class PlayScene extends Phaser.Scene {
   punch() {
     isAttacking = true;
     this.elmo.play("punch");
+    this.emitter.setPosition(this.elmo.x, this.elmo.y);
+    this.emitter.explode();
   }
 
   kick() {
     isAttacking = false;
     this.elmo.play("kick");
+    this.emitter.setPosition(this.elmo.x, this.elmo.y);
+    this.emitter.explode();
   }
 
   handleControls() {
