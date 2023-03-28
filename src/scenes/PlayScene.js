@@ -1,117 +1,193 @@
-import Phaser from 'phaser';
-import HandleInputs from '../mixin/HandleInputs';
+import Phaser from "phaser";
+import HandleInputs from "../mixin/HandleInputs";
 
-let keyV
-let keyB
+let keyV;
+let keyB;
 let isAttacking = false;
 
-class PlayScene extends Phaser.Scene{
-    constructor(config){
-        super('PlayScene')
-        this.config = config
+class PlayScene extends Phaser.Scene {
+  constructor(config) {
+    super("PlayScene");
+    this.config = config;
+    this.currentWidth = 385;
+    this.initialWidth = 385;
+    this.healthValue = 100;
+    this.style = { fontSize: "30px", color: "0xFFFFFF" };
+    this.vertices = [];
+    this.damage = 1;
+  }
+
+  create() {
+    this.createCloud();
+    this.createBackground();
+    this.createElmo();
+    this.createCookieMonster();
+    this.createKeys();
+    this.createHealthbar();
+    this.physics.add.collider(this.elmo, this.cookieMonster, this.attack);
+
+    this.anims.create({
+      key: "punch",
+      frames: this.anims.generateFrameNames("elmoPunch", {
+        frames: [0, 1, 2, 1, 0],
+      }),
+      frameRate: 12,
+    });
+    this.anims.create({
+      key: "kick",
+      frames: this.anims.generateFrameNames("elmoKick", {
+        frames: [0, 1, 2, 1, 0],
+      }),
+      frameRate: 10,
+    });
+  }
+
+  createHealthbar() {
+    this.vertices = [
+      45,
+      14,
+      45 + this.initialWidth,
+      14,
+      60 + this.initialWidth,
+      35,
+      60,
+      35,
+    ];
+    this.elmoGraphic = this.add.graphics();
+    this.elmoHealth = this.add.image(0, 0, "healthbar").setOrigin(0);
+    this.add.text(
+      this.elmoHealth.x + 70,
+      this.elmoHealth.y + 45,
+      "Elmo",
+      this.style
+    );
+    this.draw();
+  }
+
+  draw() {
+    if (this.healthValue >= 0) {
+      this.elmoGraphic.clear();
+      this.elmoGraphic.beginPath();
+      for (let i = 0; i < this.vertices.length; i += 2) {
+        this.elmoGraphic.lineTo(this.vertices[i], this.vertices[i + 1]);
+      }
+      if (this.currentWidth <= this.initialWidth / 3) {
+        this.elmoGraphic.fillStyle(0xff0000);
+      } else if (this.currentWidth <= (this.initialWidth / 3) * 2) {
+        this.elmoGraphic.fillStyle(0xffff00);
+      } else {
+        this.elmoGraphic.fillStyle(0x00ff00);
+      }
+      this.elmoGraphic.closePath();
+      this.elmoGraphic.fill();
     }
+  }
 
-    create() {
-        this.createCloud();
-        this.createBackground();
-        this.createElmo();
-        this.createCookieMonster();
-        this.createKeys();
-        this.physics.add.collider(this.elmo, this.cookieMonster, this.attack);
+  decreaseHealth(amount) {
+    this.currentWidth -= (this.initialWidth / 100) * amount;
+    this.healthValue -= amount;
+    this.vertices = [
+      45,
+      14,
+      45 + this.currentWidth,
+      14,
+      60 + this.currentWidth,
+      35,
+      60,
+      35,
+    ];
+    this.draw();
+  }
 
-        this.anims.create({
-          key:'punch',
-          frames: this.anims.generateFrameNames('elmoPunch', { frames:[0,1,2,1,0]}),
-          frameRate:12
-        })
-        this.anims.create({
-          key:'kick',
-          frames: this.anims.generateFrameNames('elmoKick', { frames:[0,1,2,1,0]}),
-          frameRate:10
-        })
-      }
-    
-      update() {
-        this.cloud.tilePositionX += 0.5;
-        this.handleControls();
-      }
+  update() {
+    this.cloud.tilePositionX += 0.5;
+    this.handleControls();
+  }
 
-      attack() {
-        if (isAttacking) {
-          console.log("Hit!");
-          isAttacking = false;
-        }
-      }
-    
-      createCloud() {
-        this.cloud = this.add.tileSprite(
-          this.config.width / 2,
-          150,
-          this.config.width,
-          500,
-          'cloud'
-        );
-      }
-    
-      createBackground() {
-        this.background = this.add.image(
-          this.config.width / 2,
-          this.config.height / 2 + 60,
-          'background'
-        );
-        this.background.setScale(1.6);
-      }
-    
-      createElmo() {
-        this.elmo = this.physics.add
-          .sprite(100, 200, 'elmo')
-          .setOrigin(1)
-          .setSize(100, 230)
-          .setOffset(100, 40);
-        
-        this.elmo.on(Phaser.Animations.Events.ANIMATION_START, () => {this.elmo.setSize(300, 300)});
-        this.elmo.on(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {this.elmo.setSize(100, 230)
-            .setOffset(100, 40);});
-
-        this.elmo.setCollideWorldBounds(true);
-        this.leftCharControl = new HandleInputs(this, charLeft, this.elmo);
-      }
-    
-      createCookieMonster() {
-        this.cookieMonster = this.physics.add
-          .sprite(1050, 200, 'cookieMonster')
-          .setScale(0.2)
-          .setOrigin(1)
-          .setFlipX(true);
-        this.cookieMonster.setCollideWorldBounds(true);
-        this.rightCharControl = new HandleInputs(this, charRight, this.cookieMonster);
-      }
-    
-      createKeys() {
-        keyV = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.V);
-        keyB = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.B);
-      }
-    
-      punch(){
-        isAttacking = true;
-        this.elmo.play('punch')
-      }
-    
-      kick(){
-        isAttacking = false;
-        this.elmo.play('kick')
-      }
-      
-      handleControls() {
-        if(keyB.isDown){
-          this.kick()
-        }
-        if(keyV.isDown) {
-          this.punch()
-        }
-        this.leftCharControl.characterControls();
-        this.rightCharControl.characterControls();
+  attack() {
+    if (isAttacking) {
+      console.log("Hit!");
+      isAttacking = false;
     }
+    this.decreaseHealth(this.damage);
+  }
+
+  createCloud() {
+    this.cloud = this.add.tileSprite(
+      this.config.width / 2,
+      150,
+      this.config.width,
+      500,
+      "cloud"
+    );
+  }
+
+  createBackground() {
+    this.background = this.add.image(
+      this.config.width / 2,
+      this.config.height / 2 + 60,
+      "background"
+    );
+    this.background.setScale(1.6);
+  }
+
+  createElmo() {
+    this.elmo = this.physics.add
+      .sprite(100, 200, "elmo")
+      .setOrigin(1)
+      .setSize(100, 230)
+      .setOffset(100, 40);
+
+    this.elmo.on(Phaser.Animations.Events.ANIMATION_START, () => {
+      this.elmo.setSize(300, 300);
+    });
+    this.elmo.on(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
+      this.elmo.setSize(100, 230).setOffset(100, 40);
+    });
+
+    this.elmo.setCollideWorldBounds(true);
+    this.leftCharControl = new HandleInputs(this, charLeft, this.elmo);
+  }
+
+  createCookieMonster() {
+    this.cookieMonster = this.physics.add
+      .sprite(1050, 200, "cookieMonster")
+      .setScale(0.2)
+      .setOrigin(1)
+      .setFlipX(true);
+    this.cookieMonster.setCollideWorldBounds(true);
+    this.rightCharControl = new HandleInputs(
+      this,
+      charRight,
+      this.cookieMonster
+    );
+  }
+
+  createKeys() {
+    keyV = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.V);
+    keyB = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.B);
+  }
+
+  punch() {
+    isAttacking = true;
+    this.elmo.play("punch");
+  }
+
+  kick() {
+    isAttacking = false;
+    this.elmo.play("kick");
+  }
+
+  handleControls() {
+    if (keyB.isDown) {
+      this.kick();
+    }
+    if (keyV.isDown) {
+      this.punch();
+    }
+    this.leftCharControl.characterControls();
+    this.rightCharControl.characterControls();
+  }
 }
 
 const charRight = {
