@@ -1,11 +1,12 @@
 import Phaser from "phaser";
 
 class HealthBar {
-  constructor(scene, characterName, isLeftPlayer, config) {
+  constructor(scene, characterName, isLeftPlayer, config, profile) {
     this.scene = scene;
     this.characterName = characterName;
     this.isLeftPlayer = isLeftPlayer;
     this.config = config;
+    this.profile = profile;
     this.bar = new Phaser.GameObjects.Graphics(scene);
     this.currentWidth = 385;
     this.initialWidth = 385;
@@ -17,8 +18,9 @@ class HealthBar {
   }
 
   initializeHealthbar() {
-    this.frame = this.scene.add.image(0, 0, "healthbar").setOrigin(0);
     if (this.isLeftPlayer) {
+      this.scene.add.image(37, 36, this.profile);
+      this.frame = this.scene.add.image(0, 0, "healthbar").setOrigin(0);
       this.vertices = [
         45,
         14,
@@ -36,7 +38,9 @@ class HealthBar {
         this.style
       );
     } else {
-      this.frame
+      this.scene.add.image(this.config.width - 37, 36, this.profile);
+      this.frame = this.scene.add
+        .image(0, 0, "healthbar")
         .setOrigin(1, 0)
         .setPosition(this.config.width, 0)
         .setFlipX(true);

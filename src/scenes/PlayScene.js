@@ -90,7 +90,13 @@ class PlayScene extends Phaser.Scene {
   }
 
   createElmo() {
-    this.healthBar1 = new HealthBar(this, "Elmo", true, this.config);
+    this.healthBar1 = new HealthBar(
+      this,
+      "Elmo",
+      true,
+      this.config,
+      "elmoProfile"
+    );
     this.elmo = new Player(
       this,
       100,
@@ -109,7 +115,13 @@ class PlayScene extends Phaser.Scene {
   }
 
   createCookieMonster() {
-    this.healthBar2 = new HealthBar(this, "Cookie Monster", false, this.config);
+    this.healthBar2 = new HealthBar(
+      this,
+      "Cookie Monster",
+      false,
+      this.config,
+      "cookieMonsterProfile"
+    );
     this.cookieMonster = new Player(
       this,
       1050,
