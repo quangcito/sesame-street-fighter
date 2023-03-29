@@ -19,8 +19,10 @@ class PlayScene extends Phaser.Scene {
     this.createBackground();
     this.createElmo();
     this.createCookieMonster();
-    
-    this.physics.add.collider(this.elmo, this.cookieMonster, () => this.attack(this.elmo, this.cookieMonster));
+
+    this.physics.add.collider(this.elmo, this.cookieMonster, () =>
+      this.attack(this.elmo, this.cookieMonster)
+    );
 
     this.anims.create({
       key: "punch",
@@ -37,7 +39,7 @@ class PlayScene extends Phaser.Scene {
       frameRate: 10,
     });
 
-    let particles = this.add.particles('pixel');
+    let particles = this.add.particles("pixel");
     this.emitter = particles.createEmitter({
       quantity: 15,
       speed: { min: -150, max: 150 },
@@ -49,18 +51,23 @@ class PlayScene extends Phaser.Scene {
 
   attack(char1, char2) {
     if (char1.isAttacking()) {
-      console.log("elmo hit!")
+      char2.healthBar.decreaseHealth(10);
+      console.log("elmo hit!");
       if (char2.x > char1.x) {
         char2.setPosition(char2.x + 50, char2.y);
-      }
-      else {
+      } else {
         char2.setPosition(char2.x - 50, char2.y);
       }
     }
     if (char2.isAttacking()) {
-      console.log("cookie hit!")
+      char1.healthBar.decreaseHealth(10);
+      console.log("cookie hit!");
+      if (char2.x > char1.x) {
+        char1.setPosition(char1.x + 50, char1.y);
+      } else {
+        char1.setPosition(char1.x - 50, char1.y);
+      }
     }
-    
   }
 
   update() {
@@ -88,7 +95,7 @@ class PlayScene extends Phaser.Scene {
   }
 
   createElmo() {
-    this.elmo = new Player(this, 100, 200, "elmo", 'punch', 'kick')
+    this.elmo = new Player(this, 100, 200, "Elmo", "punch", "kick", true)
       .setOrigin(1)
       .setSize(100, 230)
       .setOffset(100, 40);
@@ -98,7 +105,15 @@ class PlayScene extends Phaser.Scene {
   }
 
   createCookieMonster() {
-    this.cookieMonster = new Player(this, 1050, 200, "cookieMonster", 'punch', 'kick')
+    this.cookieMonster = new Player(
+      this,
+      1050,
+      200,
+      "CookieMonster",
+      "punch",
+      "kick",
+      false
+    )
       .setScale(0.2)
       .setOrigin(1)
       .setSize(600, 1000)
@@ -124,7 +139,7 @@ const charRight = {
   down: Phaser.Input.Keyboard.KeyCodes.DOWN,
   right: Phaser.Input.Keyboard.KeyCodes.RIGHT,
   punch: Phaser.Input.Keyboard.KeyCodes.O,
-  kick: Phaser.Input.Keyboard.KeyCodes.P
+  kick: Phaser.Input.Keyboard.KeyCodes.P,
 };
 
 const charLeft = {
@@ -133,7 +148,7 @@ const charLeft = {
   down: Phaser.Input.Keyboard.KeyCodes.S,
   right: Phaser.Input.Keyboard.KeyCodes.D,
   punch: Phaser.Input.Keyboard.KeyCodes.C,
-  kick: Phaser.Input.Keyboard.KeyCodes.V
+  kick: Phaser.Input.Keyboard.KeyCodes.V,
 };
 
 export default PlayScene;
