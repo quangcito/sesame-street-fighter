@@ -11,7 +11,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.punchAnim = punchAnim;
         this.kickAnim = kickAnim;
 
-        this.on(Phaser.Animations.Events.ANIMATION_START, () => {this.setSize(300, 300)});
+        this.on(Phaser.Animations.Events.ANIMATION_START, () => {this.setSize(140, 230), this.setOffset(100, 40)});
         this.on(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {this.setSize(100, 230)
             .setOffset(100, 40); this.attacking = false;});
     }
