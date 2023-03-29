@@ -1,5 +1,7 @@
 import Phaser from "phaser";
 
+const initialWidth = 385;
+
 class HealthBar {
   constructor(scene, characterName, isLeftPlayer, config, profile) {
     this.scene = scene;
@@ -10,10 +12,8 @@ class HealthBar {
     this.bar = new Phaser.GameObjects.Graphics(scene);
     this.x = 45;
     this.y = 14;
-    this.initialWidth = 385;
-    this.currentWidth = this.initialWidth;
+    this.currentWidth = initialWidth;
     this.healthValue = 100;
-    this.style = { fontSize: "30px", color: "0xFFFFFF" };
     scene.add.existing(this.bar);
 
     if (!isLeftPlayer) {
@@ -28,10 +28,10 @@ class HealthBar {
     this.createVertices(x, y);
 
     this.text = this.scene.add.text(
-      this.calculate(this.frame.x + 70),
+      this.calculate(this.x, 30),
       this.frame.y + 45,
       this.characterName,
-      this.style
+      { fontSize: "30px", color: "0xFFFFFF" }
     );
 
     if (!this.isLeftPlayer) {
@@ -54,9 +54,9 @@ class HealthBar {
         this.bar.lineTo(this.vertices[i][0], this.vertices[i][1]);
       }
 
-      if (this.currentWidth <= this.initialWidth / 3) {
+      if (this.currentWidth <= initialWidth / 3) {
         this.bar.fillStyle(0xff0000);
-      } else if (this.currentWidth <= (this.initialWidth / 3) * 2) {
+      } else if (this.currentWidth <= (initialWidth / 3) * 2) {
         this.bar.fillStyle(0xffff00);
       } else {
         this.bar.fillStyle(0x00ff00);
@@ -69,7 +69,7 @@ class HealthBar {
 
   decreaseHealth(amount) {
     this.healthValue -= amount;
-    this.currentWidth -= (this.initialWidth / 100) * amount;
+    this.currentWidth -= (initialWidth / 100) * amount;
     this.createVertices(this.x, this.y);
     this.updateGraphic();
   }
