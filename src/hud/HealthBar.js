@@ -8,65 +8,44 @@ class HealthBar {
     this.config = config;
     this.profile = profile;
     this.bar = new Phaser.GameObjects.Graphics(scene);
-    this.currentWidth = 385;
+    this.x = 45;
+    this.y = 14;
     this.initialWidth = 385;
+    this.currentWidth = this.initialWidth;
     this.healthValue = 100;
     this.style = { fontSize: "30px", color: "0xFFFFFF" };
-    this.vertices = [];
     scene.add.existing(this.bar);
-    this.initializeHealthbar();
+
+    if (!isLeftPlayer) {
+      this.x = this.config.width - 45;
+    }
+    this.initializeHealthbar(this.x, this.y);
   }
 
-  initializeHealthbar() {
-    if (this.isLeftPlayer) {
-      this.scene.add.image(37, 36, this.profile);
-      this.frame = this.scene.add.image(0, 0, "healthbar").setOrigin(0);
-      this.vertices = [
-        45,
-        14,
-        45 + this.initialWidth,
-        14,
-        60 + this.initialWidth,
-        35,
-        60,
-        35,
-      ];
-      this.scene.add.text(
-        this.frame.x + 70,
-        this.frame.y + 45,
-        this.characterName,
-        this.style
-      );
-    } else {
-      this.scene.add.image(this.config.width - 37, 36, this.profile);
-      this.frame = this.scene.add
-        .image(0, 0, "healthbar")
+  initializeHealthbar(x, y) {
+    this.scene.add.image(this.calculate(this.x, -8), this.y + 22, this.profile);
+    this.frame = this.scene.add.image(0, 0, "healthbar").setOrigin(0);
+    this.createVertices(x, y);
+
+    this.text = this.scene.add.text(
+      this.calculate(this.frame.x + 70),
+      this.frame.y + 45,
+      this.characterName,
+      this.style
+    );
+
+    if (!this.isLeftPlayer) {
+      this.text.setOrigin(1, 0);
+      this.frame
         .setOrigin(1, 0)
         .setPosition(this.config.width, 0)
         .setFlipX(true);
-      this.vertices = [
-        this.config.width - 45 - this.initialWidth,
-        14,
-        this.config.width - 45,
-        14,
-        this.config.width - 60,
-        35,
-        this.config.width - 60 - this.initialWidth,
-        35,
-      ];
-      this.scene.add
-        .text(
-          this.frame.x - 70,
-          this.frame.y + 45,
-          this.characterName,
-          this.style
-        )
-        .setOrigin(1, 0);
     }
-    this.draw();
+
+    this.updateGraphic();
   }
 
-  draw() {
+  updateGraphic() {
     if (this.healthValue >= 0) {
       this.bar.clear();
       this.bar.beginPath();
@@ -82,6 +61,7 @@ class HealthBar {
       } else {
         this.bar.fillStyle(0x00ff00);
       }
+
       this.bar.closePath();
       this.bar.fill();
     }
@@ -90,31 +70,29 @@ class HealthBar {
   decreaseHealth(amount) {
     this.healthValue -= amount;
     this.currentWidth -= (this.initialWidth / 100) * amount;
+    this.createVertices(this.x, this.y);
+    this.updateGraphic();
+  }
 
+  createVertices(x, y) {
+    this.vertices = [
+      x,
+      y,
+      this.calculate(x, this.currentWidth),
+      y,
+      this.calculate(x, 15, this.currentWidth),
+      y + 21,
+      this.calculate(x, 15),
+      y + 21,
+    ];
+  }
+
+  calculate(num1, num2, num3 = 0) {
     if (this.isLeftPlayer) {
-      this.vertices = [
-        45,
-        14,
-        45 + this.currentWidth,
-        14,
-        60 + this.currentWidth,
-        35,
-        60,
-        35,
-      ];
+      return num1 + num2 + num3;
     } else {
-      this.vertices = [
-        this.config.width - 45 - this.currentWidth,
-        14,
-        this.config.width - 45,
-        14,
-        this.config.width - 60,
-        35,
-        this.config.width - 60 - this.currentWidth,
-        35,
-      ];
+      return num1 - num2 - num3;
     }
-    this.draw();
   }
 }
 
