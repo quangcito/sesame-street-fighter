@@ -50,8 +50,8 @@ class HealthBar {
       this.bar.clear();
       this.bar.beginPath();
 
-      for (let i = 0; i < this.vertices.length; i += 2) {
-        this.bar.lineTo(this.vertices[i], this.vertices[i + 1]);
+      for (let i = 0; i < this.vertices.length; i++) {
+        this.bar.lineTo(this.vertices[i][0], this.vertices[i][1]);
       }
 
       if (this.currentWidth <= this.initialWidth / 3) {
@@ -76,14 +76,10 @@ class HealthBar {
 
   createVertices(x, y) {
     this.vertices = [
-      x,
-      y,
-      this.calculate(x, this.currentWidth),
-      y,
-      this.calculate(x, 15, this.currentWidth),
-      y + 21,
-      this.calculate(x, 15),
-      y + 21,
+      [x, y],
+      [this.calculate(x, this.currentWidth), y],
+      [this.calculate(x, 15, this.currentWidth), y + 21],
+      [this.calculate(x, 15), y + 21],
     ];
   }
 
