@@ -12,6 +12,8 @@ class HandleInputs {
         this.keyDown = this.scene.input.keyboard.addKey(charKey.down);
         this.keyLeft = this.scene.input.keyboard.addKey(charKey.left);
         this.keyRight = this.scene.input.keyboard.addKey(charKey.right);
+        this.keyPunch = this.scene.input.keyboard.addKey(charKey.punch);
+        this.keyKick = this.scene.input.keyboard.addKey(charKey.kick);
     }
 
     characterControls() {
@@ -20,19 +22,26 @@ class HandleInputs {
         } else if (this.keyRight.isDown) {
             this.character.setVelocityX(150).setFlipX(false);
         } else(this.character.setVelocityX(0))
+        
         if (this.keyDown.isDown) {
             this.character.setVelocityY(800);
         }
 
         if (this.keyUp.isDown && this.jumpCount < this.maxJump) {
-            
             this.jumpCount++
-            console.log(this.jumpCount)
             this.character.setVelocityY(-700);
         }
         
         if(this.character.body.onFloor()){
             this.jumpCount = 0;
+        }
+
+        if (this.keyPunch.isDown) {
+            this.character.punch()
+        }
+
+        if (this.keyKick.isDown) {
+            this.character.kick()
         }
     }
 };

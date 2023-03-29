@@ -1,9 +1,6 @@
 import Phaser from "phaser";
 import HandleInputs from "../mixin/HandleInputs";
-
-let keyV;
-let keyB;
-let isAttacking = false;
+import Player from "../character/Player";
 
 class PlayScene extends Phaser.Scene {
   constructor(config) {
@@ -22,8 +19,8 @@ class PlayScene extends Phaser.Scene {
     this.createBackground();
     this.createElmo();
     this.createCookieMonster();
-    this.createKeys();
-    this.physics.add.collider(this.elmo, this.cookieMonster, this.attack);
+    
+    this.physics.add.collider(this.elmo, this.cookieMonster, () => this.attack(this.elmo, this.cookieMonster));
 
     this.anims.create({
       key: "punch",
@@ -50,17 +47,18 @@ class PlayScene extends Phaser.Scene {
     });
   }
 
+  attack(char1, char2) {
+    if (char1.isAttacking()) {
+      console.log("elmo hit!")
+    }
+    if (char2.isAttacking()) {
+      console.log("cookie hit!")
+    }
+  }
+
   update() {
     this.cloud.tilePositionX += 0.5;
     this.handleControls();
-  }
-
-  attack() {
-    if (isAttacking) {
-      console.log("Hit!");
-      isAttacking = false;
-    }
-    this.decreaseHealth(this.damage);
   }
 
   createCloud() {
@@ -83,26 +81,17 @@ class PlayScene extends Phaser.Scene {
   }
 
   createElmo() {
-    this.elmo = this.physics.add
-      .sprite(100, 200, "elmo")
+    this.elmo = new Player(this, 100, 200, "elmo", 'punch', 'kick')
       .setOrigin(1)
       .setSize(100, 230)
       .setOffset(100, 40);
-
-    this.elmo.on(Phaser.Animations.Events.ANIMATION_START, () => {
-      this.elmo.setSize(300, 300);
-    });
-    this.elmo.on(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
-      this.elmo.setSize(100, 230).setOffset(100, 40);
-    });
 
     this.elmo.setCollideWorldBounds(true);
     this.leftCharControl = new HandleInputs(this, charLeft, this.elmo);
   }
 
   createCookieMonster() {
-    this.cookieMonster = this.physics.add
-      .sprite(1050, 200, "cookieMonster")
+    this.cookieMonster = new Player(this, 1050, 200, "cookieMonster", 'punch', 'kick')
       .setScale(0.2)
       .setOrigin(1)
       .setFlipX(true);
@@ -114,32 +103,7 @@ class PlayScene extends Phaser.Scene {
     );
   }
 
-  createKeys() {
-    keyV = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.V);
-    keyB = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.B);
-  }
-
-  punch() {
-    isAttacking = true;
-    this.elmo.play("punch");
-    this.emitter.setPosition(this.elmo.x, this.elmo.y);
-    this.emitter.explode();
-  }
-
-  kick() {
-    isAttacking = false;
-    this.elmo.play("kick");
-    this.emitter.setPosition(this.elmo.x, this.elmo.y);
-    this.emitter.explode();
-  }
-
   handleControls() {
-    if (keyB.isDown) {
-      this.kick();
-    }
-    if (keyV.isDown) {
-      this.punch();
-    }
     this.leftCharControl.characterControls();
     this.rightCharControl.characterControls();
   }
@@ -150,6 +114,8 @@ const charRight = {
   left: Phaser.Input.Keyboard.KeyCodes.LEFT,
   down: Phaser.Input.Keyboard.KeyCodes.DOWN,
   right: Phaser.Input.Keyboard.KeyCodes.RIGHT,
+  punch: Phaser.Input.Keyboard.KeyCodes.O,
+  kick: Phaser.Input.Keyboard.KeyCodes.P
 };
 
 const charLeft = {
@@ -157,6 +123,8 @@ const charLeft = {
   left: Phaser.Input.Keyboard.KeyCodes.A,
   down: Phaser.Input.Keyboard.KeyCodes.S,
   right: Phaser.Input.Keyboard.KeyCodes.D,
+  punch: Phaser.Input.Keyboard.KeyCodes.C,
+  kick: Phaser.Input.Keyboard.KeyCodes.V
 };
 
 export default PlayScene;
