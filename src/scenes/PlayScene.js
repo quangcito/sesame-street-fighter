@@ -94,6 +94,8 @@ class PlayScene extends Phaser.Scene {
     this.cookieMonster = new Player(this, 1050, 200, "cookieMonster", 'punch', 'kick')
       .setScale(0.2)
       .setOrigin(1)
+      .setSize(600, 1000)
+      .setOffset(200, 600)
       .setFlipX(true);
     this.cookieMonster.setCollideWorldBounds(true);
     this.rightCharControl = new HandleInputs(
