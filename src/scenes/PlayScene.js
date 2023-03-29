@@ -50,10 +50,17 @@ class PlayScene extends Phaser.Scene {
   attack(char1, char2) {
     if (char1.isAttacking()) {
       console.log("elmo hit!")
+      if (char2.x > char1.x) {
+        char2.setPosition(char2.x + 50, char2.y);
+      }
+      else {
+        char2.setPosition(char2.x - 50, char2.y);
+      }
     }
     if (char2.isAttacking()) {
       console.log("cookie hit!")
     }
+    
   }
 
   update() {
