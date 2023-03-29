@@ -48,6 +48,8 @@ class PlayScene extends Phaser.Scene {
     if (char1.isAttacking()) {
       this.healthBar2.decreaseHealth(10);
       console.log("elmo hit!");
+      this.emitter.setPosition(char1.x + 50, char1.y - 200);
+      this.emitter.explode();
       if (char2.x > char1.x) {
         char2.setPosition(char2.x + 50, char2.y);
       } else {
@@ -57,6 +59,8 @@ class PlayScene extends Phaser.Scene {
     if (char2.isAttacking()) {
       this.healthBar1.decreaseHealth(10);
       console.log("cookie hit!");
+      this.emitter.setPosition(char2.x, char2.y);
+      this.emitter.explode();
       if (char2.x > char1.x) {
         char1.setPosition(char1.x + 50, char1.y);
       } else {
@@ -98,13 +102,13 @@ class PlayScene extends Phaser.Scene {
       "elmoProfile"
     );
     this.elmo = new Player(
-      this, 
+      this,
       100,
       200,
       "Elmo",
       "punch",
       "kick",
-      this.healthBar1  
+      this.healthBar1
     )
       .setOrigin(1)
       .setSize(100, 230)
