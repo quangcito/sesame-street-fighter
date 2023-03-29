@@ -1,8 +1,7 @@
 import Phaser from "phaser";
-import HealthBar from "../hud/HealthBar";
 
 class Player extends Phaser.Physics.Arcade.Sprite {
-  constructor(scene, x, y, char, punchAnim, kickAnim, isLeftPlayer) {
+  constructor(scene, x, y, char, punchAnim, kickAnim, HealthBar) {
     super(scene, x, y, char);
     scene.physics.add.existing(this);
     scene.add.existing(this);
@@ -19,7 +18,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       this.setSize(100, 230).setOffset(100, 40);
       this.attacking = false;
     });
-    this.healthBar = new HealthBar(scene, char, isLeftPlayer);
   }
 
   punch() {

@@ -1,17 +1,12 @@
 import Phaser from "phaser";
 import HandleInputs from "../mixin/HandleInputs";
 import Player from "../character/Player";
+import HealthBar from "../hud/HealthBar";
 
 class PlayScene extends Phaser.Scene {
   constructor(config) {
     super("PlayScene");
     this.config = config;
-    this.currentWidth = 385;
-    this.initialWidth = 385;
-    this.healthValue = 100;
-    this.style = { fontSize: "30px", color: "0xFFFFFF" };
-    this.vertices = [];
-    this.damage = 1;
   }
 
   create() {
@@ -51,7 +46,7 @@ class PlayScene extends Phaser.Scene {
 
   attack(char1, char2) {
     if (char1.isAttacking()) {
-      char2.healthBar.decreaseHealth(10);
+      this.healthBar2.decreaseHealth(10);
       console.log("elmo hit!");
       if (char2.x > char1.x) {
         char2.setPosition(char2.x + 50, char2.y);
@@ -60,7 +55,7 @@ class PlayScene extends Phaser.Scene {
       }
     }
     if (char2.isAttacking()) {
-      char1.healthBar.decreaseHealth(10);
+      this.healthBar1.decreaseHealth(10);
       console.log("cookie hit!");
       if (char2.x > char1.x) {
         char1.setPosition(char1.x + 50, char1.y);
@@ -95,7 +90,16 @@ class PlayScene extends Phaser.Scene {
   }
 
   createElmo() {
-    this.elmo = new Player(this, 100, 200, "Elmo", "punch", "kick", true)
+    this.healthBar1 = new HealthBar(this, "Elmo", true, this.config);
+    this.elmo = new Player(
+      this,
+      100,
+      200,
+      "Elmo",
+      "punch",
+      "kick",
+      this.healthBar1
+    )
       .setOrigin(1)
       .setSize(100, 230)
       .setOffset(100, 40);
@@ -105,6 +109,7 @@ class PlayScene extends Phaser.Scene {
   }
 
   createCookieMonster() {
+    this.healthBar2 = new HealthBar(this, "Cookie Monster", false, this.config);
     this.cookieMonster = new Player(
       this,
       1050,
@@ -112,7 +117,7 @@ class PlayScene extends Phaser.Scene {
       "CookieMonster",
       "punch",
       "kick",
-      false
+      this.healthBar2
     )
       .setScale(0.2)
       .setOrigin(1)

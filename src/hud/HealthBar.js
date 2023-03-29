@@ -1,19 +1,18 @@
 import Phaser from "phaser";
 
 class HealthBar {
-  constructor(scene, characterName, isLeftPlayer) {
+  constructor(scene, characterName, isLeftPlayer, config) {
     this.scene = scene;
     this.characterName = characterName;
     this.isLeftPlayer = isLeftPlayer;
+    this.config = config;
     this.bar = new Phaser.GameObjects.Graphics(scene);
     this.currentWidth = 385;
     this.initialWidth = 385;
     this.healthValue = 100;
     this.style = { fontSize: "30px", color: "0xFFFFFF" };
     this.vertices = [];
-    this.damage = 1;
     scene.add.existing(this.bar);
-    this.size = { width: 1024, height: 576 };
     this.initializeHealthbar();
   }
 
@@ -37,15 +36,18 @@ class HealthBar {
         this.style
       );
     } else {
-      this.frame.setOrigin(1, 0).setPosition(this.size.width, 0).setFlipX(true);
+      this.frame
+        .setOrigin(1, 0)
+        .setPosition(this.config.width, 0)
+        .setFlipX(true);
       this.vertices = [
-        this.size.width - 45 - this.initialWidth,
+        this.config.width - 45 - this.initialWidth,
         14,
-        this.size.width - 45,
+        this.config.width - 45,
         14,
-        this.size.width - 60,
+        this.config.width - 60,
         35,
-        this.size.width - 60 - this.initialWidth,
+        this.config.width - 60 - this.initialWidth,
         35,
       ];
       this.scene.add
@@ -98,13 +100,13 @@ class HealthBar {
       ];
     } else {
       this.vertices = [
-        this.size.width - 45 - this.currentWidth,
+        this.config.width - 45 - this.currentWidth,
         14,
-        this.size.width - 45,
+        this.config.width - 45,
         14,
-        this.size.width - 60,
+        this.config.width - 60,
         35,
-        this.size.width - 60 - this.currentWidth,
+        this.config.width - 60 - this.currentWidth,
         35,
       ];
     }
