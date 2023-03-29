@@ -98,13 +98,13 @@ class PlayScene extends Phaser.Scene {
       "elmoProfile"
     );
     this.elmo = new Player(
-      this,
+      this, 
       100,
       200,
       "Elmo",
       "punch",
       "kick",
-      this.healthBar1
+      this.healthBar1  
     )
       .setOrigin(1)
       .setSize(100, 230)

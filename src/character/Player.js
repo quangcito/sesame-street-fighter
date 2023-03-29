@@ -1,8 +1,8 @@
 import Phaser from "phaser";
 
 class Player extends Phaser.Physics.Arcade.Sprite {
-  constructor(scene, x, y, char, punchAnim, kickAnim, HealthBar) {
-    super(scene, x, y, char);
+  constructor(scene, x, y, defaultImage, punchAnim, kickAnim, healthBar) {
+    super(scene, x, y, defaultImage);
     scene.physics.add.existing(this);
     scene.add.existing(this);
 
