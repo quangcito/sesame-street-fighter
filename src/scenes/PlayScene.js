@@ -20,18 +20,25 @@ class PlayScene extends Phaser.Scene {
     );
 
     this.anims.create({
-      key: "punch",
+      key: "elmopunch",
       frames: this.anims.generateFrameNames("elmoPunch", {
         frames: [0, 1, 2, 1, 0],
       }),
       frameRate: 12,
     });
     this.anims.create({
-      key: "kick",
+      key: "elmokick",
       frames: this.anims.generateFrameNames("elmoKick", {
         frames: [0, 1, 2, 1, 0],
       }),
       frameRate: 10,
+    });
+    this.anims.create({
+      key: "cookiepunch",
+      frames: this.anims.generateFrameNames("cookiePunch", {
+        frames: [0, 1, 2, 1, 0],
+      }),
+      frameRate: 12,
     });
 
     let particles = this.add.particles("pixel");
@@ -106,8 +113,8 @@ class PlayScene extends Phaser.Scene {
       100,
       200,
       "Elmo",
-      "punch",
-      "kick",
+      "elmopunch",
+      "elmokick",
       this.healthBar1
     )
       .setOrigin(1)
@@ -131,14 +138,13 @@ class PlayScene extends Phaser.Scene {
       1050,
       200,
       "CookieMonster",
-      "punch",
-      "kick",
+      "cookiepunch",
+      "cookiepunch",
       this.healthBar2
     )
-      .setScale(0.2)
       .setOrigin(1)
-      .setSize(600, 1000)
-      .setOffset(200, 600)
+      .setSize(100, 230)
+      .setOffset(100, 40)
       .setFlipX(true);
     this.cookieMonster.setCollideWorldBounds(true);
     this.rightCharControl = new HandleInputs(
