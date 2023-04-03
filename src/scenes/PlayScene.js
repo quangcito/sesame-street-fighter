@@ -76,7 +76,7 @@ class PlayScene extends Phaser.Scene {
       console.log("cookie hit!");
       this.emitter.setPosition(char2.x, char2.y);
       this.emitter.explode();
-      if (char2.x > char1.x) {
+      if (char1.x > char2.x) {
         char1.setPosition(char1.x + 50, char1.y);
       } else {
         char1.setPosition(char1.x - 50, char1.y);
