@@ -63,12 +63,12 @@ class PlayScene extends Phaser.Scene {
     if (char1.isAttacking() &&  Math.abs(char1.y - char2.y) < 100) {
       this.healthBar2.decreaseHealth(10);
       console.log("elmo hit!");
-      this.emitter.setPosition(char1.x + 50, char1.y - 200);
+      this.emitter.setPosition(char1.x + 5, char1.y - 200);
       this.emitter.explode();
       if (char2.x > char1.x) {
-        char2.setPosition(char2.x + 50, char2.y);
+        char2.setPosition(char2.x + 10, char2.y);
       } else {
-        char2.setPosition(char2.x - 50, char2.y);
+        char2.setPosition(char2.x - 10, char2.y);
       }
     }
     if (char2.isAttacking() && Math.abs(char1.y - char2.y) < 100) {
@@ -91,7 +91,7 @@ class PlayScene extends Phaser.Scene {
       if (char2.x > char1.x) {
         char2.setPosition(char2.x + 50, char2.y);
         char1.setPosition(char1.x - 50, char1.y);
-      } 
+      }
       if (char2.x < char1.x) {
         char2.setPosition(char2.x - 50, char2.y);
         char1.setPosition(char1.x + 50, char1.y);
@@ -141,7 +141,7 @@ class PlayScene extends Phaser.Scene {
       this.healthBar1
     )
       .setOrigin(1)
-      .setSize(100, 230)
+      .setSize(80, 230)
       .setOffset(100, 40);
 
     this.elmo.setCollideWorldBounds(true);
