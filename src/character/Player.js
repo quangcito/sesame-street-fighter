@@ -12,7 +12,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.kickAnim = kickAnim;
 
     this.on(Phaser.Animations.Events.ANIMATION_START, () => {
-      this.setSize(140, 230), this.setOffset(100, 40);
+      if (this.body.facing == Phaser.Physics.Arcade.FACING_RIGHT) {
+        this.setSize(140, 230), this.setOffset(100, 40);  
+      } else if (this.body.facing == Phaser.Physics.Arcade.FACING_LEFT) {
+        this.setSize(140, 230), this.setOffset(60, 40);
+      }
     });
     this.on(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
       this.setSize(100, 230).setOffset(100, 40);

@@ -33,12 +33,20 @@ class PlayScene extends Phaser.Scene {
       }),
       frameRate: 10,
     });
+
     this.anims.create({
       key: "cookiepunch",
       frames: this.anims.generateFrameNames("cookiePunch", {
         frames: [0, 1, 2, 1, 0],
       }),
       frameRate: 12,
+    });
+    this.anims.create({
+      key: "cookiekick",
+      frames: this.anims.generateFrameNames("cookieKick", {
+        frames: [0, 1, 2, 1, 0],
+      }),
+      frameRate: 10,
     });
 
     let particles = this.add.particles("pixel");
@@ -139,7 +147,7 @@ class PlayScene extends Phaser.Scene {
       200,
       "CookieMonster",
       "cookiepunch",
-      "cookiepunch",
+      "cookiekick",
       this.healthBar2
     )
       .setOrigin(1)
