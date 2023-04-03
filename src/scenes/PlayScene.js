@@ -60,7 +60,7 @@ class PlayScene extends Phaser.Scene {
   }
 
   attack(char1, char2) {
-    if (char1.isAttacking()) {
+    if (char1.isAttacking() &&  Math.abs(char1.y - char2.y) < 100) {
       this.healthBar2.decreaseHealth(10);
       console.log("elmo hit!");
       this.emitter.setPosition(char1.x + 50, char1.y - 200);
@@ -71,7 +71,7 @@ class PlayScene extends Phaser.Scene {
         char2.setPosition(char2.x - 50, char2.y);
       }
     }
-    if (char2.isAttacking()) {
+    if (char2.isAttacking() && Math.abs(char1.y - char2.y) < 100) {
       this.healthBar1.decreaseHealth(10);
       console.log("cookie hit!");
       this.emitter.setPosition(char2.x, char2.y);
@@ -82,6 +82,21 @@ class PlayScene extends Phaser.Scene {
         char1.setPosition(char1.x - 50, char1.y);
       }
     }
+
+     /*else {
+      this.healthBar1.decreaseHealth(10);
+      this.healthBar2.decreaseHealth(10);
+      console.log("both hit!");
+      //emmitter?
+      if (char2.x > char1.x) {
+        char2.setPosition(char2.x + 50, char2.y);
+        char1.setPosition(char1.x - 50, char1.y);
+      } 
+      if (char2.x < char1.x) {
+        char2.setPosition(char2.x - 50, char2.y);
+        char1.setPosition(char1.x + 50, char1.y);
+      }
+    } */
   }
 
   update() {
