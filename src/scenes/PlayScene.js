@@ -63,13 +63,20 @@ class PlayScene extends Phaser.Scene {
     if (char1.isAttacking() &&  Math.abs(char1.y - char2.y) < 100) {
       this.healthBar2.decreaseHealth(10);
       console.log("elmo hit!");
-      this.emitter.setPosition(char1.x + 5, char1.y - 200);
+      this.emitter.setPosition(char1.x + 10, char1.y - 200);
       this.emitter.explode();
+      this.tweens.add({
+        targets: char2,
+        angle: { from: -2, to : 2 },
+        duration: 200,
+        yoyo: true,
+      })
       if (char2.x > char1.x) {
         char2.setPosition(char2.x + 10, char2.y);
       } else {
         char2.setPosition(char2.x - 10, char2.y);
       }
+
     }
     if (char2.isAttacking() && Math.abs(char1.y - char2.y) < 100) {
       this.healthBar1.decreaseHealth(10);
