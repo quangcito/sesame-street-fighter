@@ -83,6 +83,12 @@ class PlayScene extends Phaser.Scene {
       console.log("cookie hit!");
       this.emitter.setPosition(char2.x, char2.y);
       this.emitter.explode();
+      this.tweens.add({
+        targets: char1,
+        angle: { from: -2, to : 2 },
+        duration: 200,
+        yoyo: true,
+      })
       if (char1.x > char2.x) {
         char1.setPosition(char1.x + 50, char1.y);
       } else {
@@ -133,7 +139,7 @@ class PlayScene extends Phaser.Scene {
   createElmo() {
     this.healthBar1 = new HealthBar(
       this,
-      "Elmo",
+      "Old Andrew",
       true,
       this.config,
       "elmoProfile"
@@ -142,7 +148,7 @@ class PlayScene extends Phaser.Scene {
       this,
       100,
       200,
-      "Elmo",
+      "Old Andrew",
       "elmopunch",
       "elmokick",
       this.healthBar1
@@ -158,7 +164,7 @@ class PlayScene extends Phaser.Scene {
   createCookieMonster() {
     this.healthBar2 = new HealthBar(
       this,
-      "Cookie Monster",
+      "New Andrew",
       false,
       this.config,
       "cookieMonsterProfile"
@@ -167,7 +173,7 @@ class PlayScene extends Phaser.Scene {
       this,
       1050,
       200,
-      "CookieMonster",
+      "New Andrew",
       "cookiepunch",
       "cookiekick",
       this.healthBar2

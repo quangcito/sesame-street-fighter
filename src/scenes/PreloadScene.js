@@ -7,8 +7,8 @@ class PreloadScene extends Phaser.Scene {
   preload() {
     this.load.image("background", "src/assets/background.png");
     this.load.image("cloud", "src/assets/cloud.png");
-    this.load.image("Elmo", "src/assets/elmo.png");
-    this.load.image("CookieMonster", "src/assets/cookiemonster.png");
+    this.load.image("Old Andrew", "src/assets/oldAndrew.png");
+    this.load.image("New Andrew", "src/assets/newAndrew.png");
     this.load.image("placeholderButton", "src/assets/placeholderButton.png");
     this.load.image("healthbar", "src/assets/HealthbarV1.png");
     this.load.image("pixel", "src/assets/pixel.png");
@@ -17,19 +17,19 @@ class PreloadScene extends Phaser.Scene {
       "cookieMonsterProfile",
       "src/assets/cookieMonsterProfile.png"
     );
-    this.load.spritesheet("cookiePunch", "src/assets/cookie_punching_full.png", {
+    this.load.spritesheet("cookiePunch", "src/assets/newAndrewPunch.png", {
       frameWidth: 300,
       frameHeight: 300,
     });
-    this.load.spritesheet("cookieKick", "src/assets/cookie_kicking_full.png", {
+    this.load.spritesheet("cookieKick", "src/assets/newAndrewKick.png", {
       frameWidth: 300,
       frameHeight: 300,
     });
-    this.load.spritesheet("elmoPunch", "src/assets/elmo_punching_full.png", {
+    this.load.spritesheet("elmoPunch", "src/assets/oldAndrewPunch.png", {
       frameWidth: 300,
       frameHeight: 300,
     });
-    this.load.spritesheet("elmoKick", "src/assets/elmo_kicking_full.png", {
+    this.load.spritesheet("elmoKick", "src/assets/oldAndrewKick.png", {
       frameWidth: 300,
       frameHeight: 300,
     });
