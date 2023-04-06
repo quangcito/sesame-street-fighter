@@ -138,7 +138,7 @@ class PlayScene extends Phaser.Scene {
   createElmo() {
     this.healthBar1 = new HealthBar(
       this,
-      "Emo Andrew",
+      "Hipster Andrew",
       true,
       this.config,
       "elmoProfile"
@@ -147,7 +147,7 @@ class PlayScene extends Phaser.Scene {
       this,
       100,
       200,
-      "Emo Andrew",
+      "Hipster Andrew",
       "elmopunch",
       "elmokick",
       this.healthBar1

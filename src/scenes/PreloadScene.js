@@ -7,7 +7,7 @@ class PreloadScene extends Phaser.Scene {
   preload() {
     this.load.image("background", "src/assets/background.png");
     this.load.image("cloud", "src/assets/cloud.png");
-    this.load.image("Emo Andrew", "src/assets/oldAndrew.png");
+    this.load.image("Hipster Andrew", "src/assets/oldAndrew.png");
     this.load.image("Fuckboy Andrew", "src/assets/newAndrew.png");
     this.load.image("placeholderButton", "src/assets/placeholderButton.png");
     this.load.image("healthbar", "src/assets/HealthbarV1.png");
