@@ -20,6 +20,7 @@ class HandleInputs {
     if (this.character.isAttacked) {
       return;
     }
+
     if (this.keyDown.isDown) {
       this.character.setVelocityY(800);
       this.character.setBlocking(true);
@@ -28,7 +29,8 @@ class HandleInputs {
       this.character.setBlocking(false);
     }
 
-    if (this.blocking) {
+    if (this.character.getBlocking()) {
+      //character has other controls disabled if blocking
       this.character.setVelocityX(0);
       return;
     }

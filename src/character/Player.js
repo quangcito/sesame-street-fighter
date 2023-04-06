@@ -5,7 +5,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     super(scene, x, y, defaultImage);
     scene.physics.add.existing(this);
     scene.add.existing(this);
-    this.timeFromPreviousAttack = new Date();
+    this.timeFromPreviousAttack = null;
     this.attacking = false;
     this.isAttacked = false;
     this.blocking = false;
@@ -35,8 +35,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
   punch() {
     if (
-      this.timeFromPreviousAttack &&
-      this.attackCooldown + this.timeFromPreviousAttack > new Date().getTime() //The time in milliseconds starting at January 1, 19
+      this.timeFromPreviousAttack && //check to see if the character has attacked atleast once
+      this.attackCooldown + this.timeFromPreviousAttack > new Date().getTime() // checks if enough time has passed for the character to attack again.
     ) {
       return;
     } else {
@@ -73,6 +73,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
   setBlocking(blocking) {
     this.blocking = blocking;
+  }
+
+  getAttacked() {
+    return this.isAttacked;
   }
 }
 

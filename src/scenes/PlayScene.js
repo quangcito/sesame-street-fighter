@@ -72,7 +72,7 @@ class PlayScene extends Phaser.Scene {
       !char2.getBlocking()
     ) {
       char2.isAttacked = true;
-      this.time.delayedCall(1000, () => (char2.isAttacked = false));
+      this.time.delayedCall(3000, () => (char2.isAttacked = false));
       this.healthBar2.decreaseHealth(10);
       console.log("elmo hit!");
       this.emitter.setPosition(char1.x + 10, char1.y - 200);
