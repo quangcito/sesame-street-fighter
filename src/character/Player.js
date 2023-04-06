@@ -11,7 +11,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.blocking = false;
     this.lightAttackDamage = 5;
     this.heavyAttackDamage = 10;
-    this.attackCooldown = 1000;
+    this.attackCooldown = 500;
     this.punchAnim = punchAnim;
     this.kickAnim = kickAnim;
     this.scene = scene;
@@ -34,21 +34,29 @@ class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   punch() {
-    // if (
-    //   this.timeFromPreviousAttack &&
-    //   this.attackCooldown + this.timeFromPreviousAttack > getTime() //The time in milliseconds starting at January 1, 19
-    // ) {
-    //   return;
-    // } else {
-    //   this.addT;
-    //   this.timeFromPreviousAttack = new Date().getTime();
-    this.attacking = true;
-    this.play(this.punchAnim);
+    if (
+      this.timeFromPreviousAttack &&
+      this.attackCooldown + this.timeFromPreviousAttack > new Date().getTime() //The time in milliseconds starting at January 1, 19
+    ) {
+      return;
+    } else {
+      this.timeFromPreviousAttack = new Date().getTime();
+      this.attacking = true;
+      this.play(this.punchAnim);
+    }
   }
 
   kick() {
-    this.attacking = true;
-    this.play(this.kickAnim);
+    if (
+      this.timeFromPreviousAttack &&
+      this.attackCooldown + this.timeFromPreviousAttack > new Date().getTime() //The time in milliseconds starting at January 1, 19
+    ) {
+      return;
+    } else {
+      this.timeFromPreviousAttack = new Date().getTime();
+      this.attacking = true;
+      this.play(this.kickAnim);
+    }
   }
 
   isAttacking() {
