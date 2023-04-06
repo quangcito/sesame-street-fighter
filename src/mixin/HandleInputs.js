@@ -17,15 +17,25 @@ class HandleInputs {
   }
 
   characterControls() {
+    if (isa)
+      if (this.keyDown.isDown) {
+        this.character.setVelocityY(800);
+        this.blocking = true;
+        console.log("blocking!");
+      } else {
+        this.blocking = false;
+      }
+
+    if (this.blocking) {
+      this.character.setVelocityX(0);
+      return;
+    }
+
     if (this.keyLeft.isDown && Phaser.Physics.Arcade.FACING_LEFT) {
       this.character.setVelocityX(-150).setFlipX(true);
     } else if (this.keyRight.isDown && Phaser.Physics.Arcade.FACING_RIGHT) {
       this.character.setVelocityX(150).setFlipX(false);
     } else this.character.setVelocityX(0);
-
-    if (this.keyDown.isDown) {
-      this.character.setVelocityY(800);
-    }
 
     if (this.keyUp.isDown && this.jumpCount < this.maxJump) {
       this.jumpCount++;
