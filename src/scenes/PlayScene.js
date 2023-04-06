@@ -60,23 +60,22 @@ class PlayScene extends Phaser.Scene {
   }
 
   attack(char1, char2) {
-    if (char1.isAttacking() &&  Math.abs(char1.y - char2.y) < 100) {
+    if (char1.isAttacking() && Math.abs(char1.y - char2.y) < 100) {
       this.healthBar2.decreaseHealth(10);
       console.log("elmo hit!");
       this.emitter.setPosition(char1.x + 10, char1.y - 200);
       this.emitter.explode();
       this.tweens.add({
         targets: char2,
-        angle: { from: -2, to : 2 },
+        angle: { from: -2, to: 2 },
         duration: 200,
         yoyo: true,
-      })
+      });
       if (char2.x > char1.x) {
         char2.setPosition(char2.x + 10, char2.y);
       } else {
         char2.setPosition(char2.x - 10, char2.y);
       }
-
     }
     if (char2.isAttacking() && Math.abs(char1.y - char2.y) < 100) {
       this.healthBar1.decreaseHealth(10);
@@ -85,10 +84,10 @@ class PlayScene extends Phaser.Scene {
       this.emitter.explode();
       this.tweens.add({
         targets: char1,
-        angle: { from: -2, to : 2 },
+        angle: { from: -2, to: 2 },
         duration: 200,
         yoyo: true,
-      })
+      });
       if (char1.x > char2.x) {
         char1.setPosition(char1.x + 50, char1.y);
       } else {
@@ -96,7 +95,7 @@ class PlayScene extends Phaser.Scene {
       }
     }
 
-     /*else {
+    /*else {
       this.healthBar1.decreaseHealth(10);
       this.healthBar2.decreaseHealth(10);
       console.log("both hit!");
@@ -139,7 +138,7 @@ class PlayScene extends Phaser.Scene {
   createElmo() {
     this.healthBar1 = new HealthBar(
       this,
-      "Old Andrew",
+      "Emo Andrew",
       true,
       this.config,
       "elmoProfile"
@@ -148,7 +147,7 @@ class PlayScene extends Phaser.Scene {
       this,
       100,
       200,
-      "Old Andrew",
+      "Emo Andrew",
       "elmopunch",
       "elmokick",
       this.healthBar1
@@ -164,7 +163,7 @@ class PlayScene extends Phaser.Scene {
   createCookieMonster() {
     this.healthBar2 = new HealthBar(
       this,
-      "New Andrew",
+      "Fuckboy Andrew",
       false,
       this.config,
       "cookieMonsterProfile"
@@ -173,7 +172,7 @@ class PlayScene extends Phaser.Scene {
       this,
       1050,
       200,
-      "New Andrew",
+      "Fuckboy Andrew",
       "cookiepunch",
       "cookiekick",
       this.healthBar2
