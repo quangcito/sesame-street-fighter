@@ -7,6 +7,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
     this.timeFromPreviousAttack = new Date();
     this.attacking = false;
+    this.isAttacked = false;
     this.blocking = false;
     this.lightAttackDamage = 5;
     this.heavyAttackDamage = 10;
@@ -56,6 +57,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
   setAttacking(attacking) {
     this.attacking = attacking;
+  }
+
+  getBlocking() {
+    return this.blocking;
+  }
+
+  setBlocking(blocking) {
+    this.blocking = blocking;
   }
 }
 

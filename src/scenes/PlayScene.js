@@ -20,32 +20,38 @@ class PlayScene extends Phaser.Scene {
     );
 
     this.anims.create({
-      key: "elmopunch",
-      frames: this.anims.generateFrameNames("elmoPunch", {
-        frames: [0, 1, 2, 1, 0],
+      key: "cookiepunch",
+      frames: this.anims.generateFrameNames("cookiePunch", {
+        frames: [0, 1, 2],
       }),
+      yoyo: true,
       frameRate: 12,
     });
+
     this.anims.create({
-      key: "elmokick",
-      frames: this.anims.generateFrameNames("elmoKick", {
-        frames: [0, 1, 2, 1, 0],
+      key: "cookiekick",
+      frames: this.anims.generateFrameNames("cookieKick", {
+        frames: [0, 1, 2],
       }),
+      yoyo: true,
       frameRate: 10,
     });
 
     this.anims.create({
-      key: "cookiepunch",
-      frames: this.anims.generateFrameNames("cookiePunch", {
-        frames: [0, 1, 2, 1, 0],
+      key: "elmopunch",
+      frames: this.anims.generateFrameNames("elmoPunch", {
+        frames: [0, 1, 2],
       }),
+      yoyo: true,
       frameRate: 12,
     });
+
     this.anims.create({
-      key: "cookiekick",
-      frames: this.anims.generateFrameNames("cookieKick", {
-        frames: [0, 1, 2, 1, 0],
+      key: "elmokick",
+      frames: this.anims.generateFrameNames("elmoKick", {
+        frames: [0, 1, 2],
       }),
+      yoyo: true,
       frameRate: 10,
     });
 
@@ -60,7 +66,13 @@ class PlayScene extends Phaser.Scene {
   }
 
   attack(char1, char2) {
-    if (char1.isAttacking() && Math.abs(char1.y - char2.y) < 100) {
+    if (
+      char1.isAttacking() &&
+      Math.abs(char1.y - char2.y) < 100 &&
+      !char2.getBlocking()
+    ) {
+      char2.isAttacked = true;
+      this.time.delayedCall(1000, () => (char2.isAttacked = false));
       this.healthBar2.decreaseHealth(10);
       console.log("elmo hit!");
       this.emitter.setPosition(char1.x + 10, char1.y - 200);

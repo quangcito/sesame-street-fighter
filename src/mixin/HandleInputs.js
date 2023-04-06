@@ -17,14 +17,16 @@ class HandleInputs {
   }
 
   characterControls() {
-    if (isa)
-      if (this.keyDown.isDown) {
-        this.character.setVelocityY(800);
-        this.blocking = true;
-        console.log("blocking!");
-      } else {
-        this.blocking = false;
-      }
+    if (this.character.isAttacked) {
+      return;
+    }
+    if (this.keyDown.isDown) {
+      this.character.setVelocityY(800);
+      this.character.setBlocking(true);
+      console.log("blocking!");
+    } else {
+      this.character.setBlocking(false);
+    }
 
     if (this.blocking) {
       this.character.setVelocityX(0);
