@@ -23,13 +23,13 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.on(Phaser.Animations.Events.ANIMATION_START, () => {
       if (this.body.facing == Phaser.Physics.Arcade.FACING_RIGHT) {
-        scene.time.delayedCall(350, () => {
+        scene.time.delayedCall(175, () => {
           console.log("delayed");
           this.setSize(130, 230), this.setOffset(90, 40);
         });
         // this.setSize(80, 230), this.setOffset(100, 40);
       } else if (this.body.facing == Phaser.Physics.Arcade.FACING_LEFT) {
-        scene.time.delayedCall(350, () => {
+        scene.time.delayedCall(175, () => {
           this.setSize(130, 230), this.setOffset(70, 40);
         });
       }
@@ -46,11 +46,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       this.attackCooldown + this.timeFromPreviousAttack > new Date().getTime() // checks if enough time has passed for the character to attack again.
     ) {
       return;
-    } else {
-      this.timeFromPreviousAttack = new Date().getTime();
-      this.attacking = true;
-      this.play(this.punchAnim);
     }
+
+    this.timeFromPreviousAttack = new Date().getTime();
+    this.attacking = true;
+    this.play(this.punchAnim);
   }
 
   kick() {

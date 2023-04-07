@@ -9,8 +9,8 @@ import ResultsScene from './scenes/ResultsScene';
 import ResumeScene from './scenes/ResumeScene';
 
 const WIDTH = 1024;
-const HEIGHT = 576; 
-  
+const HEIGHT = 576;
+
 const SHARED_CONFIG ={
   width: WIDTH,
   height: HEIGHT
@@ -18,7 +18,7 @@ const SHARED_CONFIG ={
 
 const Scenes= [PreloadScene,MainMenuScene,CharacterSelectScene,MapSelectScene,PlayScene,PauseScene,ResumeScene,ResultsScene]
 
-const createScene = (Scene) => new Scene(SHARED_CONFIG)  
+const createScene = (Scene) => new Scene(SHARED_CONFIG)
 
 const initScenes = () => Scenes.map(createScene)
 
@@ -30,8 +30,8 @@ const config = {
   physics: {
     default: 'arcade',
     arcade: {
-      debug:true,
-      gravity: { y: 1000 }
+      debug:false,
+      gravity: { y: 1500 }
     },
   },
   scene: initScenes()
