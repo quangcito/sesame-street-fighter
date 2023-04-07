@@ -2,6 +2,7 @@ import Phaser from "phaser";
 import HandleInputs from "../mixin/HandleInputs";
 import Player from "../character/Player";
 import HealthBar from "../hud/HealthBar";
+import initAnims from "../character/Animation";
 
 class PlayScene extends Phaser.Scene {
   constructor(config) {
@@ -14,40 +15,11 @@ class PlayScene extends Phaser.Scene {
     this.createBackground();
     this.createElmo();
     this.createCookieMonster();
+    initAnims(this.anims);
 
     this.physics.add.collider(this.elmo, this.cookieMonster, () =>
       this.attack(this.elmo, this.cookieMonster)
     );
-
-    this.anims.create({
-      key: "elmopunch",
-      frames: this.anims.generateFrameNames("elmoPunch", {
-        frames: [0, 1, 2, 1, 0],
-      }),
-      frameRate: 12,
-    });
-    this.anims.create({
-      key: "elmokick",
-      frames: this.anims.generateFrameNames("elmoKick", {
-        frames: [0, 1, 2, 1, 0],
-      }),
-      frameRate: 10,
-    });
-
-    this.anims.create({
-      key: "cookiepunch",
-      frames: this.anims.generateFrameNames("cookiePunch", {
-        frames: [0, 1, 2, 1, 0],
-      }),
-      frameRate: 12,
-    });
-    this.anims.create({
-      key: "cookiekick",
-      frames: this.anims.generateFrameNames("cookieKick", {
-        frames: [0, 1, 2, 1, 0],
-      }),
-      frameRate: 10,
-    });
 
     let particles = this.add.particles("pixel");
     this.emitter = particles.createEmitter({
