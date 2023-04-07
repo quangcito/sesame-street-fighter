@@ -18,11 +18,11 @@ class HandleInputs {
 
     characterControls() {
         if (this.keyLeft.isDown) {
-            this.character.setVelocityX(-150).setFlipX(true);
+            this.character.setVelocityX(-200).setFlipX(true);
         } else if (this.keyRight.isDown) {
-            this.character.setVelocityX(150).setFlipX(false);
+            this.character.setVelocityX(200).setFlipX(false);
         } else(this.character.setVelocityX(0))
-        
+
         if (this.keyDown.isDown) {
             this.character.setVelocityY(800);
         }
@@ -31,7 +31,7 @@ class HandleInputs {
             this.jumpCount++
             this.character.setVelocityY(-700);
         }
-        
+
         if(this.character.body.onFloor()){
             this.jumpCount = 0;
         }

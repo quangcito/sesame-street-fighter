@@ -82,7 +82,7 @@ class PlayScene extends Phaser.Scene {
       });
 
     }
-    if (char2.isAttacking() && Math.abs(char1.y - char2.y) < 100) {
+    if (char2.isAttacking() && !char1.getImmune() && Math.abs(char1.y - char2.y) < 100) {
       this.healthBar1.decreaseHealth(10);
       console.log("cookie hit!");
       this.emitter.setPosition(char2.x, char2.y);
@@ -92,6 +92,10 @@ class PlayScene extends Phaser.Scene {
       } else {
         char1.setPosition(char1.x - 50, char1.y);
       }
+      char1.setImmune(true);
+      this.time.delayedCall(500, () => {
+        char1.setImmune(false);
+      });
     }
 
      /*else {
