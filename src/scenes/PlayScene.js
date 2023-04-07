@@ -74,6 +74,14 @@ class PlayScene extends Phaser.Scene {
   update() {
     this.cloud.tilePositionX += 0.5;
     this.handleControls();
+    this.detectWin(char1, char2);
+  }
+
+  detectWin(char1, char2) {
+    console.log("Healthbar is " + char2.healthBar.healthValue);
+    if ((char1.healthBar.healthValue || char2.healthBar.healthValue) === 0 ) {
+      alert("Oh my god! Somebody won!");
+    }
   }
 
   createCloud() {
@@ -96,14 +104,30 @@ class PlayScene extends Phaser.Scene {
   }
 
   createElmo() {
+<<<<<<< Updated upstream
     let healthBar = new HealthBar(
+=======
+    this.healthBar = new HealthBar(
+>>>>>>> Stashed changes
       this,
       "Elmo",
       true,
       this.config,
       "elmoProfile"
     );
+<<<<<<< Updated upstream
     this.leftPlayer = new Player(this, 100, 200, leftPlayerKey, healthBar)
+=======
+    this.elmo = new Player(
+      this,
+      100,
+      200,
+      "Elmo",
+      "elmopunch",
+      "elmokick",
+      this.healthBar
+    )
+>>>>>>> Stashed changes
       .setOrigin(1)
       .setSize(80, 230)
       .setOffset(100, 40);
@@ -113,14 +137,30 @@ class PlayScene extends Phaser.Scene {
   }
 
   createCookieMonster() {
+<<<<<<< Updated upstream
     let healthBar = new HealthBar(
+=======
+    this.healthBar = new HealthBar(
+>>>>>>> Stashed changes
       this,
       "Cookie Monster",
       false,
       this.config,
       "cookieMonsterProfile"
     );
+<<<<<<< Updated upstream
     this.rightPlayer = new Player(this, 1050, 200, rightPlayerKey, healthBar)
+=======
+    this.cookieMonster = new Player(
+      this,
+      1050,
+      200,
+      "CookieMonster",
+      "cookiepunch",
+      "cookiekick",
+      this.healthBar
+    )
+>>>>>>> Stashed changes
       .setOrigin(1)
       .setSize(100, 230)
       .setOffset(100, 40)
