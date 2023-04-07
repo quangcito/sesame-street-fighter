@@ -22,7 +22,7 @@ class HandleInputs {
     }
 
     if (this.keyDown.isDown) {
-      this.character.setVelocityY(800);
+      this.character.setVelocityY(1000);
       this.character.setBlocking(true);
       console.log("blocking!");
     } else {
@@ -36,18 +36,18 @@ class HandleInputs {
     }
 
     if (this.keyLeft.isDown) {
-      this.character.setVelocityX(-200).setFlipX(true);
+      this.character.setVelocityX(-500).setFlipX(true);
     } else if (this.keyRight.isDown) {
-      this.character.setVelocityX(200).setFlipX(false);
+      this.character.setVelocityX(500).setFlipX(false);
     } else this.character.setVelocityX(0);
 
-    if (this.keyDown.isDown) {
-      this.character.setVelocityY(800);
-    }
+    // if (this.keyDown.isDown) {
+    //   this.character.setVelocityY(800);
+    // }
 
     if (this.keyUp.isDown && this.jumpCount < this.maxJump) {
       this.jumpCount++;
-      this.character.setVelocityY(-700);
+      this.character.setVelocityY(-1200);
     }
 
     if (this.character.body.onFloor()) {
