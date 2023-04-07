@@ -70,10 +70,11 @@ class HealthBar {
 
   //decreases health value and updates the healthbar to have less length.
   decreaseHealth(amount) {
-    this.healthValue -= amount;
     this.currentWidth -= (initialWidth / 100) * amount;
     this.createVertices(this.x, this.y);
     this.updateGraphic();
+    this.healthValue -= amount;
+
   }
 
   //adds in the four vertices that make healthbar for both players.
