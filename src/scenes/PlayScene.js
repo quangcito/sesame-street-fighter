@@ -3,6 +3,7 @@ import HandleInputs from "../mixin/HandleInputs";
 import Player from "../character/Player";
 import HealthBar from "../hud/HealthBar";
 import initAnims from "../character/Animation";
+import {leftPlayerKey, rightPlayerKey} from "./CharacterSelectScene";
 
 class PlayScene extends Phaser.Scene {
   constructor(config) {
@@ -17,8 +18,8 @@ class PlayScene extends Phaser.Scene {
     this.createCookieMonster();
     initAnims(this.anims);
 
-    this.physics.add.collider(this.elmo, this.cookieMonster, () =>
-      this.attack(this.elmo, this.cookieMonster)
+    this.physics.add.collider(this.leftPlayer, this.rightPlayer, () =>
+      this.attack(this.leftPlayer, this.rightPlayer)
     );
 
     let particles = this.add.particles("pixel");
@@ -129,21 +130,18 @@ class PlayScene extends Phaser.Scene {
       this.config,
       "elmoProfile"
     );
-    this.elmo = new Player(
+    this.leftPlayer = new Player(
       this,
       100,
       200,
-      "Elmo",
-      "elmopunch",
-      "elmokick",
-      this.healthBar1
+      leftPlayerKey
     )
       .setOrigin(1)
       .setSize(80, 230)
       .setOffset(100, 40);
 
-    this.elmo.setCollideWorldBounds(true);
-    this.leftCharControl = new HandleInputs(this, charLeft, this.elmo);
+    this.leftPlayer.setCollideWorldBounds(true);
+    this.leftPlayerControl = new HandleInputs(this, charLeft, this.leftPlayer);
   }
 
   createCookieMonster() {
@@ -154,30 +152,27 @@ class PlayScene extends Phaser.Scene {
       this.config,
       "cookieMonsterProfile"
     );
-    this.cookieMonster = new Player(
+    this.rightPlayer = new Player(
       this,
       1050,
       200,
-      "CookieMonster",
-      "cookiepunch",
-      "cookiekick",
-      this.healthBar2
+      rightPlayerKey
     )
       .setOrigin(1)
       .setSize(100, 230)
       .setOffset(100, 40)
       .setFlipX(true);
-    this.cookieMonster.setCollideWorldBounds(true);
-    this.rightCharControl = new HandleInputs(
+    this.rightPlayer.setCollideWorldBounds(true);
+    this.rightPlayerControl = new HandleInputs(
       this,
       charRight,
-      this.cookieMonster
+      this.rightPlayer
     );
   }
 
   handleControls() {
-    this.leftCharControl.characterControls();
-    this.rightCharControl.characterControls();
+    this.leftPlayerControl.characterControls();
+    this.rightPlayerControl.characterControls();
   }
 }
 
