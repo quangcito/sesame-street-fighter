@@ -7,6 +7,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
 
     this.attacking = false;
+    this.immune = false;
 
     this.punchAnim = punchAnim;
     this.kickAnim = kickAnim;
@@ -15,12 +16,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       if (this.body.facing == Phaser.Physics.Arcade.FACING_RIGHT) {
         scene.time.delayedCall(350, () => {
           console.log('delayed')
-          this.setSize(120, 230), this.setOffset(100, 40);
+          this.setSize(130, 230), this.setOffset(90, 40);
         });
-        this.setSize(80, 230), this.setOffset(100, 40);
+        // this.setSize(80, 230), this.setOffset(100, 40);
       }
       else if (this.body.facing == Phaser.Physics.Arcade.FACING_LEFT) {
-        this.setSize(120, 230), this.setOffset(60, 40);
+        scene.time.delayedCall(350, () => {
+          this.setSize(130, 230), this.setOffset(70, 40);
+        });
       }
     });
     this.on(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
@@ -45,6 +48,21 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
   setAttacking(attacking) {
     this.attacking = attacking;
+  }
+
+  setImmune(immune) {
+    this.immune = immune;
+  }
+
+  playerIsImmune(time) {
+    this.immune = true;
+    scene.time.delayedCall(time, () => {
+      this.immune = false;
+    });
+  }
+
+  getImmune() {
+    return this.immune;
   }
 }
 
