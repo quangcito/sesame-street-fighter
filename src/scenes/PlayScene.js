@@ -45,15 +45,33 @@ class PlayScene extends Phaser.Scene {
       char2.healthBar.decreaseHealth(10);
       console.log("elmo hit!");
       char2.isAttacked = true;
-      this.time.delayedCall(500, () => (char2.isAttacked = false));
-      this.emitter.setPosition(char1.x + 10, char1.y - 200);
+
+      this.emitter.setPosition(char2.x - 150, char2.y - 200);
       this.emitter.explode();
-      this.tweens.add({
-        targets: char2,
-        angle: { from: -2, to: 2 },
-        duration: 200,
-        yoyo: true,
-      });
+
+      if (char1.body.facing == Phaser.Physics.Arcade.FACING_RIGHT) {
+        this.tweens.add({
+          targets: char2,
+          angle: { from: -1, to: 1 },
+          duration: 200,
+          yoyo: true,
+        });
+      }
+
+      if (char1.body.facing == Phaser.Physics.Arcade.FACING_LEFT) {
+        this.tweens.add({
+          targets: char2,
+          angle: { from: 1, to: -1 },
+          duration: 200,
+          yoyo: true,
+        });
+      }
+
+
+      this.time.delayedCall(500, () => (char2.isAttacked = false));
+
+
+
       if (char2.getBounds().right >= this.config.width) {
         char1.setPosition(char1.x - 20, char1.y);
       } else if (char2.getBounds().left <= 0) {
