@@ -7,6 +7,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
 
     this.attacking = false;
+    this.immune = false;
 
     this.punchAnim = punchAnim;
     this.kickAnim = kickAnim;
@@ -47,6 +48,21 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
   setAttacking(attacking) {
     this.attacking = attacking;
+  }
+
+  setImmune(immune) {
+    this.immune = immune;
+  }
+
+  playerIsImmune(time) {
+    this.immune = true;
+    scene.time.delayedCall(time, () => {
+      this.immune = false;
+    });
+  }
+
+  getImmune() {
+    return this.immune;
   }
 }
 

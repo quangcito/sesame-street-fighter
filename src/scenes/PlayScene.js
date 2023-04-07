@@ -60,7 +60,7 @@ class PlayScene extends Phaser.Scene {
   }
 
   attack(char1, char2) {
-    if (char1.isAttacking() &&  Math.abs(char1.y - char2.y) < 100) {
+    if (char1.isAttacking() && !char2.getImmune() && Math.abs(char1.y - char2.y) < 100) {
       this.healthBar2.decreaseHealth(10);
       console.log("elmo hit!");
       this.emitter.setPosition(char1.x + 10, char1.y - 200);
@@ -76,6 +76,10 @@ class PlayScene extends Phaser.Scene {
       } else {
         char2.setPosition(char2.x - 10, char2.y);
       }
+      char2.setImmune(true);
+      this.time.delayedCall(500, () => {
+        char2.setImmune(false);
+      });
 
     }
     if (char2.isAttacking() && Math.abs(char1.y - char2.y) < 100) {
