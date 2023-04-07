@@ -60,17 +60,24 @@ class PlayScene extends Phaser.Scene {
   }
 
   attack(char1, char2) {
-    if (char1.isAttacking() && !char2.getImmune() && Math.abs(char1.y - char2.y) < 100) {
+    if (
+      char1.isAttacking() &&
+      !char2.getImmune() &&
+      Math.abs(char1.y - char2.y) < 100 &&
+      !char2.getBlocking()
+    ) {
       this.healthBar2.decreaseHealth(10);
       console.log("elmo hit!");
+      char2.isAttacked = true;
+      this.time.delayedCall(3000, () => (char2.isAttacked = false));
       this.emitter.setPosition(char1.x + 10, char1.y - 200);
       this.emitter.explode();
       this.tweens.add({
         targets: char2,
-        angle: { from: -2, to : 2 },
+        angle: { from: -2, to: 2 },
         duration: 200,
         yoyo: true,
-      })
+      });
       if (char2.x > char1.x) {
         char2.setPosition(char2.x + 10, char2.y);
       } else {
@@ -80,9 +87,13 @@ class PlayScene extends Phaser.Scene {
       this.time.delayedCall(500, () => {
         char2.setImmune(false);
       });
-
     }
-    if (char2.isAttacking() && !char1.getImmune() && Math.abs(char1.y - char2.y) < 100) {
+
+    if (
+      char2.isAttacking() &&
+      !char1.getImmune() &&
+      Math.abs(char1.y - char2.y) < 100
+    ) {
       this.healthBar1.decreaseHealth(10);
       console.log("cookie hit!");
       this.emitter.setPosition(char2.x, char2.y);
@@ -98,7 +109,7 @@ class PlayScene extends Phaser.Scene {
       });
     }
 
-     /*else {
+    /*else {
       this.healthBar1.decreaseHealth(10);
       this.healthBar2.decreaseHealth(10);
       console.log("both hit!");

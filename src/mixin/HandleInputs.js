@@ -17,34 +17,51 @@ class HandleInputs {
   }
 
   characterControls() {
-      if (this.keyLeft.isDown) {
-          this.character.setVelocityX(-200).setFlipX(true);
-      } else if (this.keyRight.isDown) {
-          this.character.setVelocityX(200).setFlipX(false);
-      } else(this.character.setVelocityX(0))
+    if (this.character.isAttacked) {
+      return;
+    }
 
-      if (this.keyDown.isDown) {
-          this.character.setVelocityY(800);
-      }
+    if (this.keyDown.isDown) {
+      this.character.setVelocityY(800);
+      this.character.setBlocking(true);
+      console.log("blocking!");
+    } else {
+      this.character.setBlocking(false);
+    }
 
-      if (this.keyUp.isDown && this.jumpCount < this.maxJump) {
-          this.jumpCount++
-          this.character.setVelocityY(-700);
-      }
+    if (this.character.getBlocking()) {
+      //character has other controls disabled if blocking
+      this.character.setVelocityX(0);
+      return;
+    }
 
-      if(this.character.body.onFloor()){
-          this.jumpCount = 0;
-      }
+    if (this.keyLeft.isDown) {
+      this.character.setVelocityX(-200).setFlipX(true);
+    } else if (this.keyRight.isDown) {
+      this.character.setVelocityX(200).setFlipX(false);
+    } else this.character.setVelocityX(0);
 
-      if (this.keyPunch.isDown) {
-          this.character.punch()
-      }
+    if (this.keyDown.isDown) {
+      this.character.setVelocityY(800);
+    }
 
-      if (this.keyKick.isDown) {
-          this.character.kick()
-      }
+    if (this.keyUp.isDown && this.jumpCount < this.maxJump) {
+      this.jumpCount++;
+      this.character.setVelocityY(-700);
+    }
+
+    if (this.character.body.onFloor()) {
+      this.jumpCount = 0;
+    }
+
+    if (this.keyPunch.isDown) {
+      this.character.punch();
+    }
+
+    if (this.keyKick.isDown) {
+      this.character.kick();
+    }
   }
 }
-
 
 export default HandleInputs;
