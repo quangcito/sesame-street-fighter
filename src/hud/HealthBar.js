@@ -23,10 +23,11 @@ class HealthBar {
   }
 
   initializeHealthbar(x, y) {
-    this.scene.add.image(this.calculate(this.x, -8), this.y + 22, this.profile);
-    this.frame = this.scene.add.image(0, 0, "healthbar").setOrigin(0);
-    this.createVertices(x, y);
+    this.scene.add.image(this.calculate(this.x, -8), this.y + 22, this.profile); //creates character profile picture
+    this.frame = this.scene.add.image(0, 0, "healthbar").setOrigin(0); //creates healthbar frame
+    this.createVertices(x, y); //creates the healtbar based on how much health the character has.
 
+    //adds character name below the frame
     this.text = this.scene.add.text(
       this.calculate(this.x, 30),
       this.frame.y + 45,
@@ -42,7 +43,7 @@ class HealthBar {
         .setFlipX(true);
     }
 
-    this.updateGraphic();
+    this.updateGraphic(); //draws the healthbar and changes color based on how much health the character has left.
   }
 
   updateGraphic() {
@@ -67,6 +68,7 @@ class HealthBar {
     }
   }
 
+  //decreases health value and updates the healthbar to have less length.
   decreaseHealth(amount) {
     this.healthValue -= amount;
     this.currentWidth -= (initialWidth / 100) * amount;
@@ -74,6 +76,7 @@ class HealthBar {
     this.updateGraphic();
   }
 
+  //adds in the four vertices that make healthbar for both players.
   createVertices(x, y) {
     this.vertices = [
       [x, y],
@@ -83,6 +86,7 @@ class HealthBar {
     ];
   }
 
+  //adds or subtract numbers depending on whether or not the character spawns on the left side of screen.
   calculate(num1, num2, num3 = 0) {
     if (this.isLeftPlayer) {
       return num1 + num2 + num3;
