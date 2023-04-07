@@ -3,7 +3,7 @@ import HandleInputs from "../mixin/HandleInputs";
 import Player from "../character/Player";
 import HealthBar from "../hud/HealthBar";
 import initAnims from "../character/Animation";
-import {leftPlayerKey, rightPlayerKey} from "./CharacterSelectScene";
+import { leftPlayerKey, rightPlayerKey } from "./CharacterSelectScene";
 
 class PlayScene extends Phaser.Scene {
   constructor(config) {
@@ -18,9 +18,13 @@ class PlayScene extends Phaser.Scene {
     this.createCookieMonster();
     initAnims(this.anims);
 
-    this.physics.add.collider(this.leftPlayer, this.rightPlayer, () =>
-      this.attack(this.leftPlayer, this.rightPlayer)
-    );
+    this.physics.add.collider(this.leftPlayer, this.rightPlayer, () => {
+      if (this.leftPlayer.isAttacking()) {
+        this.attack(this.leftPlayer, this.rightPlayer);
+      } else if (this.rightPlayer.isAttacking()) {
+        this.attack(this.rightPlayer, this.leftPlayer);
+      }
+    });
 
     let particles = this.add.particles("pixel");
     this.emitter = particles.createEmitter({
@@ -34,15 +38,14 @@ class PlayScene extends Phaser.Scene {
 
   attack(char1, char2) {
     if (
-      char1.isAttacking() &&
       !char2.getImmune() &&
       Math.abs(char1.y - char2.y) < 100 &&
       !char2.getBlocking()
     ) {
-      this.healthBar2.decreaseHealth(10);
+      char2.healthBar.decreaseHealth(10);
       console.log("elmo hit!");
       char2.isAttacked = true;
-      this.time.delayedCall(3000, () => (char2.isAttacked = false));
+      this.time.delayedCall(500, () => (char2.isAttacked = false));
       this.emitter.setPosition(char1.x + 10, char1.y - 200);
       this.emitter.explode();
       this.tweens.add({
@@ -51,51 +54,21 @@ class PlayScene extends Phaser.Scene {
         duration: 200,
         yoyo: true,
       });
-      if (char2.x > char1.x) {
-        char2.setPosition(char2.x + 10, char2.y);
+      if (char2.getBounds().right >= this.config.width) {
+        char1.setPosition(char1.x - 20, char1.y);
+      } else if (char2.getBounds().left <= 0) {
+        char1.setPosition(char1.x + 20, char1.y);
+      } else if (char2.x > char1.x) {
+        char2.setPosition(char2.x + 20, char2.y);
       } else {
-        char2.setPosition(char2.x - 10, char2.y);
+        char2.setPosition(char2.x - 20, char2.y);
       }
+
       char2.setImmune(true);
       this.time.delayedCall(500, () => {
         char2.setImmune(false);
       });
     }
-
-    if (
-      char2.isAttacking() &&
-      !char1.getImmune() &&
-      Math.abs(char1.y - char2.y) < 100
-    ) {
-      this.healthBar1.decreaseHealth(10);
-      console.log("cookie hit!");
-      this.emitter.setPosition(char2.x, char2.y);
-      this.emitter.explode();
-      if (char1.x > char2.x) {
-        char1.setPosition(char1.x + 50, char1.y);
-      } else {
-        char1.setPosition(char1.x - 50, char1.y);
-      }
-      char1.setImmune(true);
-      this.time.delayedCall(500, () => {
-        char1.setImmune(false);
-      });
-    }
-
-    /*else {
-      this.healthBar1.decreaseHealth(10);
-      this.healthBar2.decreaseHealth(10);
-      console.log("both hit!");
-      //emmitter?
-      if (char2.x > char1.x) {
-        char2.setPosition(char2.x + 50, char2.y);
-        char1.setPosition(char1.x - 50, char1.y);
-      }
-      if (char2.x < char1.x) {
-        char2.setPosition(char2.x - 50, char2.y);
-        char1.setPosition(char1.x + 50, char1.y);
-      }
-    } */
   }
 
   update() {
@@ -123,19 +96,14 @@ class PlayScene extends Phaser.Scene {
   }
 
   createElmo() {
-    this.healthBar1 = new HealthBar(
+    let healthBar = new HealthBar(
       this,
       "Elmo",
       true,
       this.config,
       "elmoProfile"
     );
-    this.leftPlayer = new Player(
-      this,
-      100,
-      200,
-      leftPlayerKey
-    )
+    this.leftPlayer = new Player(this, 100, 200, leftPlayerKey, healthBar)
       .setOrigin(1)
       .setSize(80, 230)
       .setOffset(100, 40);
@@ -145,19 +113,14 @@ class PlayScene extends Phaser.Scene {
   }
 
   createCookieMonster() {
-    this.healthBar2 = new HealthBar(
+    let healthBar = new HealthBar(
       this,
       "Cookie Monster",
       false,
       this.config,
       "cookieMonsterProfile"
     );
-    this.rightPlayer = new Player(
-      this,
-      1050,
-      200,
-      rightPlayerKey
-    )
+    this.rightPlayer = new Player(this, 1050, 200, rightPlayerKey, healthBar)
       .setOrigin(1)
       .setSize(100, 230)
       .setOffset(100, 40)
