@@ -1,20 +1,5 @@
 import BaseScene from "./BaseScene";
 
-<<<<<<< Updated upstream
-class CharacterSelectScene extends BaseScene{
-    constructor(config){
-        super('CharacterSelectScene')
-        this.config = config
-    }
-
-    create(){
-        this.createTitle('PlaceHolder CharacterSelect')
-        this.createButton('MapSelectScene','placeholderButton')
-    }
-}
-
-export default CharacterSelectScene
-=======
 export let leftPlayerKey;
 export let rightPlayerKey;
 
@@ -47,4 +32,3 @@ const cookie = {
 };
 
 export default CharacterSelectScene;
->>>>>>> Stashed changes
