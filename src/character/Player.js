@@ -7,10 +7,21 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
     this.timeFromPreviousAttack = null;
     this.attacking = false;
+<<<<<<< Updated upstream
     this.isAttacked = false;
     this.blocking = false;
     this.lightAttackDamage = 5;
     this.heavyAttackDamage = 10;
+=======
+    this.immune = false;
+    this.attacked = false;
+    this.blocking = false;
+
+    this.punchAnim = characterKey.punchAnim;
+    this.kickAnim = characterKey.kickAnim;
+    this.blockAnim = characterKey.blockAnim;
+
+>>>>>>> Stashed changes
     this.attackCooldown = 500;
     this.punchAnim = punchAnim;
     this.kickAnim = kickAnim;
@@ -59,6 +70,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
+  // blocking() {
+  // if (this.blocking) {
+  //   this.anims.get(this.blockAnim).setCurrentFrame(1);
+  // } else {
+  //   this.anims.get(this.blockAnim).setCurrentFrame(0);
+  // }
+  // }
+
   isAttacking() {
     return this.attacking;
   }
@@ -67,16 +86,32 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.attacking = attacking;
   }
 
+<<<<<<< Updated upstream
   getBlocking() {
     return this.blocking;
+=======
+  setImmune(immune) {
+    this.immune = immune;
+  }
+
+  playerIsImmune(time) {
+    this.immune = true;
+    scene.time.delayedCall(time, () => {
+      this.immune = false;
+    });
+  }
+
+  getImmune() {
+    return this.immune;
+>>>>>>> Stashed changes
   }
 
   setBlocking(blocking) {
     this.blocking = blocking;
   }
 
-  getAttacked() {
-    return this.isAttacked;
+  isAttacked() {
+    return this.attacked;
   }
 }
 

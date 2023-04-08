@@ -24,16 +24,19 @@ class HandleInputs {
     if (this.keyDown.isDown) {
       this.character.setVelocityY(800);
       this.character.setBlocking(true);
-      console.log("blocking!");
+      this.character.setVelocityX(0);
+      this.character.isBlocking();
+      return;
     } else {
       this.character.setBlocking(false);
+      this.character.isBlocking();
     }
 
-    if (this.character.getBlocking()) {
-      //character has other controls disabled if blocking
-      this.character.setVelocityX(0);
-      return;
-    }
+    // if (this.character.getBlocking()) {
+    //   //character has other controls disabled if blocking
+    //   this.character.isBlocking();
+
+    // }
 
     if (this.keyLeft.isDown && Phaser.Physics.Arcade.FACING_LEFT) {
       this.character.setVelocityX(-150).setFlipX(true);

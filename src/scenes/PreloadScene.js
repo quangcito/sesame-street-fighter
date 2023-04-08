@@ -17,6 +17,19 @@ class PreloadScene extends Phaser.Scene {
       "cookieMonsterProfile",
       "src/assets/cookieMonsterProfile.png"
     );
+<<<<<<< Updated upstream
+=======
+
+    this.load.spritesheet(
+      "cookieBlock",
+      "src/assets/cookie_blocking_full.png",
+      {
+        frameWidth: 300,
+        frameHeight: 300,
+      }
+    );
+
+>>>>>>> Stashed changes
     this.load.spritesheet(
       "cookiePunch",
       "src/assets/cookie_punching_full.png",
@@ -25,14 +38,25 @@ class PreloadScene extends Phaser.Scene {
         frameHeight: 300,
       }
     );
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
     this.load.spritesheet("cookieKick", "src/assets/cookie_kicking_full.png", {
       frameWidth: 300,
       frameHeight: 300,
     });
+
+    this.load.spritesheet("elmoBlock", "src/assets/elmo_blocking_full.png", {
+      frameWidth: 300,
+      frameHeight: 300,
+    });
+
     this.load.spritesheet("elmoPunch", "src/assets/elmo_punching_full.png", {
       frameWidth: 300,
       frameHeight: 300,
     });
+
     this.load.spritesheet("elmoKick", "src/assets/elmo_kicking_full.png", {
       frameWidth: 300,
       frameHeight: 300,

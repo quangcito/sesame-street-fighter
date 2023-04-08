@@ -67,9 +67,15 @@ class PlayScene extends Phaser.Scene {
 
   attack(char1, char2) {
     if (
+<<<<<<< Updated upstream
       char1.isAttacking() &&
       Math.abs(char1.y - char2.y) < 100 &&
       !char2.getBlocking()
+=======
+      !char2.getImmune() &&
+      Math.abs(char1.y - char2.y) < 100
+      // !char2.isBlocking()
+>>>>>>> Stashed changes
     ) {
       char2.isAttacked = true;
       this.time.delayedCall(3000, () => (char2.isAttacked = false));
