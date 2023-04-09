@@ -17,10 +17,14 @@ class PreloadScene extends Phaser.Scene {
       "cookieMonsterProfile",
       "src/assets/cookieMonsterProfile.png"
     );
-    this.load.spritesheet("cookiePunch", "src/assets/cookie_punching_full.png", {
-      frameWidth: 300,
-      frameHeight: 300,
-    });
+    this.load.spritesheet(
+      "cookiePunch",
+      "src/assets/cookie_punching_full.png",
+      {
+        frameWidth: 300,
+        frameHeight: 300,
+      }
+    );
     this.load.spritesheet("cookieKick", "src/assets/cookie_kicking_full.png", {
       frameWidth: 300,
       frameHeight: 300,
@@ -36,7 +40,7 @@ class PreloadScene extends Phaser.Scene {
   }
 
   create() {
-    this.scene.start("MainMenuScene");
+    this.scene.start("CharacterSelectScene");
   }
 }
 export default PreloadScene;

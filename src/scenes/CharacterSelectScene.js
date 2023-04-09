@@ -1,32 +1,32 @@
-import BaseScene from "./BaseScene"
+import BaseScene from "./BaseScene";
 
 export let leftPlayerKey;
 export let rightPlayerKey;
 
-class CharacterSelectScene extends BaseScene{
-    constructor(config){
-        super('CharacterSelectScene');
-        this.config = config;
-        leftPlayerKey = elmo;
-        rightPlayerKey = cookie;
-    }
+class CharacterSelectScene extends BaseScene {
+  constructor(config) {
+    super("CharacterSelectScene");
+    this.config = config;
+    leftPlayerKey = elmo;
+    rightPlayerKey = cookie;
+  }
 
-    create(){
-        this.createTitle('PlaceHolder CharacterSelect');
-        this.createButton('MapSelectScene','placeholderButton');
-    }
+  create() {
+    this.createTitle("PlaceHolder CharacterSelect");
+    this.createButton("PlayScene", "placeholderButton");
+  }
 }
 
 const elmo = {
-    defaultImage: 'Elmo',
-    punchAnim: 'elmopunch',
-    kickAnim: 'elmokick'
-}
+  defaultImage: "Elmo",
+  punchAnim: "elmopunch",
+  kickAnim: "elmokick",
+};
 
 const cookie = {
-    defaultImage: 'CookieMonster',
-    punchAnim: 'cookiepunch',
-    kickAnim: 'cookiekick'
-}
+  defaultImage: "CookieMonster",
+  punchAnim: "cookiepunch",
+  kickAnim: "cookiekick",
+};
 
-export default CharacterSelectScene
+export default CharacterSelectScene;

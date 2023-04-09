@@ -68,10 +68,7 @@ class PlayScene extends Phaser.Scene {
         });
       }
 
-
       this.time.delayedCall(500, () => (char2.isAttacked = false));
-
-
 
       if (char2.getBounds().right >= this.config.width) {
         char1.setPosition(char1.x - 20, char1.y);
@@ -88,6 +85,9 @@ class PlayScene extends Phaser.Scene {
         char2.setImmune(false);
       });
     }
+
+    this.cameras.main.setBounds(300, 0, 1000, 600);
+    this.cameras.main.startFollow(this.elmo);
   }
 
   update() {
@@ -98,10 +98,9 @@ class PlayScene extends Phaser.Scene {
 
   detectWin(char1, char2) {
     console.log("Healthbar is " + char2.healthBar.healthValue);
-    if ((char1.healthBar.healthValue <= 0) || (char2.healthBar.healthValue <= 0)) {
+    if (char1.healthBar.healthValue <= 0 || char2.healthBar.healthValue <= 0) {
       //KO = this.add.bitmapText(250, 250, null, 'K.O.', 64);
-      this.time.delayedCall(3000, () => (
-      this.scene.start("EndScene")));
+      this.time.delayedCall(3000, () => this.scene.start("EndScene"));
     }
   }
 
