@@ -8,8 +8,8 @@ import PreloadScene from "./scenes/PreloadScene";
 import ResultsScene from "./scenes/ResultsScene";
 import ResumeScene from "./scenes/ResumeScene";
 
-const WIDTH = 1600;
-const HEIGHT = 640;
+const WIDTH = 1024;
+const HEIGHT = 576;
 
 const SHARED_CONFIG = {
   width: WIDTH,
