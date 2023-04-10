@@ -15,7 +15,7 @@ class PlayScene extends Phaser.Scene {
   create() {
     this.createCloud();
     const map = this.createMap();
-    const layers = this.createLayers(map);
+    this.layers = this.createLayers(map);
 
     this.createElmo();
     this.createCookieMonster();
@@ -29,9 +29,19 @@ class PlayScene extends Phaser.Scene {
       }
     });
 
-    this.physics.add.collider(this.leftPlayer, layers.platforms);
+    console.log(this.layers.platforms);
+    this.physics.add.collider(this.leftPlayer, this.layers.platforms);
 
-    this.physics.add.collider(this.rightPlayer, layers.platforms);
+    // this.physics.add.collider(this.rightPlayer, this.layers.platforms, () => {
+    //   // this.layers.platforms.forEach( => {
+
+    //   // });
+    //   if (this.rightPlayer.y < this.layers.platforms.displayHeight) {
+    //     this.layers.platforms.setCollisionByExclusion(323);
+    //   } else {
+    //     this.layers.platforms.setCollisionByExclusion(-1);
+    //   }
+    // });
 
     let particles = this.add.particles("pixel");
     this.emitter = particles.createEmitter({
@@ -100,10 +110,21 @@ class PlayScene extends Phaser.Scene {
     this.cloud.tilePositionX += 0.5;
     this.handleControls();
     this.detectWin(this.leftPlayer, this.rightPlayer);
+    this.time.delayedCall(1000, () => {
+      console.log("body: " + this.rightPlayer.y);
+      console.log("display: " + this.rightPlayer.displayOriginY);
+      console.log(
+        "platform y " +
+          this.layers.platforms.getTileAtWorldXY(
+            this.rightPlayer.x,
+            this.rightPlayer.y
+          )
+      );
+    });
   }
 
   detectWin(char1, char2) {
-    console.log("Healthbar is " + char2.healthBar.healthValue);
+    // console.log("Healthbar is " + char2.healthBar.healthValue);
     if (char1.healthBar.healthValue <= 0 || char2.healthBar.healthValue <= 0) {
       //KO = this.add.bitmapText(250, 250, null, 'K.O.', 64);
       this.time.delayedCall(3000, () => this.scene.start("EndScene"));
