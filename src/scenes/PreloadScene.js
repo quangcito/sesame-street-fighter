@@ -5,6 +5,10 @@ class PreloadScene extends Phaser.Scene {
     super("PreloadScene");
   }
   preload() {
+    //load JSON file of map and pngs used.
+    this.load.tilemapTiledJSON("map1", "src/assets/test.json");
+    this.load.image("tiles-1", "src/assets/dungeon.png");
+
     this.load.image("background", "src/assets/background.png");
     this.load.image("cloud", "src/assets/cloud.png");
     this.load.image("Elmo", "src/assets/elmo.png");
@@ -17,6 +21,7 @@ class PreloadScene extends Phaser.Scene {
       "cookieMonsterProfile",
       "src/assets/cookieMonsterProfile.png"
     );
+
     this.load.spritesheet(
       "cookiePunch",
       "src/assets/cookie_punching_full.png",

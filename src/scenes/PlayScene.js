@@ -14,7 +14,9 @@ class PlayScene extends Phaser.Scene {
 
   create() {
     this.createCloud();
-    this.createBackground();
+    const map = this.createMap();
+    const layers = this.createLayers(map);
+
     this.createElmo();
     this.createCookieMonster();
     initAnims(this.anims);
@@ -26,6 +28,10 @@ class PlayScene extends Phaser.Scene {
         this.attack(this.rightPlayer, this.leftPlayer);
       }
     });
+
+    this.physics.add.collider(this.leftPlayer, layers.platforms);
+
+    this.physics.add.collider(this.rightPlayer, layers.platforms);
 
     let particles = this.add.particles("pixel");
     this.emitter = particles.createEmitter({
@@ -86,8 +92,8 @@ class PlayScene extends Phaser.Scene {
       });
     }
 
-    this.cameras.main.setBounds(300, 0, 1000, 600);
-    this.cameras.main.startFollow(this.elmo);
+    // this.cameras.main.setBounds(300, 0, 1000, 600);
+    // this.cameras.main.startFollow(this.elmo);
   }
 
   update() {
@@ -114,13 +120,23 @@ class PlayScene extends Phaser.Scene {
     );
   }
 
-  createBackground() {
-    this.background = this.add.image(
-      this.config.width / 2,
-      this.config.height / 2 + 60,
-      "background"
-    );
-    this.background.setScale(1.6);
+  //creates TileMap and images from JSON file.
+  createMap() {
+    //adds tilemap to background
+    const map = this.make.tilemap({ key: "map1" });
+    //first parameter is name of png file in Tiled. second parameter is key of loaded image
+    map.addTilesetImage("Dungeon", "tiles-1");
+    return map;
+  }
+
+  //creates layers in Tiled.
+  createLayers(map) {
+    const tileset = map.getTileset("Dungeon");
+    const floor = map.createLayer("floor", tileset);
+    const platforms = map.createLayer("platforms", tileset);
+
+    platforms.setCollisionByExclusion(-1, true);
+    return { floor, platforms };
   }
 
   createElmo() {
@@ -134,7 +150,8 @@ class PlayScene extends Phaser.Scene {
     this.leftPlayer = new Player(this, 100, 200, leftPlayerKey, healthBar)
       .setOrigin(1)
       .setSize(80, 230)
-      .setOffset(100, 40);
+      .setOffset(100, 40)
+      .setScale(0.5);
 
     this.leftPlayer.setCollideWorldBounds(true);
     this.leftPlayerControl = new HandleInputs(this, charLeft, this.leftPlayer);
@@ -152,7 +169,8 @@ class PlayScene extends Phaser.Scene {
       .setOrigin(1)
       .setSize(100, 230)
       .setOffset(100, 40)
-      .setFlipX(true);
+      .setFlipX(true)
+      .setScale(0.5);
     this.rightPlayer.setCollideWorldBounds(true);
     this.rightPlayerControl = new HandleInputs(
       this,
