@@ -6,10 +6,17 @@ class PreloadScene extends Phaser.Scene {
   }
   preload() {
     this.load.image("background", "src/assets/background.png");
+    this.load.image("selection", "src/assets/selectionScreen.png");
     this.load.image("cloud", "src/assets/cloud.png");
+
+    this.load.image("elmoSelectionIcon", "src/assets/elmoselection.png");
+    this.load.image("cookieSelectionIcon", "src/assets/cookiemonsterselection.png")
+
     this.load.image("Elmo", "src/assets/elmo.png");
     this.load.image("CookieMonster", "src/assets/cookiemonster.png");
+
     this.load.image("placeholderButton", "src/assets/placeholderButton.png");
+
     this.load.image("healthbar", "src/assets/HealthbarV1.png");
     this.load.image("pixel", "src/assets/pixel.png");
     this.load.image("elmoProfile", "src/assets/elmoProfile.png");
@@ -17,6 +24,7 @@ class PreloadScene extends Phaser.Scene {
       "cookieMonsterProfile",
       "src/assets/cookieMonsterProfile.png"
     );
+
     this.load.spritesheet("cookiePunch", "src/assets/cookie_punching_full.png", {
       frameWidth: 300,
       frameHeight: 300,
@@ -25,6 +33,7 @@ class PreloadScene extends Phaser.Scene {
       frameWidth: 300,
       frameHeight: 300,
     });
+
     this.load.spritesheet("elmoPunch", "src/assets/elmo_punching_full.png", {
       frameWidth: 300,
       frameHeight: 300,
