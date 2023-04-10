@@ -1,5 +1,6 @@
 import BaseScene from "./BaseScene"
 import CharacterIcon from "../selectionScreen/CharacterIcon";
+import Cursor from "../selectionScreen/Cursor";
 
 export let leftPlayerKey;
 export let rightPlayerKey;
@@ -15,6 +16,7 @@ class CharacterSelectScene extends BaseScene{
         this.add.image(this.config.width / 2, this.config.height / 2, "selection");
         this.createButton('MapSelectScene','placeholderButton');
         this.createCharacterIcon();
+        this.createCursor();
         leftPlayerKey = this.elmoIcon.characterKey;
         rightPlayerKey = this.cookieIcon.characterKey;
     }
@@ -22,6 +24,17 @@ class CharacterSelectScene extends BaseScene{
     createCharacterIcon() {
         this.elmoIcon = new CharacterIcon(this, this.config.width/2 - 100, this.config.height/2 + 70, "elmoSelectionIcon", elmo);
         this.cookieIcon = new CharacterIcon(this, this.config.width/2 + 100, this.config.height/2 + 70, "cookieSelectionIcon", cookie);
+        this.iconArray = [this.elmoIcon, this.cookieIcon];
+    }
+
+    createCursor() {
+        this.leftCursor = new Cursor(this, 0, 0, 'leftCursor', charLeftControl, this.iconArray);
+        this.rightCursor = new Cursor(this, 0, 0, 'rightCursor', charRightControl, this.iconArray);
+    }
+
+    update() {
+        this.leftCursor.update();
+        this.rightCursor.update();
     }
 }
 
