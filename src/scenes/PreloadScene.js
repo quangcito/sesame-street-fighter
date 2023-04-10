@@ -6,6 +6,7 @@ class PreloadScene extends Phaser.Scene {
   }
   preload() {
     this.load.image("background", "src/assets/background.png");
+    this.load.image("menuBackground", "src/assets/sesame-street-in-blue-sky.jpg");
     this.load.image("cloud", "src/assets/cloud.png");
     this.load.image("Elmo", "src/assets/elmo.png");
     this.load.image("CookieMonster", "src/assets/cookiemonster.png");
@@ -33,10 +34,22 @@ class PreloadScene extends Phaser.Scene {
       frameWidth: 300,
       frameHeight: 300,
     });
+
+    this.loadLabel = this.add.text(500, 250, 'loading\n0%',
+     { font: '60px Interstate Bold', fill: '#fff', align: 'center' });
+    this.loadLabel.setOrigin(0.5, 0.5)
+    this.load.on('progress', this.progress, this);
   }
 
-  create() {
+  progress(value) {
+    let percentage = Math.round(value * 100) + '%';
+    this.loadLabel.setText('loading\n' + percentage);
+  }
+
+  update() {
     this.scene.start("MainMenuScene");
   }
+
+
 }
 export default PreloadScene;
