@@ -138,7 +138,7 @@ class PlayScene extends Phaser.Scene {
       .setOffset(100, 40);
 
     this.leftPlayer.setCollideWorldBounds(true);
-    this.leftPlayerControl = new HandleInputs(this, charLeft, this.leftPlayer);
+    this.leftPlayerControl = new HandleInputs(this, charLeftControl, this.leftPlayer);
   }
 
   createCookieMonster() {
@@ -157,7 +157,7 @@ class PlayScene extends Phaser.Scene {
     this.rightPlayer.setCollideWorldBounds(true);
     this.rightPlayerControl = new HandleInputs(
       this,
-      charRight,
+      charRightControl,
       this.rightPlayer
     );
   }
@@ -168,7 +168,7 @@ class PlayScene extends Phaser.Scene {
   }
 }
 
-const charRight = {
+const charRightControl = {
   up: Phaser.Input.Keyboard.KeyCodes.UP,
   left: Phaser.Input.Keyboard.KeyCodes.LEFT,
   down: Phaser.Input.Keyboard.KeyCodes.DOWN,
@@ -177,7 +177,7 @@ const charRight = {
   kick: Phaser.Input.Keyboard.KeyCodes.P,
 };
 
-const charLeft = {
+const charLeftControl = {
   up: Phaser.Input.Keyboard.KeyCodes.W,
   left: Phaser.Input.Keyboard.KeyCodes.A,
   down: Phaser.Input.Keyboard.KeyCodes.S,

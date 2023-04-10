@@ -20,8 +20,8 @@ class CharacterSelectScene extends BaseScene{
     }
 
     createCharacterIcon() {
-        this.elmoIcon = new CharacterIcon(this, this.config.width/2 - 150, this.config.height/2, "elmoSelectionIcon", elmo);
-        this.cookieIcon = new CharacterIcon(this, this.config.width/2 + 50, this.config.height/2, "cookieSelectionIcon", cookie);
+        this.elmoIcon = new CharacterIcon(this, this.config.width/2 - 100, this.config.height/2 + 70, "elmoSelectionIcon", elmo);
+        this.cookieIcon = new CharacterIcon(this, this.config.width/2 + 100, this.config.height/2 + 70, "cookieSelectionIcon", cookie);
     }
 }
 
@@ -36,5 +36,19 @@ const cookie = {
     punchAnim: 'cookiepunch',
     kickAnim: 'cookiekick'
 }
+
+const charRightControl = {
+    up: Phaser.Input.Keyboard.KeyCodes.UP,
+    left: Phaser.Input.Keyboard.KeyCodes.LEFT,
+    down: Phaser.Input.Keyboard.KeyCodes.DOWN,
+    right: Phaser.Input.Keyboard.KeyCodes.RIGHT,
+  };
+  
+  const charLeftControl = {
+    up: Phaser.Input.Keyboard.KeyCodes.W,
+    left: Phaser.Input.Keyboard.KeyCodes.A,
+    down: Phaser.Input.Keyboard.KeyCodes.S,
+    right: Phaser.Input.Keyboard.KeyCodes.D,
+  };
 
 export default CharacterSelectScene
