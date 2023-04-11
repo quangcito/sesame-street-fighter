@@ -99,15 +99,18 @@ class PlayScene extends Phaser.Scene {
     console.log("Healthbar is " + char2.healthBar.healthValue);
     if ((char1.healthBar.healthValue <= 0) || (char2.healthBar.healthValue <= 0)) {
       this.physics.disableUpdate();
-    if (char1.healthBar.healthValue <= 0) {
-      this.winner2 = this.add.text(200, 130, 'Player 2 Wins!',
+      this.KOImage = this.add.image(400, 100, "KO");
+      this.KOImage.setScale(0.8);
+      //this.KO = this.add.text(300, 50, 'K.O.', 
+      //{ font: '90px Interstate Bold', fill: '#8B0000' });        
+      if (char1.healthBar.healthValue <= 0) {
+        this.winner2 = this.add.text(200, 180, 'Player 2 Wins!',
+          { font: '70px Interstate Bold', fill: '#000000' });        
+      }
+      if (char2.healthBar.healthValue <= 0) {
+        this.winner1 = this.add.text(200, 180, 'Player 1 Wins!',
         { font: '70px Interstate Bold', fill: '#000000' });        
-    }
-    if (char2.healthBar.healthValue <= 0) {
-      this.winner1 = this.add.text(200, 130, 'Player 1 Wins!',
-      { font: '70px Interstate Bold', fill: '#000000' });        
-    }
-      //KO = this.add.bitmapText(250, 250, null, 'K.O.', 64);
+      }
       this.time.delayedCall(5300, () => (
       this.scene.start("EndScene")));
     }
