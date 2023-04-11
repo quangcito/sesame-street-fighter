@@ -9,8 +9,8 @@ class EndScene extends BaseScene{
     create(){
         this.createBackground();
         this.nameLabel = this.add.text(200, 130, 'Thanks for Playing!',
-        { font: '70px Interstate Bold', fill: '#888888' });        this.startInstruction = this.add.text(300, 400, 'Press SPACE to restart!',
-            { font: '50px Interstate Bold', fill: '#888888' });
+        { font: '70px Interstate Bold', fill: '#000000' });        this.startInstruction = this.add.text(300, 400, 'Press SPACE to restart!',
+            { font: '50px Interstate Bold', fill: '#000000' });
         this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);    }
 
     createBackground() {

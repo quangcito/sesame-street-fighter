@@ -98,6 +98,7 @@ class PlayScene extends Phaser.Scene {
   detectWin(char1, char2) {
     console.log("Healthbar is " + char2.healthBar.healthValue);
     if ((char1.healthBar.healthValue <= 0) || (char2.healthBar.healthValue <= 0)) {
+      this.physics.disableUpdate();
       //KO = this.add.bitmapText(250, 250, null, 'K.O.', 64);
       this.time.delayedCall(3000, () => (
       this.scene.start("EndScene")));
