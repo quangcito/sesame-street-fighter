@@ -9,7 +9,6 @@ class PlayScene extends Phaser.Scene {
   constructor(config) {
     super("PlayScene");
     this.config = config;
-    var KO;
   }
 
   create() {
