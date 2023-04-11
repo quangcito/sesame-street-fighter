@@ -47,7 +47,7 @@ class HandleInputs {
 
     if (this.keyUp.isDown && this.jumpCount < this.maxJump) {
       this.jumpCount++;
-      this.character.setVelocityY(-1200);
+      this.character.setVelocityY(-800);
     }
 
     if (this.character.body.onFloor()) {

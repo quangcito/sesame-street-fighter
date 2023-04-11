@@ -29,19 +29,14 @@ class PlayScene extends Phaser.Scene {
       }
     });
 
-    console.log(this.layers.platforms);
-    this.physics.add.collider(this.leftPlayer, this.layers.platforms);
-
-    // this.physics.add.collider(this.rightPlayer, this.layers.platforms, () => {
-    //   // this.layers.platforms.forEach( => {
-
-    //   // });
-    //   if (this.rightPlayer.y < this.layers.platforms.displayHeight) {
-    //     this.layers.platforms.setCollisionByExclusion(323);
-    //   } else {
-    //     this.layers.platforms.setCollisionByExclusion(-1);
-    //   }
-    // });
+    this.leftCollider = this.physics.add.collider(
+      this.leftPlayer,
+      this.layers.platforms
+    );
+    this.rightCollider = this.physics.add.collider(
+      this.rightPlayer,
+      this.layers.platforms
+    );
 
     let particles = this.add.particles("pixel");
     this.emitter = particles.createEmitter({
@@ -53,6 +48,18 @@ class PlayScene extends Phaser.Scene {
     });
   }
 
+  platformCheck(player, collider) {
+    //retrieves the tile at the feet of the player
+    const tile = this.layers.platforms.getTileAtWorldXY(player.x, player.y);
+    if (!tile) {
+      collider.active = false;
+    } else {
+      collider.active = true;
+      //ensures that the player can jump onto a platform that is above the platform that the player is currently on.
+      player.body.checkCollision.up = false;
+    }
+  }
+
   attack(char1, char2) {
     if (
       !char2.getImmune() &&
@@ -60,7 +67,7 @@ class PlayScene extends Phaser.Scene {
       !char2.getBlocking()
     ) {
       char2.healthBar.decreaseHealth(10);
-      console.log("elmo hit!");
+
       char2.isAttacked = true;
 
       this.emitter.setPosition(char2.x - 150, char2.y - 200);
@@ -110,17 +117,20 @@ class PlayScene extends Phaser.Scene {
     this.cloud.tilePositionX += 0.5;
     this.handleControls();
     this.detectWin(this.leftPlayer, this.rightPlayer);
-    this.time.delayedCall(1000, () => {
-      console.log("body: " + this.rightPlayer.y);
-      console.log("display: " + this.rightPlayer.displayOriginY);
-      console.log(
-        "platform y " +
-          this.layers.platforms.getTileAtWorldXY(
-            this.rightPlayer.x,
-            this.rightPlayer.y
-          )
-      );
-    });
+    this.platformCheck(this.leftPlayer, this.leftCollider);
+    this.platformCheck(this.rightPlayer, this.rightCollider);
+
+    // this.time.delayedCall(1000, () => {
+    //   console.log("body: " + this.rightPlayer.y);
+    //   console.log("display: " + this.rightPlayer.displayOriginY);
+    //   console.log(
+    //     "platform y " +
+    //       this.layers.platforms.getTileAtWorldXY(
+    //         this.rightPlayer.x,
+    //         this.rightPlayer.y
+    //       )
+    //   );
+    // });
   }
 
   detectWin(char1, char2) {
@@ -169,7 +179,7 @@ class PlayScene extends Phaser.Scene {
       "elmoProfile"
     );
     this.leftPlayer = new Player(this, 100, 200, leftPlayerKey, healthBar)
-      .setOrigin(1)
+      .setOrigin(0.5, 1)
       .setSize(80, 230)
       .setOffset(100, 40)
       .setScale(0.5);
@@ -187,7 +197,7 @@ class PlayScene extends Phaser.Scene {
       "cookieMonsterProfile"
     );
     this.rightPlayer = new Player(this, 1050, 200, rightPlayerKey, healthBar)
-      .setOrigin(1)
+      .setOrigin(0.5, 1)
       .setSize(100, 230)
       .setOffset(100, 40)
       .setFlipX(true)
