@@ -11,6 +11,7 @@ class HealthBar extends Phaser.GameObjects.Container {
     this.config = config;
     this.profile = profile;
     this.bar = new Phaser.GameObjects.Graphics(scene);
+    this.setOrigin(0);
     this.x = 45;
     this.y = 14;
     this.currentWidth = initialWidth;
