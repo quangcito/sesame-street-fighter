@@ -17,7 +17,7 @@ class HandleInputs {
   }
 
   characterControls() {
-    if (this.character.isAttacked) {
+    if (this.character.isAttacked || (this.character.healthBar.healthValue <= 0)) {
       return;
     }
 

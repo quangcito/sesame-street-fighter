@@ -17,9 +17,17 @@ class Cursor extends Phaser.Physics.Arcade.Image{
         this.keyLeft = this.scene.input.keyboard.addKey(this.controlKey.left);
         this.keyRight = this.scene.input.keyboard.addKey(this.controlKey.right);
         this.keyDown = this.scene.input.keyboard.addKey(this.controlKey.down);
+        this.keyUp = this.scene.input.keyboard.addKey(this.controlKey.up);
     }
 
     keyControl() {
+        if (Phaser.Input.Keyboard.JustDown(this.keyUp)) {
+            this.chosenIcon = null;
+            this.setTint();
+        }
+        if (this.chosenIcon != null) {
+            return;
+        }
         if (Phaser.Input.Keyboard.JustDown(this.keyLeft))
             if (this.selectedIconIndex > 0) {
                 this.selectedIconIndex = (this.selectedIconIndex - 1);
@@ -28,6 +36,10 @@ class Cursor extends Phaser.Physics.Arcade.Image{
             }
         if (Phaser.Input.Keyboard.JustDown(this.keyRight)) {
             this.selectedIconIndex = (this.selectedIconIndex + 1) % this.iconArray.length
+        }
+        if (Phaser.Input.Keyboard.JustDown(this.keyDown)) {
+            this.chosenIcon = this.iconArray[this.selectedIconIndex];
+            this.setTint("#101010");
         }
     }
 
@@ -39,6 +51,14 @@ class Cursor extends Phaser.Physics.Arcade.Image{
     selectIcon(index) {
         let selectedIcon = this.iconArray[index];
         this.setPosition(selectedIcon.x, selectedIcon.y);
+    }
+
+    chosenCharacterOrNull() {
+        if (this.chosenIcon === null) {
+            return null;
+        } else {
+            return this.chosenIcon.characterKey;
+        }
     }
 }
 export default Cursor;

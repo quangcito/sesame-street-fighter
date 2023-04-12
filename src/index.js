@@ -7,6 +7,7 @@ import PlayScene from './scenes/PlayScene';
 import PreloadScene from './scenes/PreloadScene';
 import ResultsScene from './scenes/ResultsScene';
 import ResumeScene from './scenes/ResumeScene';
+import EndScene from './scenes/EndScene';
 
 const WIDTH = 1024;
 const HEIGHT = 576;
@@ -16,7 +17,7 @@ const SHARED_CONFIG ={
   height: HEIGHT
 }
 
-const Scenes= [PreloadScene,MainMenuScene,CharacterSelectScene,MapSelectScene,PlayScene,PauseScene,ResumeScene,ResultsScene]
+const Scenes= [PreloadScene,MainMenuScene,CharacterSelectScene,MapSelectScene,PlayScene,PauseScene,ResumeScene,ResultsScene,EndScene]
 
 const createScene = (Scene) => new Scene(SHARED_CONFIG)
 
@@ -31,7 +32,7 @@ const config = {
     default: 'arcade',
     arcade: {
       debug:false,
-      gravity: { y: 1500 }
+      gravity: { y: 2700 }
     },
   },
   scene: initScenes()

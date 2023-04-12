@@ -2,28 +2,33 @@ import BaseScene from "./BaseScene"
 import CharacterIcon from "../selectionScreen/CharacterIcon";
 import Cursor from "../selectionScreen/Cursor";
 
-export let leftPlayerKey;
-export let rightPlayerKey;
+export let leftPlayerKey=null;
+export let rightPlayerKey=null;
 
-class CharacterSelectScene extends BaseScene{
+class CharacterSelectScene extends Phaser.Scene{
     constructor(config){
         super('CharacterSelectScene');
         this.config = config;
     }
 
     create(){
-        this.createTitle('PlaceHolder CharacterSelect');
+        this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         this.add.image(this.config.width / 2, this.config.height / 2, "selection");
-        this.createButton('MapSelectScene','placeholderButton');
         this.createCharacterIcon();
         this.createCursor();
-        leftPlayerKey = this.elmoIcon.characterKey;
-        rightPlayerKey = this.cookieIcon.characterKey;
+        // leftPlayerKey = this.elmoIcon.characterKey;
+        // rightPlayerKey = this.cookieIcon.characterKey;
     }
 
     createCharacterIcon() {
-        this.elmoIcon = new CharacterIcon(this, this.config.width/2 - 100, this.config.height/2 + 70, "elmoSelectionIcon", elmo);
-        this.cookieIcon = new CharacterIcon(this, this.config.width/2 + 100, this.config.height/2 + 70, "cookieSelectionIcon", cookie);
+        this.elmoIcon = new CharacterIcon(this, 
+            this.config.width/2 - 100, 
+            this.config.height/2 + 70, 
+            "elmoSelectionIcon", elmo);
+        this.cookieIcon = new CharacterIcon(this, 
+            this.config.width/2 + 100, 
+            this.config.height/2 + 70, 
+            "cookieSelectionIcon", cookie);
         this.iconArray = [this.elmoIcon, this.cookieIcon];
     }
 
@@ -35,17 +40,34 @@ class CharacterSelectScene extends BaseScene{
     update() {
         this.leftCursor.update();
         this.rightCursor.update();
+
+        leftPlayerKey = this.leftCursor.chosenCharacterOrNull();
+        rightPlayerKey = this.rightCursor.chosenCharacterOrNull();
+
+        if (this.spaceKey.isDown) {
+            this.toNextScene();
+        }
+    }
+
+    toNextScene() {
+        if (leftPlayerKey != null && rightPlayerKey != null) {
+            this.scene.start('MapSelectScene');
+        } else {
+            alert("Please each choose a character!");
+        }
     }
 }
 
 const elmo = {
     defaultImage: 'Elmo',
+    displayName: "Elmo",
     punchAnim: 'elmopunch',
     kickAnim: 'elmokick'
 }
 
 const cookie = {
     defaultImage: 'CookieMonster',
+    displayName: "Cookie Monster",
     punchAnim: 'cookiepunch',
     kickAnim: 'cookiekick'
 }

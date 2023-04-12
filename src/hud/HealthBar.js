@@ -22,19 +22,16 @@ class HealthBar {
     this.initializeHealthbar(this.x, this.y);
   }
 
-  initializeHealthbar(x, y) {
-    this.scene.add.image(this.calculate(this.x, -8), this.y + 22, this.profile); //creates character profile picture
-    this.frame = this.scene.add.image(0, 0, "healthbar").setOrigin(0); //creates healthbar frame
-    this.createVertices(x, y); //creates the healtbar based on how much health the character has.
-
-    //adds character name below the frame
-    this.text = this.scene.add.text(
+  setName(characterName) {
+    this.characterName = characterName;
+     //adds character name below the frame
+     this.text = this.scene.add.text(
       this.calculate(this.x, 30),
       this.frame.y + 45,
       this.characterName,
       { fontSize: "30px", color: "0xFFFFFF" }
     );
-
+    
     if (!this.isLeftPlayer) {
       this.text.setOrigin(1, 0);
       this.frame
@@ -42,6 +39,12 @@ class HealthBar {
         .setPosition(this.config.width, 0)
         .setFlipX(true);
     }
+  }
+
+  initializeHealthbar(x, y) {
+    this.scene.add.image(this.calculate(this.x, -8), this.y + 22, this.profile); //creates character profile picture
+    this.frame = this.scene.add.image(0, 0, "healthbar").setOrigin(0); //creates healthbar frame
+    this.createVertices(x, y); //creates the healtbar based on how much health the character has.
 
     this.updateGraphic(); //draws the healthbar and changes color based on how much health the character has left.
   }
