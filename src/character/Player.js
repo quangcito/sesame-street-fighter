@@ -13,6 +13,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.timeFromPreviousAttack = null;
     this.immune = false;
     this.isAttacked = false;
+    this.isAttacking = false; //can't return as a global variable so making getter method
     this.blocking = false;
 
     this.punchAnim = characterKey.punchAnim;
@@ -22,7 +23,12 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.scene = scene;
   }
 
+  getAttacking() {
+    return this.isAttacking;
+  }
+
   punch() {
+    this.isAttacking = true;
     if (
       this.timeFromPreviousAttack && //check to see if the character has attacked atleast once
       this.attackCooldown + this.timeFromPreviousAttack > new Date().getTime() // checks if enough time has passed for the character to attack again.
@@ -34,15 +40,38 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.play(this.punchAnim);
 
     // What if you change your direction while punching??
-    scene.time.delayedCall(175, () => {  // 175 here might belong in constructor params / character config
+    this.scene.time.delayedCall(175, () => {  // 175 here might belong in constructor params / character config
       if (this.body.facing == Phaser.Physics.Arcade.FACING_RIGHT) {
         // compute fist position
-        this.attackCallback(fistPosition)
+
+
+
+        // this.attackCallback(fistPosition)
       } else if (this.body.facing == Phaser.Physics.Arcade.FACING_LEFT) {
         // ??????????????
       }
     });
+    this.scene.time.delayedCall(10, () => {
+      this.isAttacking = false;
+    });
 }
+
+  punchingCoord() {
+    if (this.body.facing == Phaser.Physics.Arcade.FACING_RIGHT) {
+      // compute fist position
+      var fistX = this.x + 35;
+      var fistY = this.y + 35;
+
+    } else if (this.body.facing == Phaser.Physics.Arcade.FACING_LEFT) {
+      var fistX = this.x - 35;
+      var fistY = this.y - 35;
+    }
+
+    return {
+      x: fistX,
+      y: fistY
+    }
+    }
 
   kick() {
     if (

@@ -18,12 +18,6 @@ class PlayScene extends Phaser.Scene {
     this.createCookieMonster();
     initAnims(this.anims);
 
-    this.leftPlayer.attackCallback = (attackPosition) =>
-      this.attack(attackPosition, this.leftPlayer, this.rightPlayer);
-      // ^ maybe should be this.rightPlayer.receiveAttack(attackPosition)
-    this.rightPlayer.attackCallback = (attackPosition) =>
-      this.attack(attackPosition, this.rightPlayer, this.leftPlayer);
-
     let particles = this.add.particles("pixel");
     this.emitter = particles.createEmitter({
       quantity: 15,
@@ -34,41 +28,52 @@ class PlayScene extends Phaser.Scene {
     });
   }
 
-  attack(attacker, target) {
+  detectHit(punchingCoord, target) {
+    console.log(punchingCoord.x + ";" + punchingCoord.y);
+    if ((target.x - 300 <= punchingCoord.x <= target.x + 300) || (target.y - 200 <= punchingCoord.y <= target.y + 200)) {
+      return true;
+
+    }
+    return;
+  }
+
+  attack(punchingCoord, attacker, target) {
+    console.log("someone is attacking");
     if (
       target.getImmune() ||
-      Math.abs(attacker.y - target.y) >= 100 ||
       target.getBlocking()
     ) {
       return;
     }
+    if (this.detectHit(punchingCoord, target)) {
+      target.healthBar.decreaseHealth(10);
+      console.log("elmo hit!");
+      target.isAttacked = true;
 
-    target.healthBar.decreaseHealth(10);
-    console.log("elmo hit!");
-    target.isAttacked = true;
+      this.emitter.setPosition(target.x - 150, target.y - 200);
+      this.emitter.explode();
 
-    this.emitter.setPosition(target.x - 150, target.y - 200);
-    this.emitter.explode();
+      if (attacker.body.facing == Phaser.Physics.Arcade.FACING_RIGHT) {
+        this.tweens.add({
+          targets: target,
+          angle: { from: -1, to: 1 },
+          duration: 200,
+          yoyo: true,
+        });
+      }
 
-    if (attacker.body.facing == Phaser.Physics.Arcade.FACING_RIGHT) {
-      this.tweens.add({
-        targets: target,
-        angle: { from: -1, to: 1 },
-        duration: 200,
-        yoyo: true,
-      });
+      if (attacker.body.facing == Phaser.Physics.Arcade.FACING_LEFT) {
+        this.tweens.add({
+          targets: target,
+          angle: { from: 1, to: -1 },
+          duration: 200,
+          yoyo: true,
+        });
     }
 
-    if (attacker.body.facing == Phaser.Physics.Arcade.FACING_LEFT) {
-      this.tweens.add({
-        targets: target,
-        angle: { from: 1, to: -1 },
-        duration: 200,
-        yoyo: true,
-      });
     }
 
-    this.time.delayedCall(500, () => (target.isAttacked = false));
+    //this.time.delayedCall(500, () => (target.isAttacked = false)); called already in player class let's see if works
 
     if (target.getBounds().right >= this.config.width) {
       attacker.setPosition(attacker.x - 20, attacker.y);
@@ -90,6 +95,17 @@ class PlayScene extends Phaser.Scene {
     this.cloud.tilePositionX += 0.5;
     this.handleControls();
     this.detectWin(this.leftPlayer, this.rightPlayer);
+    this.checkAttacking(this.leftPlayer, this.rightPlayer);
+  }
+
+  checkAttacking (leftPlayer, rightPlayer) {
+
+    if (leftPlayer.getAttacking() === false || rightPlayer.getAttacking() === false ) {
+      return
+    }
+    this.attack(this.leftPlayer.punchingCoord(), this.leftPlayer, this.rightPlayer);
+    // ^ maybe should be this.rightPlayer.receiveAttack(attackPosition)
+    this.attack(this.rightPlayer.punchingCoord(), this.rightPlayer, this.leftPlayer);
   }
 
   detectWin(char1, char2) {
