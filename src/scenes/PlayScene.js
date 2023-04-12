@@ -135,10 +135,14 @@ class PlayScene extends Phaser.Scene {
     this.background.setScale(1.6);
   }
 
+  createPlayer() {
+
+  }
+
   createElmo() {
     let healthBar = new HealthBar(
       this,
-      "Elmo",
+      "Player 1",
       true,
       this.config,
       "elmoProfile"
@@ -155,7 +159,7 @@ class PlayScene extends Phaser.Scene {
   createCookieMonster() {
     let healthBar = new HealthBar(
       this,
-      "Cookie Monster",
+      "Player 2",
       false,
       this.config,
       "cookieMonsterProfile"

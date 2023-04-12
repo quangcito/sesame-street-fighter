@@ -8,6 +8,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
 
     this.healthBar = healthBar;
+    this.healthBar.setName(characterKey.displayName);
 
     this.timeFromPreviousAttack = null;
     this.attacking = false;

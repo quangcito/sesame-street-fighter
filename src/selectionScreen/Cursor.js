@@ -40,7 +40,6 @@ class Cursor extends Phaser.Physics.Arcade.Image{
         if (Phaser.Input.Keyboard.JustDown(this.keyDown)) {
             this.chosenIcon = this.iconArray[this.selectedIconIndex];
             this.setTint("#101010");
-            console.log(this.chosenIcon);
         }
     }
 
@@ -52,6 +51,14 @@ class Cursor extends Phaser.Physics.Arcade.Image{
     selectIcon(index) {
         let selectedIcon = this.iconArray[index];
         this.setPosition(selectedIcon.x, selectedIcon.y);
+    }
+
+    chosenCharacterOrNull() {
+        if (this.chosenIcon === null) {
+            return null;
+        } else {
+            return this.chosenIcon.characterKey;
+        }
     }
 }
 export default Cursor;
