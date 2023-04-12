@@ -15,12 +15,11 @@ class PlayScene extends Phaser.Scene {
   create() {
     this.createCloud();
     const map = this.createMap();
-    this.mapOffset = Math.abs(map.widthInPixels - this.config.width);
-    map.x = this.mapOffset;
+    // this.mapOffset = Math.abs(map.widthInPixels - this.config.width);
+    // map.x = this.mapOffset;
     this.layers = this.createLayers(map);
-
-    this.createElmo();
     this.createCookieMonster();
+    this.createElmo();
     initAnims(this.anims);
 
     this.physics.add.collider(this.leftPlayer, this.rightPlayer, () => {
@@ -65,16 +64,12 @@ class PlayScene extends Phaser.Scene {
     // );
 
     // console.log(-Math.abs(map.widthInPixels - this.config.width) / 2);
-    this.physics.world.setBounds(
-      -Math.abs(map.widthInPixels - this.config.width) / 2,
-      0,
-      map.widthInPixels,
-      this.config.height
-    );
+    this.physics.world.setBounds(0, 0, map.widthInPixels, this.config.height);
     // camera.useBounds = true;
     this.cameras.main
+      .setBounds(0, 0, map.widthInPixels, map.heightInPixels)
       .setSize(this.config.width, this.config.height)
-      .centerOn(this.leftPlayer.x - this.rightPlayer.x, this.config.height / 2)
+      // .centerOn(this.leftPlayer.x - this.rightPlayer.x, this.config.height / 2)
       .startFollow(this.rightPlayer);
   }
 
@@ -169,13 +164,9 @@ class PlayScene extends Phaser.Scene {
   }
 
   createCloud() {
-    this.cloud = this.add.tileSprite(
-      this.config.width / 2,
-      150,
-      this.config.width,
-      500,
-      "cloud"
-    );
+    this.cloud = this.add
+      .tileSprite(this.config.width / 2, 150, this.config.width, 500, "cloud")
+      .setScrollFactor(0);
   }
 
   //creates TileMap and images from JSON file.
@@ -206,6 +197,7 @@ class PlayScene extends Phaser.Scene {
       this.config,
       "elmoProfile"
     );
+
     this.leftPlayer = new Player(this, 100, 200, leftPlayerKey, healthBar)
       .setOrigin(0.5, 1)
       .setSize(80, 230)
@@ -224,7 +216,11 @@ class PlayScene extends Phaser.Scene {
       this.config,
       "cookieMonsterProfile"
     );
-    this.rightPlayer = new Player(this, 1050, 200, rightPlayerKey, healthBar)
+
+    console.log("x: " + healthBar.x);
+    console.log("y: " + healthBar.y);
+
+    this.rightPlayer = new Player(this, 600, 200, rightPlayerKey, healthBar)
       .setOrigin(0.5, 1)
       .setSize(100, 230)
       .setOffset(100, 40)

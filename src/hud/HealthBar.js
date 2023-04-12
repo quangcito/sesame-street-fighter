@@ -2,8 +2,9 @@ import Phaser from "phaser";
 
 const initialWidth = 385;
 
-class HealthBar {
+class HealthBar extends Phaser.GameObjects.Container {
   constructor(scene, characterName, isLeftPlayer, config, profile) {
+    super(scene);
     this.scene = scene;
     this.characterName = characterName;
     this.isLeftPlayer = isLeftPlayer;
@@ -14,16 +15,21 @@ class HealthBar {
     this.y = 14;
     this.currentWidth = initialWidth;
     this.healthValue = 100;
-    scene.add.existing(this.bar);
 
     if (!isLeftPlayer) {
       this.x = this.config.width - 45;
     }
     this.initializeHealthbar(this.x, this.y);
+    scene.add.existing(this);
+    this.setScrollFactor(0);
   }
 
   initializeHealthbar(x, y) {
-    this.scene.add.image(this.calculate(this.x, -8), this.y + 22, this.profile); //creates character profile picture
+    this.profilePicture = this.scene.add.image(
+      this.calculate(this.x, -8),
+      this.y + 22,
+      this.profile
+    ); //creates character profile picture
     this.frame = this.scene.add.image(0, 0, "healthbar").setOrigin(0); //creates healthbar frame
     this.createVertices(x, y); //creates the healtbar based on how much health the character has.
 
@@ -42,8 +48,11 @@ class HealthBar {
         .setPosition(this.config.width, 0)
         .setFlipX(true);
     }
-
-    this.updateGraphic(); //draws the healthbar and changes color based on how much health the character has left.
+    this.updateGraphic();
+    this.add(this.profilePicture);
+    this.add(this.frame);
+    this.add(this.text);
+    //draws the healthbar and changes color based on how much health the character has left.
   }
 
   updateGraphic() {
@@ -65,6 +74,7 @@ class HealthBar {
 
       this.bar.closePath();
       this.bar.fill();
+      this.add(this.bar);
     }
   }
 

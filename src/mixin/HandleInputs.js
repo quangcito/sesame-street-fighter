@@ -45,9 +45,11 @@ class HandleInputs {
     //   this.character.setVelocityY(800);
     // }
 
-    if (this.keyUp.isDown && this.jumpCount < this.maxJump) {
-      this.jumpCount++;
+    const justDown = Phaser.Input.Keyboard.JustDown(this.keyUp);
+    if (justDown && this.jumpCount < this.maxJump) {
+      console.log(this.jumpCount);
       this.character.setVelocityY(-800);
+      this.jumpCount++;
     }
 
     if (this.character.body.onFloor()) {
