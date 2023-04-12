@@ -7,6 +7,12 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     scene.physics.add.existing(this);
     scene.add.existing(this);
 
+    this.characterKey = characterKey;
+
+    this.setOrigin(0.5, 1)
+        .setSize(characterKey.size[0], characterKey.size[1])
+        .setOffset(100, 40);
+
     this.healthBar = healthBar;
     this.healthBar.setName(characterKey.displayName);
 
@@ -34,12 +40,21 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.play(this.punchAnim);
 
     // What if you change your direction while punching??
-    scene.time.delayedCall(175, () => {  // 175 here might belong in constructor params / character config
+    this.scene.time.delayedCall(175, () => {  // 175 here might belong in constructor params / character config
       if (this.body.facing == Phaser.Physics.Arcade.FACING_RIGHT) {
         // compute fist position
+        let fistPosition = {
+          x:this.x + 90,
+          y:this.y - 180
+        };
         this.attackCallback(fistPosition)
       } else if (this.body.facing == Phaser.Physics.Arcade.FACING_LEFT) {
         // ??????????????
+        let fistPosition = {
+          x:this.x - 90,
+          y:this.y - 180
+        };;
+        this.attackCallback(fistPosition)
       }
     });
 }
@@ -79,8 +94,19 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.blocking = blocking;
   }
 
-  getAttacked() {
-    return this.isAttacked;
+  getFrame() {
+    return {
+      width:this.characterKey.size[0],
+      height:this.characterKey.size[1],
+      topLeft: {
+        x:this.x - 40,
+        y:this.y + 230
+      },
+      botRight: {
+        x:this.x + 40,
+        y:this.y
+      },
+    }
   }
 }
 

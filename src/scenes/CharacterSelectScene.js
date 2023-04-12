@@ -16,8 +16,6 @@ class CharacterSelectScene extends Phaser.Scene{
         this.add.image(this.config.width / 2, this.config.height / 2, "selection");
         this.createCharacterIcon();
         this.createCursor();
-        // leftPlayerKey = this.elmoIcon.characterKey;
-        // rightPlayerKey = this.cookieIcon.characterKey;
     }
 
     createCharacterIcon() {
@@ -63,6 +61,7 @@ const elmo = {
     displayName: "Elmo",
     punchAnim: 'elmopunch',
     kickAnim: 'elmokick',
+    size: [80, 230],
     //maybe like this:
     punch: {
         anim: 'elmopunch',
@@ -77,7 +76,8 @@ const cookie = {
     defaultImage: 'CookieMonster',
     displayName: "Cookie Monster",
     punchAnim: 'cookiepunch',
-    kickAnim: 'cookiekick'
+    kickAnim: 'cookiekick',
+    size: [100, 230]
 }
 
 const charRightControl = {

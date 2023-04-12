@@ -18,11 +18,26 @@ class PlayScene extends Phaser.Scene {
     this.createCookieMonster();
     initAnims(this.anims);
 
-    this.leftPlayer.attackCallback = (attackPosition) =>
-      this.attack(attackPosition, this.leftPlayer, this.rightPlayer);
+    this.physics.add.collider(this.leftPlayer, this.rightPlayer);
+
+    this.leftPlayer.attackCallback = (attackPosition) => {
+      // if (attackPosition)
+      // this.attack(attackPosition, this.leftPlayer, this.rightPlayer);
+      this.add.circle(attackPosition.x, attackPosition.y, 10, 0x6666ff);
+      let targetChoord = this.rightPlayer.getFrame();
+      this.add.circle(targetChoord.topLeft.x, targetChoord.topLeft.y, 10, 0x6666ff)
+      this.add.circle(targetChoord.botRight.x, targetChoord.botRight.y, 10, 0x6666ff)
+    }
       // ^ maybe should be this.rightPlayer.receiveAttack(attackPosition)
-    this.rightPlayer.attackCallback = (attackPosition) =>
-      this.attack(attackPosition, this.rightPlayer, this.leftPlayer);
+    this.rightPlayer.attackCallback = (attackPosition) => {
+      // this.attack(attackPosition, this.rightPlayer, this.leftPlayer);
+      // console.log(this.rightPlayer.x, this.rightPlayer.y);
+      this.add.circle(attackPosition.x, attackPosition.y, 10, 0x6666ff);
+      let targetChoord = this.leftPlayer.getFrame();
+      this.add.circle(targetChoord.topLeft.x, targetChoord.topLeft.y, 10, 0x6666ff)
+      this.add.circle(targetChoord.botRight.x, targetChoord.botRight.y, 10, 0x6666ff)
+      
+    }
 
     let particles = this.add.particles("pixel");
     this.emitter = particles.createEmitter({
@@ -32,6 +47,15 @@ class PlayScene extends Phaser.Scene {
       lifespan: 800,
       on: false,
     });
+  }
+
+  checkOverlap(attackCoord, targetCoord) {
+    let distanceX = Math.abs(targetCoord.topLeft.x - attackCoord.x) + (Math.abs(targetCoord.botRight.x - attackCoord.x));
+    let distanceY = Math.abs(targetCoord.topLeft.y - attackCoord.y) + (Math.abs(targetCoord.botRight.y - attackCoord.y));
+    if (distanceX === targetCoord.width && distanceY === targetCoord.height) {
+      return true;
+    }
+    return false;
   }
 
   attack(attacker, target) {
@@ -144,10 +168,6 @@ class PlayScene extends Phaser.Scene {
       "elmoProfile"
     );
     this.leftPlayer = new Player(this, 100, 200, leftPlayerKey, healthBar)
-      .setOrigin(1)
-      .setSize(80, 230)
-      .setOffset(100, 40);
-
     this.leftPlayer.setCollideWorldBounds(true);
     this.leftPlayerControl = new HandleInputs(this, charLeftControl, this.leftPlayer);
   }
@@ -161,9 +181,6 @@ class PlayScene extends Phaser.Scene {
       "cookieMonsterProfile"
     );
     this.rightPlayer = new Player(this, 1050, 200, rightPlayerKey, healthBar)
-      .setOrigin(1)
-      .setSize(100, 230)
-      .setOffset(100, 40)
       .setFlipX(true);
     this.rightPlayer.setCollideWorldBounds(true);
     this.rightPlayerControl = new HandleInputs(
