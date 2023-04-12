@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import HealthBar from "../hud/HealthBar";
+import Weapon from "../weapons/punch";
 
 class Player extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, characterKey, healthBar) {
@@ -15,6 +16,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.immune = false;
     this.isAttacked = false;
     this.blocking = false;
+    this.weapon = new Weapon(this.scene, this.x - 50, this.y - 300, this);
 
     this.punchAnim = characterKey.punchAnim;
     this.kickAnim = characterKey.kickAnim;
@@ -26,7 +28,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       if (this.body.facing == Phaser.Physics.Arcade.FACING_RIGHT) {
         scene.time.delayedCall(175, () => {
           console.log("delayed");
-          this.setSize(130, 230), this.setOffset(90, 40);
+          // this.setSize(130, 230), this.setOffset(90, 40);
+          // this.weapon.setActive(false);
         });
         // this.setSize(80, 230), this.setOffset(100, 40);
       } else if (this.body.facing == Phaser.Physics.Arcade.FACING_LEFT) {
@@ -52,6 +55,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.timeFromPreviousAttack = new Date().getTime();
     this.attacking = true;
     this.play(this.punchAnim);
+    this.weapon.attack();
   }
 
   kick() {

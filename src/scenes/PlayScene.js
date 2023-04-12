@@ -18,6 +18,17 @@ class PlayScene extends Phaser.Scene {
     this.createCookieMonster();
     initAnims(this.anims);
 
+    this.physics.add.overlap(
+      this.leftPlayer.weapon,
+      this.rightPlayer,
+      () => {
+        // this.leftPlayer.weapon.attack();
+        console.log("hit");
+        // this.leftPlayer.weapon.setActive(false);
+      }
+      // this.rightPlayer.setVelocityX(50)
+    );
+
     this.physics.add.collider(this.leftPlayer, this.rightPlayer, () => {
       if (this.leftPlayer.isAttacking()) {
         this.attack(this.leftPlayer, this.rightPlayer);
@@ -67,10 +78,7 @@ class PlayScene extends Phaser.Scene {
         });
       }
 
-
       this.time.delayedCall(500, () => (char2.isAttacked = false));
-
-
 
       if (char2.getBounds().right >= this.config.width) {
         char1.setPosition(char1.x - 20, char1.y);
@@ -97,22 +105,25 @@ class PlayScene extends Phaser.Scene {
 
   detectWin(char1, char2) {
     console.log("Healthbar is " + char2.healthBar.healthValue);
-    if ((char1.healthBar.healthValue <= 0) || (char2.healthBar.healthValue <= 0)) {
+    if (char1.healthBar.healthValue <= 0 || char2.healthBar.healthValue <= 0) {
       this.physics.disableUpdate();
       this.KOImage = this.add.image(400, 100, "KO");
       this.KOImage.setScale(0.8);
-      //this.KO = this.add.text(300, 50, 'K.O.', 
-      //{ font: '90px Interstate Bold', fill: '#8B0000' });        
+      //this.KO = this.add.text(300, 50, 'K.O.',
+      //{ font: '90px Interstate Bold', fill: '#8B0000' });
       if (char1.healthBar.healthValue <= 0) {
-        this.winner2 = this.add.text(200, 180, 'Player 2 Wins!',
-          { font: '70px Interstate Bold', fill: '#000000' });        
+        this.winner2 = this.add.text(200, 180, "Player 2 Wins!", {
+          font: "70px Interstate Bold",
+          fill: "#000000",
+        });
       }
       if (char2.healthBar.healthValue <= 0) {
-        this.winner1 = this.add.text(200, 180, 'Player 1 Wins!',
-        { font: '70px Interstate Bold', fill: '#000000' });        
+        this.winner1 = this.add.text(200, 180, "Player 1 Wins!", {
+          font: "70px Interstate Bold",
+          fill: "#000000",
+        });
       }
-      this.time.delayedCall(5300, () => (
-      this.scene.start("EndScene")));
+      this.time.delayedCall(5300, () => this.scene.start("EndScene"));
     }
   }
 
@@ -135,9 +146,7 @@ class PlayScene extends Phaser.Scene {
     this.background.setScale(1.6);
   }
 
-  createPlayer() {
-
-  }
+  createPlayer() {}
 
   createElmo() {
     let healthBar = new HealthBar(
@@ -153,7 +162,11 @@ class PlayScene extends Phaser.Scene {
       .setOffset(100, 40);
 
     this.leftPlayer.setCollideWorldBounds(true);
-    this.leftPlayerControl = new HandleInputs(this, charLeftControl, this.leftPlayer);
+    this.leftPlayerControl = new HandleInputs(
+      this,
+      charLeftControl,
+      this.leftPlayer
+    );
   }
 
   createCookieMonster() {
