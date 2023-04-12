@@ -217,8 +217,9 @@ class PlayScene extends Phaser.Scene {
       "cookieMonsterProfile"
     );
 
-    console.log("x: " + healthBar.x);
-    console.log("y: " + healthBar.y);
+    console.log(healthBar);
+    // console.log("x: " + healthBar.x);
+    // console.log("y: " + healthBar.y);
 
     this.rightPlayer = new Player(this, 600, 200, rightPlayerKey, healthBar)
       .setOrigin(0.5, 1)

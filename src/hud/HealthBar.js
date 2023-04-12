@@ -11,48 +11,61 @@ class HealthBar extends Phaser.GameObjects.Container {
     this.config = config;
     this.profile = profile;
     this.bar = new Phaser.GameObjects.Graphics(scene);
-    this.setOrigin(0);
     this.x = 45;
     this.y = 14;
     this.currentWidth = initialWidth;
     this.healthValue = 100;
 
     if (!isLeftPlayer) {
-      this.x = this.config.width - 45;
+      this.x = this.config.width;
+      console.log("container x: " + this.x);
     }
+
     this.initializeHealthbar(this.x, this.y);
     scene.add.existing(this);
     this.setScrollFactor(0);
+    console.log("displayOriginX: " + this.displayOriginX);
   }
 
   initializeHealthbar(x, y) {
+    this.frame = this.scene.add.image(-this.x, 0, "healthbar").setOrigin(0); //creates healthbar frame
     this.profilePicture = this.scene.add.image(
-      this.calculate(this.x, -8),
+      this.calculate(this.frame.x, +40),
       this.y + 22,
       this.profile
     ); //creates character profile picture
-    this.frame = this.scene.add.image(0, 0, "healthbar").setOrigin(0); //creates healthbar frame
     this.createVertices(x, y); //creates the healtbar based on how much health the character has.
 
     //adds character name below the frame
     this.text = this.scene.add.text(
-      this.calculate(this.x, 30),
+      this.calculate(this.frame.x, 60),
       this.frame.y + 45,
       this.characterName,
       { fontSize: "30px", color: "0xFFFFFF" }
     );
 
+    // if (!this.isLeftPlayer) {
+    //   this.frame
+    //     .setOrigin(1, 0)
+    //     .setPosition(this.config.width - 500, 0)
+    //     .setFlipX(true);
+    //   console.log("frame x: " + this.frame.x);
+    //   console.log(this.frame);
+    // }
+
     if (!this.isLeftPlayer) {
-      this.text.setOrigin(1, 0);
-      this.frame
-        .setOrigin(1, 0)
-        .setPosition(this.config.width, 0)
-        .setFlipX(true);
+      this.text.setOrigin(1, 0).setPosition(-50, this.frame.y + 45);
+      this.frame.setOrigin(1, 0).setFlipX(true).setPosition(0, 0);
+      this.profilePicture.setOrigin(1, 0).setPosition(0, 0);
+      console.log("frame x: " + this.frame.x);
+      console.log("profile x: " + this.profilePicture.x);
+      console.log("text x: " + this.text.x);
     }
     this.updateGraphic();
     this.add(this.profilePicture);
     this.add(this.frame);
     this.add(this.text);
+
     //draws the healthbar and changes color based on how much health the character has left.
   }
 
