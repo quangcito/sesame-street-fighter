@@ -11,7 +11,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.healthBar.setName(characterKey.displayName);
 
     this.timeFromPreviousAttack = null;
-    this.attacking = false;
     this.immune = false;
     this.isAttacked = false;
     this.blocking = false;
@@ -21,24 +20,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.attackCooldown = 500;
     this.scene = scene;
-
-    this.on(Phaser.Animations.Events.ANIMATION_START, () => {
-      if (this.body.facing == Phaser.Physics.Arcade.FACING_RIGHT) {
-        scene.time.delayedCall(175, () => {
-          console.log("delayed");
-          this.setSize(130, 230), this.setOffset(90, 40);
-        });
-        // this.setSize(80, 230), this.setOffset(100, 40);
-      } else if (this.body.facing == Phaser.Physics.Arcade.FACING_LEFT) {
-        scene.time.delayedCall(175, () => {
-          this.setSize(130, 230), this.setOffset(70, 40);
-        });
-      }
-    });
-    this.on(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
-      this.setSize(80, 230).setOffset(100, 40);
-      this.attacking = false;
-    });
   }
 
   punch() {
@@ -50,9 +31,18 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     this.timeFromPreviousAttack = new Date().getTime();
-    this.attacking = true;
     this.play(this.punchAnim);
-  }
+
+    // What if you change your direction while punching??
+    scene.time.delayedCall(175, () => {  // 175 here might belong in constructor params / character config
+      if (this.body.facing == Phaser.Physics.Arcade.FACING_RIGHT) {
+        // compute fist position
+        this.attackCallback(fistPosition)
+      } else if (this.body.facing == Phaser.Physics.Arcade.FACING_LEFT) {
+        // ??????????????
+      }
+    });
+}
 
   kick() {
     if (
@@ -62,17 +52,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       return;
     } else {
       this.timeFromPreviousAttack = new Date().getTime();
-      this.attacking = true;
       this.play(this.kickAnim);
     }
-  }
-
-  isAttacking() {
-    return this.attacking;
-  }
-
-  setAttacking(attacking) {
-    this.attacking = attacking;
   }
 
   setImmune(immune) {

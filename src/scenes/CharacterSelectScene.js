@@ -21,13 +21,13 @@ class CharacterSelectScene extends Phaser.Scene{
     }
 
     createCharacterIcon() {
-        this.elmoIcon = new CharacterIcon(this, 
-            this.config.width/2 - 100, 
-            this.config.height/2 + 70, 
+        this.elmoIcon = new CharacterIcon(this,
+            this.config.width/2 - 100,
+            this.config.height/2 + 70,
             "elmoSelectionIcon", elmo);
-        this.cookieIcon = new CharacterIcon(this, 
-            this.config.width/2 + 100, 
-            this.config.height/2 + 70, 
+        this.cookieIcon = new CharacterIcon(this,
+            this.config.width/2 + 100,
+            this.config.height/2 + 70,
             "cookieSelectionIcon", cookie);
         this.iconArray = [this.elmoIcon, this.cookieIcon];
     }
@@ -53,7 +53,7 @@ class CharacterSelectScene extends Phaser.Scene{
         if (leftPlayerKey != null && rightPlayerKey != null) {
             this.scene.start('MapSelectScene');
         } else {
-            alert("Please each choose a character!");
+            // alert("Please each choose a character!");
         }
     }
 }
@@ -62,7 +62,15 @@ const elmo = {
     defaultImage: 'Elmo',
     displayName: "Elmo",
     punchAnim: 'elmopunch',
-    kickAnim: 'elmokick'
+    kickAnim: 'elmokick',
+    //maybe like this:
+    punch: {
+        anim: 'elmopunch',
+        delay: 175,
+        size: [50, 20],
+        position: [100, 200],
+        damage: 20,
+    }
 }
 
 const cookie = {
@@ -78,7 +86,7 @@ const charRightControl = {
     down: Phaser.Input.Keyboard.KeyCodes.DOWN,
     right: Phaser.Input.Keyboard.KeyCodes.RIGHT,
   };
-  
+
   const charLeftControl = {
     up: Phaser.Input.Keyboard.KeyCodes.W,
     left: Phaser.Input.Keyboard.KeyCodes.A,
