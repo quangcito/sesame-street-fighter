@@ -15,6 +15,8 @@ class PlayScene extends Phaser.Scene {
   create() {
     this.createCloud();
     const map = this.createMap();
+    this.mapOffset = Math.abs(map.widthInPixels - this.config.width);
+    map.x = this.mapOffset;
     this.layers = this.createLayers(map);
 
     this.createElmo();
@@ -46,6 +48,34 @@ class PlayScene extends Phaser.Scene {
       lifespan: 800,
       on: false,
     });
+
+    this.setUpCamera(map);
+  }
+
+  setUpCamera(map) {
+    /**
+     * zoom
+     * zoomEffect
+     * fadeIn
+     * fadeOut
+     */
+
+    // this.cameras.main.midPoint = Math.abs(
+    //   this.leftPlayer.x - this.rightPlayer.x
+    // );
+
+    // console.log(-Math.abs(map.widthInPixels - this.config.width) / 2);
+    this.physics.world.setBounds(
+      -Math.abs(map.widthInPixels - this.config.width) / 2,
+      0,
+      map.widthInPixels,
+      this.config.height
+    );
+    // camera.useBounds = true;
+    this.cameras.main
+      .setSize(this.config.width, this.config.height)
+      .centerOn(this.leftPlayer.x - this.rightPlayer.x, this.config.height / 2)
+      .startFollow(this.rightPlayer);
   }
 
   platformCheck(player, collider) {
@@ -108,9 +138,6 @@ class PlayScene extends Phaser.Scene {
         char2.setImmune(false);
       });
     }
-
-    // this.cameras.main.setBounds(300, 0, 1000, 600);
-    // this.cameras.main.startFollow(this.elmo);
   }
 
   update() {
@@ -157,6 +184,7 @@ class PlayScene extends Phaser.Scene {
     const map = this.make.tilemap({ key: "map1" });
     //first parameter is name of png file in Tiled. second parameter is key of loaded image
     map.addTilesetImage("Dungeon", "tiles-1");
+
     return map;
   }
 
