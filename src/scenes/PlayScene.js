@@ -15,12 +15,17 @@ class PlayScene extends Phaser.Scene {
   create() {
     this.createCloud();
     const map = this.createMap();
-    // this.mapOffset = Math.abs(map.widthInPixels - this.config.width);
+    this.mapOffset = Math.abs(map.widthInPixels - this.config.width);
+    console.log("mapOffset:" + this.mapOffset);
     // map.x = this.mapOffset;
     this.layers = this.createLayers(map);
     this.createCookieMonster();
     this.createElmo();
     initAnims(this.anims);
+    this.offset = (map.widthInPixels - this.config.width) / 2;
+    console.log("offset: " + this.offset);
+    console.log("map: " + map.widthInPixels);
+    console.log("config: " + this.config.width);
 
     this.physics.add.collider(this.leftPlayer, this.rightPlayer, () => {
       if (this.leftPlayer.isAttacking()) {
@@ -57,20 +62,24 @@ class PlayScene extends Phaser.Scene {
      * zoomEffect
      * fadeIn
      * fadeOut
+     * shake
+     *
      */
 
-    // this.cameras.main.midPoint = Math.abs(
-    //   this.leftPlayer.x - this.rightPlayer.x
-    // );
-
-    // console.log(-Math.abs(map.widthInPixels - this.config.width) / 2);
     this.physics.world.setBounds(0, 0, map.widthInPixels, this.config.height);
-    // camera.useBounds = true;
     this.cameras.main
       .setBounds(0, 0, map.widthInPixels, map.heightInPixels)
       .setSize(this.config.width, this.config.height)
-      // .centerOn(this.leftPlayer.x - this.rightPlayer.x, this.config.height / 2)
-      .startFollow(this.rightPlayer);
+      .fadeIn(2000, 0, 0, 0)
+
+      // this.cameras.main.startFollow(this.rightPlayer);
+      // this.cameras.main.startFollow(this.leftPlayer);
+
+      .centerOn(map.widthInPixels / 2, map.heightInPixels / 2);
+    // .startFollow([this.leftPlayer, this.rightPlayer])
+    // .setScroll(0, 0)
+    // .clampX(0, map.widthInPixels);
+    // .clampY(0, map.heightInPixels);
   }
 
   platformCheck(player, collider) {
@@ -135,12 +144,29 @@ class PlayScene extends Phaser.Scene {
     }
   }
 
+  cameraUpdate() {
+    console.log("leftPlayer.x: " + this.leftPlayer.x);
+    console.log("rightPlayer.x: " + this.rightPlayer.x);
+    if (
+      this.leftPlayer.x > this.config.width / 2 + 200 ||
+      this.rightPlayer.x > this.config.width / 2 + 200
+    ) {
+      this.cameras.main.scrollX += 10;
+    } else if (
+      this.leftPlayer.x < this.config.width / 2 + 200 ||
+      this.rightPlayer.x < this.config.width / 2 + 200
+    ) {
+      this.cameras.main.scrollX -= 10;
+    }
+  }
+
   update() {
     this.cloud.tilePositionX += 0.5;
     this.handleControls();
     this.detectWin(this.leftPlayer, this.rightPlayer);
     this.platformCheck(this.leftPlayer, this.leftCollider);
     this.platformCheck(this.rightPlayer, this.rightCollider);
+    this.cameraUpdate();
 
     // this.time.delayedCall(1000, () => {
     //   console.log("body: " + this.rightPlayer.y);
