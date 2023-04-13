@@ -30,7 +30,8 @@ class PlayScene extends Phaser.Scene {
     this.physics.add.collider(this.leftPlayer, this.rightPlayer, () => {
       if (this.leftPlayer.isAttacking()) {
         this.attack(this.leftPlayer, this.rightPlayer);
-      } else if (this.rightPlayer.isAttacking()) {
+      }
+      if (this.rightPlayer.isAttacking()) {
         this.attack(this.rightPlayer, this.leftPlayer);
       }
     });
