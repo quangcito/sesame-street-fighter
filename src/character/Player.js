@@ -98,15 +98,16 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     return {
       width:this.characterKey.size[0],
       height:this.characterKey.size[1],
+      x: this.x,
       topLeft: {
         x:this.x - 40,
-        y:this.y + 230
+        y:this.y - 230
       },
       botRight: {
         x:this.x + 40,
         y:this.y
       },
-    }
+    };
   }
 }
 
