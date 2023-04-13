@@ -21,8 +21,7 @@ class PlayScene extends Phaser.Scene {
     this.physics.add.collider(this.leftPlayer, this.rightPlayer);
 
     this.leftPlayer.attackCallback = (attackPosition) => {
-      // if (attackPosition)
-      // this.attack(attackPosition, this.leftPlayer, this.rightPlayer);
+      this.add.circle(attackPosition.x, attackPosition.y, 10, 0x6666ff);
       let targetChoord = this.rightPlayer.getFrame();
       if (this.checkOverlap(attackPosition, targetChoord)) {
         this.attack(this.leftPlayer, this.rightPlayer);
@@ -30,8 +29,6 @@ class PlayScene extends Phaser.Scene {
     }
       // ^ maybe should be this.rightPlayer.receiveAttack(attackPosition)
     this.rightPlayer.attackCallback = (attackPosition) => {
-      // this.attack(attackPosition, this.rightPlayer, this.leftPlayer);
-      // console.log(this.rightPlayer.x, this.rightPlayer.y);
       this.add.circle(attackPosition.x, attackPosition.y, 10, 0x6666ff);
       let targetChoord = this.leftPlayer.getFrame()
       if (this.checkOverlap(attackPosition, targetChoord)) {
