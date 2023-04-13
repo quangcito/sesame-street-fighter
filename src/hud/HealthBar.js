@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { leftPlayerKey } from "../scenes/CharacterSelectScene";
 
 const initialWidth = 385;
 
@@ -18,13 +19,11 @@ class HealthBar extends Phaser.GameObjects.Container {
 
     if (!isLeftPlayer) {
       this.x = this.config.width;
-      console.log("container x: " + this.x);
     }
 
     this.initializeHealthbar(this.x, this.y);
     scene.add.existing(this);
     this.setScrollFactor(0);
-    console.log("displayOriginX: " + this.displayOriginX);
   }
 
   initializeHealthbar(x, y) {
@@ -34,7 +33,7 @@ class HealthBar extends Phaser.GameObjects.Container {
       this.y + 22,
       this.profile
     ); //creates character profile picture
-    this.createVertices(x, y); //creates the healtbar based on how much health the character has.
+    this.createVertices(0, this.y); //creates the healtbar based on how much health the character has.
 
     //adds character name below the frame
     this.text = this.scene.add.text(
@@ -44,24 +43,13 @@ class HealthBar extends Phaser.GameObjects.Container {
       { fontSize: "30px", color: "0xFFFFFF" }
     );
 
-    // if (!this.isLeftPlayer) {
-    //   this.frame
-    //     .setOrigin(1, 0)
-    //     .setPosition(this.config.width - 500, 0)
-    //     .setFlipX(true);
-    //   console.log("frame x: " + this.frame.x);
-    //   console.log(this.frame);
-    // }
-
     if (!this.isLeftPlayer) {
-      this.text.setOrigin(1, 0).setPosition(-50, this.frame.y + 45);
+      this.text.setOrigin(1, 0).setPosition(-60, this.frame.y + 45);
       this.frame.setOrigin(1, 0).setFlipX(true).setPosition(0, 0);
       this.profilePicture.setOrigin(1, 0).setPosition(0, 0);
-      console.log("frame x: " + this.frame.x);
-      console.log("profile x: " + this.profilePicture.x);
-      console.log("text x: " + this.text.x);
     }
-    this.updateGraphic();
+
+    this.updateHealthBar();
     this.add(this.profilePicture);
     this.add(this.frame);
     this.add(this.text);
@@ -69,10 +57,9 @@ class HealthBar extends Phaser.GameObjects.Container {
     //draws the healthbar and changes color based on how much health the character has left.
   }
 
-  updateGraphic() {
+  updateHealthBar() {
     if (this.healthValue > 0) {
-      this.bar.clear();
-      this.bar.beginPath();
+      this.bar.clear().beginPath();
 
       for (let i = 0; i < this.vertices.length; i++) {
         this.bar.lineTo(this.vertices[i][0], this.vertices[i][1]);
@@ -86,8 +73,7 @@ class HealthBar extends Phaser.GameObjects.Container {
         this.bar.fillStyle(0x00ff00);
       }
 
-      this.bar.closePath();
-      this.bar.fill();
+      this.bar.closePath().fill();
       this.add(this.bar);
     }
   }
@@ -95,13 +81,16 @@ class HealthBar extends Phaser.GameObjects.Container {
   //decreases health value and updates the healthbar to have less length.
   decreaseHealth(amount) {
     this.currentWidth -= (initialWidth / 100) * amount;
-    this.createVertices(this.x, this.y);
-    this.updateGraphic();
+    this.createVertices(0, this.y);
+    this.updateHealthBar();
     this.healthValue -= amount;
   }
 
   //adds in the four vertices that make healthbar for both players.
   createVertices(x, y) {
+    if (!this.isLeftPlayer) {
+      x = x - 45;
+    }
     this.vertices = [
       [x, y],
       [this.calculate(x, this.currentWidth), y],
