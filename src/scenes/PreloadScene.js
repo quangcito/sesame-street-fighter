@@ -39,12 +39,20 @@ class PreloadScene extends Phaser.Scene {
       frameWidth: 300,
       frameHeight: 300,
     });
+    this.load.spritesheet("cookieBlock", "src/assets/cookie_blocking_full.png", {
+      frameWidth: 300,
+      frameHeight: 300,
+    });
 
     this.load.spritesheet("elmoPunch", "src/assets/elmo_punching_full.png", {
       frameWidth: 300,
       frameHeight: 300,
     });
     this.load.spritesheet("elmoKick", "src/assets/elmo_kicking_full.png", {
+      frameWidth: 300,
+      frameHeight: 300,
+    });
+    this.load.spritesheet("elmoBlock", "src/assets/elmo_blocking_full.png", {
       frameWidth: 300,
       frameHeight: 300,
     });

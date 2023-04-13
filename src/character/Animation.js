@@ -13,7 +13,13 @@ export default (anims) => {
       }),
       frameRate: 10,
     });
-
+  anims.create({
+    key: "elmoblock",
+    frames: anims.generateFrameNames("elmoBlock", {
+      frames: [1, 0],
+    }),
+    frameRate: 10,
+  });
   anims.create({
       key: "cookiepunch",
       frames: anims.generateFrameNames("cookiePunch", {
@@ -28,4 +34,11 @@ export default (anims) => {
       }),
       frameRate: 10,
     });
+  anims.create({
+    key: "cookieblock",
+    frames: anims.generateFrameNames("cookieBlock", {
+      frames: [1, 0],
+    }),
+    frameRate: 10,
+  });
 }

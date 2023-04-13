@@ -21,13 +21,13 @@ class CharacterSelectScene extends Phaser.Scene{
     }
 
     createCharacterIcon() {
-        this.elmoIcon = new CharacterIcon(this, 
-            this.config.width/2 - 100, 
-            this.config.height/2 + 70, 
+        this.elmoIcon = new CharacterIcon(this,
+            this.config.width/2 - 100,
+            this.config.height/2 + 70,
             "elmoSelectionIcon", elmo);
-        this.cookieIcon = new CharacterIcon(this, 
-            this.config.width/2 + 100, 
-            this.config.height/2 + 70, 
+        this.cookieIcon = new CharacterIcon(this,
+            this.config.width/2 + 100,
+            this.config.height/2 + 70,
             "cookieSelectionIcon", cookie);
         this.iconArray = [this.elmoIcon, this.cookieIcon];
     }
@@ -62,14 +62,16 @@ const elmo = {
     defaultImage: 'Elmo',
     displayName: "Elmo",
     punchAnim: 'elmopunch',
-    kickAnim: 'elmokick'
+    kickAnim: 'elmokick',
+    blockAnim: 'elmoblock'
 }
 
 const cookie = {
     defaultImage: 'CookieMonster',
     displayName: "Cookie Monster",
     punchAnim: 'cookiepunch',
-    kickAnim: 'cookiekick'
+    kickAnim: 'cookiekick',
+    blockAnim: 'cookieblock'
 }
 
 const charRightControl = {
@@ -78,7 +80,7 @@ const charRightControl = {
     down: Phaser.Input.Keyboard.KeyCodes.DOWN,
     right: Phaser.Input.Keyboard.KeyCodes.RIGHT,
   };
-  
+
   const charLeftControl = {
     up: Phaser.Input.Keyboard.KeyCodes.W,
     left: Phaser.Input.Keyboard.KeyCodes.A,

@@ -18,6 +18,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.punchAnim = characterKey.punchAnim;
     this.kickAnim = characterKey.kickAnim;
+    this.blockAnim = characterKey.blockAnim;
 
     this.attackCooldown = 500;
     this.scene = scene;
@@ -51,7 +52,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.timeFromPreviousAttack = new Date().getTime();
     this.attacking = true;
-    this.play(this.punchAnim);
+    this.play(this.punchAnim, true);
   }
 
   kick() {
@@ -64,6 +65,23 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       this.timeFromPreviousAttack = new Date().getTime();
       this.attacking = true;
       this.play(this.kickAnim);
+    }
+  }
+
+  block() {
+    if(this.body.onFloor()) {
+      this.blocking = true;
+      this.anims.play(this.blockAnim, true)
+    }
+  }
+
+  unblock() {
+    if(this.body.onFloor()) {
+      if (this.blocking) {
+        this.blocking = false;
+        this.anims.currentAnim.getFrameByProgress(0);
+      }
+
     }
   }
 

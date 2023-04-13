@@ -22,11 +22,11 @@ class HandleInputs {
     }
 
     if (this.keyDown.isDown) {
-      this.character.setVelocityY(1000);
-      this.character.setBlocking(true);
+      this.character.setVelocityY(700);
+      this.character.block();
       console.log("blocking!");
     } else {
-      this.character.setBlocking(false);
+      this.character.unblock();
     }
 
     if (this.character.getBlocking()) {
