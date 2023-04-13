@@ -42,7 +42,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     // What if you change your direction while punching??
     this.scene.time.delayedCall(175, () => {
       // 175 here might belong in constructor params / character config
-      if (this.body.facing == Phaser.Physics.Arcade.FACING_RIGHT) {
+      if (!this.flipX) {
         console.log("right: " + this.flipX);
         // compute fist position
         let fistPosition = {
@@ -50,7 +50,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
           y: this.y - 180,
         };
         this.attackCallback(fistPosition);
-      } else if (this.body.facing == Phaser.Physics.Arcade.FACING_LEFT) {
+      } else {
         // ??????????????
         console.log("left: " + this.flipX);
         let fistPosition = {
