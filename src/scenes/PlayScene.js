@@ -14,8 +14,8 @@ class PlayScene extends Phaser.Scene {
   create() {
     this.createCloud();
     this.createBackground();
-    this.createElmo();
-    this.createCookieMonster();
+    this.createLeftPlayer();
+    this.createRightPlayer();
     initAnims(this.anims);
 
     this.physics.add.collider(this.leftPlayer, this.rightPlayer);
@@ -72,7 +72,7 @@ class PlayScene extends Phaser.Scene {
     console.log("elmo hit!");
     target.isAttacked = true;
 
-    this.emitter.setPosition(target.x - 50, target.y - 200);
+    this.emitter.setPosition(target.x, target.y - 200);
     this.emitter.explode();
 
     if (attacker.body.facing == Phaser.Physics.Arcade.FACING_RIGHT) {
@@ -159,9 +159,7 @@ class PlayScene extends Phaser.Scene {
     this.background.setScale(1.6);
   }
 
-  createPlayer() {}
-
-  createElmo() {
+  createLeftPlayer() {
     let healthBar = new HealthBar(
       this,
       "Player 1",
@@ -178,7 +176,7 @@ class PlayScene extends Phaser.Scene {
     );
   }
 
-  createCookieMonster() {
+  createRightPlayer() {
     let healthBar = new HealthBar(
       this,
       "Player 2",

@@ -59,25 +59,36 @@ class CharacterSelectScene extends Phaser.Scene{
 const elmo = {
     defaultImage: 'Elmo',
     displayName: "Elmo",
-    punchAnim: 'elmopunch',
-    kickAnim: 'elmokick',
     size: [80, 230],
     //maybe like this:
     punch: {
         anim: 'elmopunch',
         delay: 175,
-        size: [50, 20],
-        position: [100, 200],
+        position: [90, 180],
         damage: 20,
+    },
+    kick: {
+        anim: 'elmokick',
+        delay: 175,
+        position: [90, 210],
     }
 }
 
 const cookie = {
     defaultImage: 'CookieMonster',
     displayName: "Cookie Monster",
-    punchAnim: 'cookiepunch',
-    kickAnim: 'cookiekick',
-    size: [100, 230]
+    size: [100, 230],
+    punch: {
+        anim: 'cookiepunch',
+        delay: 175,
+        position: [90, 180],
+        damage: 20,
+    },
+    kick: {
+        anim: 'cookiekick',
+        delay: 175,
+        position: [90, 210]
+    }
 }
 
 const charRightControl = {

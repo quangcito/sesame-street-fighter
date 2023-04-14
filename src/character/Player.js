@@ -21,14 +21,16 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.isAttacked = false;
     this.blocking = false;
 
-    this.punchAnim = characterKey.punchAnim;
-    this.kickAnim = characterKey.kickAnim;
+    this.punchAnim = characterKey.punch.anim;
+    this.kickAnim = characterKey.kick.anim;
 
     this.attackCooldown = 500;
     this.scene = scene;
   }
 
-  punch() {
+  doAttack(attackKey) {
+    let animation = attackKey.anim;
+
     if (
       this.timeFromPreviousAttack && //check to see if the character has attacked atleast once
       this.attackCooldown + this.timeFromPreviousAttack > new Date().getTime() // checks if enough time has passed for the character to attack again.
@@ -37,41 +39,31 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     this.timeFromPreviousAttack = new Date().getTime();
-    this.play(this.punchAnim);
+    this.play(animation);
 
-    // What if you change your direction while punching??
-    this.scene.time.delayedCall(175, () => {
-      // 175 here might belong in constructor params / character config
+    this.scene.time.delayedCall(attackKey.delay, () => {
       if (!this.flipX) {
-        console.log("right: " + this.flipX);
-        // compute fist position
-        let fistPosition = {
-          x: this.x + 90,
-          y: this.y - 180,
+        let attackPosition = {
+          x: this.x + attackKey.position[0],
+          y: this.y - attackKey.position[1],
         };
-        this.attackCallback(fistPosition);
+        this.attackCallback(attackPosition);
       } else {
-        // ??????????????
-        console.log("left: " + this.flipX);
-        let fistPosition = {
-          x: this.x - 90,
-          y: this.y - 180,
+        let attackPosition = {
+          x: this.x - attackKey.position[0],
+          y: this.y - attackKey.position[1],
         };
-        this.attackCallback(fistPosition);
+        this.attackCallback(attackPosition);
       }
     });
   }
 
+  punch() {
+    this.doAttack(this.characterKey.punch);
+  }
+
   kick() {
-    if (
-      this.timeFromPreviousAttack && //check to see if the character has attacked atleast once
-      this.attackCooldown + this.timeFromPreviousAttack > new Date().getTime() // checks if enough time has passed for the character to attack again.
-    ) {
-      return;
-    } else {
-      this.timeFromPreviousAttack = new Date().getTime();
-      this.play(this.kickAnim);
-    }
+    this.doAttack(this.characterKey.kick);
   }
 
   setImmune(immune) {
@@ -103,11 +95,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       height: this.characterKey.size[1],
       x: this.x,
       topLeft: {
-        x: this.x - 40,
-        y: this.y - 230,
+        x: this.x - this.characterKey.size[0]/2,
+        y: this.y - this.characterKey.size[1],
       },
       botRight: {
-        x: this.x + 40,
+        x: this.x + this.characterKey.size[0]/2,
         y: this.y,
       },
     };
