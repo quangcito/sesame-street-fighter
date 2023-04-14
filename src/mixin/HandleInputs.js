@@ -21,11 +21,9 @@ class HandleInputs {
       return;
     }
 
-    if (this.keyDown.isDown && this.character.body.onFloor()) {
-      this.character.s;
-    } else if (this.keyDown.isDown) {
-      this.character.setVelocityY(800);
-      this.character.setBlocking(true);
+    if (this.keyDown.isDown) {
+      this.character.setVelocityY(1000);
+      // this.character.setBlocking(true);
       console.log("blocking!");
     } else {
       this.character.setBlocking(false);
