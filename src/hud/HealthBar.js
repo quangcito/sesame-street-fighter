@@ -41,11 +41,14 @@ class HealthBar {
     }
   }
 
-  initializeHealthbar(x, y) {
+  setProfile(profile) {
+    this.profile = profile;
     this.scene.add.image(this.calculate(this.x, -8), this.y + 22, this.profile); //creates character profile picture
     this.frame = this.scene.add.image(0, 0, "healthbar").setOrigin(0); //creates healthbar frame
-    this.createVertices(x, y); //creates the healtbar based on how much health the character has.
+  }
 
+  initializeHealthbar(x, y) {
+    this.createVertices(x, y); //creates the healtbar based on how much health the character has.
     this.updateGraphic(); //draws the healthbar and changes color based on how much health the character has left.
   }
 

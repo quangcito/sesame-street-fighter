@@ -59,6 +59,7 @@ class CharacterSelectScene extends Phaser.Scene{
 const elmo = {
     defaultImage: 'Elmo',
     displayName: "Elmo",
+    profilePicture:"elmoProfile",
     size: [80, 230],
     blood: 0xFF0000,
     //maybe like this:
@@ -80,6 +81,7 @@ const cookie = {
     displayName: "Cookie Monster",
     size: [100, 230],
     blood: 0x0000FF,
+    profilePicture:"cookieMonsterProfile",
     punch: {
         anim: 'cookiepunch',
         delay: 175,
