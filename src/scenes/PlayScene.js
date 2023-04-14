@@ -14,18 +14,24 @@ class PlayScene extends Phaser.Scene {
 
   create() {
     this.createCloud();
-    const map = this.createMap();
-    this.mapOffset = Math.abs(map.widthInPixels - this.config.width);
-    console.log("mapOffset:" + this.mapOffset);
+    this.map = this.createMap();
+    this.mapOffset = Math.abs(this.map.widthInPixels - this.config.width) / 2;
+    console.log(this.mapOffset);
+    // console.log("mapOffset:" + this.mapOffset);
     // map.x = this.mapOffset;
-    this.layers = this.createLayers(map);
-    this.createCookieMonster();
-    this.createElmo();
+    this.layers = this.createLayers(this.map);
+    this.createCookieMonster(
+      this.layers.spawns.objects[0].x,
+      this.layers.spawns.objects[0].y
+    );
+    this.createElmo(
+      this.layers.spawns.objects[1].x,
+      this.layers.spawns.objects[1].y
+    );
     initAnims(this.anims);
-    this.offset = (map.widthInPixels - this.config.width) / 2;
-    console.log("offset: " + this.offset);
-    console.log("map: " + map.widthInPixels);
-    console.log("config: " + this.config.width);
+    // console.log("offset: " + this.offset);
+    // console.log("map: " + this.map.widthInPixels);
+    // console.log("config: " + this.config.width);
 
     this.physics.add.collider(this.leftPlayer, this.rightPlayer, () => {
       if (this.leftPlayer.isAttacking()) {
@@ -54,10 +60,10 @@ class PlayScene extends Phaser.Scene {
       on: false,
     });
 
-    this.setUpCamera(map);
+    this.setUpCamera();
   }
 
-  setUpCamera(map) {
+  setUpCamera() {
     /**
      * zoom
      * zoomEffect
@@ -67,16 +73,21 @@ class PlayScene extends Phaser.Scene {
      *
      */
 
-    this.physics.world.setBounds(0, 0, map.widthInPixels, this.config.height);
+    this.physics.world.setBounds(
+      0,
+      0,
+      this.map.widthInPixels,
+      this.config.height
+    );
     this.cameras.main
-      .setBounds(0, 0, map.widthInPixels, map.heightInPixels)
+      .setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels)
       .setSize(this.config.width, this.config.height)
       .fadeIn(2000, 0, 0, 0)
 
       // this.cameras.main.startFollow(this.rightPlayer);
       // this.cameras.main.startFollow(this.leftPlayer);
 
-      .centerOn(map.widthInPixels / 2, map.heightInPixels / 2);
+      .centerOn(this.map.widthInPixels / 2, this.map.heightInPixels / 2);
     // .startFollow([this.leftPlayer, this.rightPlayer])
     // .setScroll(0, 0)
     // .clampX(0, map.widthInPixels);
@@ -146,18 +157,26 @@ class PlayScene extends Phaser.Scene {
   }
 
   cameraUpdate() {
-    console.log("leftPlayer.x: " + this.leftPlayer.x);
-    console.log("rightPlayer.x: " + this.rightPlayer.x);
+    // console.log("leftPlayer.x: " + this.leftPlayer.x);
+    // console.log("rightPlayer.x: " + this.rightPlayer.x);
     if (
-      this.leftPlayer.x > this.config.width / 2 + 200 ||
-      this.rightPlayer.x > this.config.width / 2 + 200
+      this.leftPlayer.x > this.mapOffset ||
+      this.rightPlayer.x > this.mapOffset
     ) {
-      this.cameras.main.scrollX += 10;
+      this.cameras.main.setScroll(
+        this.map.widthInPixels,
+        this.map.heightInPixels / 2
+      );
     } else if (
-      this.leftPlayer.x < this.config.width / 2 + 200 ||
-      this.rightPlayer.x < this.config.width / 2 + 200
+      this.leftPlayer.x < this.mapOffset ||
+      this.rightPlayer.x < this.mapOffset
     ) {
-      this.cameras.main.scrollX -= 10;
+      this.cameras.main.setScroll(0, this.map.heightInPixels / 2);
+    } else {
+      this.cameras.main.setScroll(
+        this.map.widthInPixels / 2,
+        this.map.heightInPixels / 2
+      );
     }
   }
 
@@ -211,12 +230,13 @@ class PlayScene extends Phaser.Scene {
     const tileset = map.getTileset("Dungeon");
     const floor = map.createLayer("floor", tileset);
     const platforms = map.createLayer("platforms", tileset);
+    const spawns = map.getObjectLayer("spawn_points");
 
     platforms.setCollisionByExclusion(-1, true);
-    return { floor, platforms };
+    return { floor, platforms, spawns };
   }
 
-  createElmo() {
+  createElmo(x, y) {
     let healthBar = new HealthBar(
       this,
       "Elmo",
@@ -225,7 +245,7 @@ class PlayScene extends Phaser.Scene {
       "elmoProfile"
     );
 
-    this.leftPlayer = new Player(this, 100, 200, leftPlayerKey, healthBar)
+    this.leftPlayer = new Player(this, x, y, leftPlayerKey, healthBar)
       .setOrigin(0.5, 1)
       .setSize(80, 230)
       .setOffset(100, 40)
@@ -235,7 +255,7 @@ class PlayScene extends Phaser.Scene {
     this.leftPlayerControl = new HandleInputs(this, charLeft, this.leftPlayer);
   }
 
-  createCookieMonster() {
+  createCookieMonster(x, y) {
     let healthBar = new HealthBar(
       this,
       "Cookie Monster",
@@ -244,11 +264,11 @@ class PlayScene extends Phaser.Scene {
       "cookieMonsterProfile"
     );
 
-    console.log(healthBar);
+    // console.log(healthBar);
     // console.log("x: " + healthBar.x);
     // console.log("y: " + healthBar.y);
 
-    this.rightPlayer = new Player(this, 600, 200, rightPlayerKey, healthBar)
+    this.rightPlayer = new Player(this, x, y, rightPlayerKey, healthBar)
       .setOrigin(0.5, 1)
       .setSize(100, 230)
       .setOffset(100, 40)
