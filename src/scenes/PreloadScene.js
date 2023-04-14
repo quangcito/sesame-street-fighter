@@ -6,8 +6,10 @@ class PreloadScene extends Phaser.Scene {
   }
   preload() {
     this.load.image("background", "src/assets/background.png");
-    this.load.image("menuBackground", "src/assets/sesame-street-in-blue-sky.jpg");
+    this.load.image("menuBackground", "src/assets/sesame-street.jpg");
     this.load.image("endBackground", "src/assets/endArt.jpg");
+    this.load.image("fighterLabel", "src/assets/fighter-logo-png-transparent.png");
+    this.load.image("spaceLabel", "src/assets/space.png");
     this.load.image("selection", "src/assets/selectionScreen.png");
     this.load.image("cloud", "src/assets/cloud.png");
     this.load.image("KO", "src/assets/KO.png");
@@ -25,6 +27,7 @@ class PreloadScene extends Phaser.Scene {
 
     this.load.image("healthbar", "src/assets/HealthbarV1.png");
     this.load.image("pixel", "src/assets/pixel.png");
+    this.load.image("bluePixel", "src/assets/bluePixel.png");
     this.load.image("elmoProfile", "src/assets/elmoProfile.png");
     this.load.image(
       "cookieMonsterProfile",

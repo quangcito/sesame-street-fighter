@@ -16,18 +16,16 @@ class CharacterSelectScene extends Phaser.Scene{
         this.add.image(this.config.width / 2, this.config.height / 2, "selection");
         this.createCharacterIcon();
         this.createCursor();
-        // leftPlayerKey = this.elmoIcon.characterKey;
-        // rightPlayerKey = this.cookieIcon.characterKey;
     }
 
     createCharacterIcon() {
-        this.elmoIcon = new CharacterIcon(this, 
-            this.config.width/2 - 100, 
-            this.config.height/2 + 70, 
+        this.elmoIcon = new CharacterIcon(this,
+            this.config.width/2 - 100,
+            this.config.height/2 + 70,
             "elmoSelectionIcon", elmo);
-        this.cookieIcon = new CharacterIcon(this, 
-            this.config.width/2 + 100, 
-            this.config.height/2 + 70, 
+        this.cookieIcon = new CharacterIcon(this,
+            this.config.width/2 + 100,
+            this.config.height/2 + 70,
             "cookieSelectionIcon", cookie);
         this.iconArray = [this.elmoIcon, this.cookieIcon];
     }
@@ -53,7 +51,7 @@ class CharacterSelectScene extends Phaser.Scene{
         if (leftPlayerKey != null && rightPlayerKey != null) {
             this.scene.start('MapSelectScene');
         } else {
-            alert("Please each choose a character!");
+            // alert("Please each choose a character!");
         }
     }
 }
@@ -61,15 +59,40 @@ class CharacterSelectScene extends Phaser.Scene{
 const elmo = {
     defaultImage: 'Elmo',
     displayName: "Elmo",
-    punchAnim: 'elmopunch',
-    kickAnim: 'elmokick'
+    profilePicture:"elmoProfile",
+    size: [80, 230],
+    blood: 0xFF0000,
+    //maybe like this:
+    punch: {
+        anim: 'elmopunch',
+        delay: 175,
+        position: [90, 180],
+        damage: 20,
+    },
+    kick: {
+        anim: 'elmokick',
+        delay: 175,
+        position: [90, 210],
+    }
 }
 
 const cookie = {
     defaultImage: 'CookieMonster',
     displayName: "Cookie Monster",
-    punchAnim: 'cookiepunch',
-    kickAnim: 'cookiekick'
+    size: [100, 230],
+    blood: 0x0000FF,
+    profilePicture:"cookieMonsterProfile",
+    punch: {
+        anim: 'cookiepunch',
+        delay: 175,
+        position: [90, 180],
+        damage: 20,
+    },
+    kick: {
+        anim: 'cookiekick',
+        delay: 175,
+        position: [90, 210]
+    }
 }
 
 const charRightControl = {
@@ -78,7 +101,7 @@ const charRightControl = {
     down: Phaser.Input.Keyboard.KeyCodes.DOWN,
     right: Phaser.Input.Keyboard.KeyCodes.RIGHT,
   };
-  
+
   const charLeftControl = {
     up: Phaser.Input.Keyboard.KeyCodes.W,
     left: Phaser.Input.Keyboard.KeyCodes.A,
