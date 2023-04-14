@@ -18,13 +18,23 @@ class PlayScene extends Phaser.Scene {
     this.createCookieMonster();
     initAnims(this.anims);
 
-    this.physics.add.collider(this.leftPlayer, this.rightPlayer, () => {
-      if (this.leftPlayer.isAttacking()) {
+    this.physics.add.collider(this.leftPlayer, this.rightPlayer);
+
+    this.leftPlayer.attackCallback = (attackPosition) => {
+      this.add.circle(attackPosition.x, attackPosition.y, 10, 0x6666ff);
+      let targetChoord = this.rightPlayer.getFrame();
+      if (this.checkOverlap(attackPosition, targetChoord)) {
         this.attack(this.leftPlayer, this.rightPlayer);
-      } else if (this.rightPlayer.isAttacking()) {
+      }
+    };
+    // ^ maybe should be this.rightPlayer.receiveAttack(attackPosition)
+    this.rightPlayer.attackCallback = (attackPosition) => {
+      this.add.circle(attackPosition.x, attackPosition.y, 10, 0x6666ff);
+      let targetChoord = this.leftPlayer.getFrame();
+      if (this.checkOverlap(attackPosition, targetChoord)) {
         this.attack(this.rightPlayer, this.leftPlayer);
       }
-    });
+    };
 
     let particles = this.add.particles("pixel");
     this.emitter = particles.createEmitter({
@@ -36,57 +46,69 @@ class PlayScene extends Phaser.Scene {
     });
   }
 
-  attack(char1, char2) {
+  checkOverlap(attackCoord, targetCoord) {
+    let distanceX =
+      Math.abs(targetCoord.topLeft.x - attackCoord.x) +
+      Math.abs(targetCoord.botRight.x - attackCoord.x);
+    let distanceY =
+      Math.abs(targetCoord.topLeft.y - attackCoord.y) +
+      Math.abs(targetCoord.botRight.y - attackCoord.y);
+    if (distanceX === targetCoord.width && distanceY === targetCoord.height) {
+      return true;
+    }
+    return false;
+  }
+
+  attack(attacker, target) {
     if (
-      !char2.getImmune() &&
-      Math.abs(char1.y - char2.y) < 100 &&
-      !char2.getBlocking()
+      target.getImmune() ||
+      Math.abs(attacker.y - target.y) >= 100 ||
+      target.getBlocking()
     ) {
-      char2.healthBar.decreaseHealth(10);
-      console.log("elmo hit!");
-      char2.isAttacked = true;
+      return;
+    }
 
-      this.emitter.setPosition(char2.x - 150, char2.y - 200);
-      this.emitter.explode();
+    target.healthBar.decreaseHealth(10);
+    console.log("elmo hit!");
+    target.isAttacked = true;
 
-      if (char1.body.facing == Phaser.Physics.Arcade.FACING_RIGHT) {
-        this.tweens.add({
-          targets: char2,
-          angle: { from: -1, to: 1 },
-          duration: 200,
-          yoyo: true,
-        });
-      }
+    this.emitter.setPosition(target.x - 50, target.y - 200);
+    this.emitter.explode();
 
-      if (char1.body.facing == Phaser.Physics.Arcade.FACING_LEFT) {
-        this.tweens.add({
-          targets: char2,
-          angle: { from: 1, to: -1 },
-          duration: 200,
-          yoyo: true,
-        });
-      }
-
-
-      this.time.delayedCall(500, () => (char2.isAttacked = false));
-
-
-
-      if (char2.getBounds().right >= this.config.width) {
-        char1.setPosition(char1.x - 20, char1.y);
-      } else if (char2.getBounds().left <= 0) {
-        char1.setPosition(char1.x + 20, char1.y);
-      } else if (char2.x > char1.x) {
-        char2.setPosition(char2.x + 20, char2.y);
-      } else {
-        char2.setPosition(char2.x - 20, char2.y);
-      }
-
-      char2.setImmune(true);
-      this.time.delayedCall(500, () => {
-        char2.setImmune(false);
+    if (attacker.body.facing == Phaser.Physics.Arcade.FACING_RIGHT) {
+      this.tweens.add({
+        targets: target,
+        angle: { from: -1, to: 1 },
+        duration: 200,
+        yoyo: true,
       });
     }
+
+    if (attacker.body.facing == Phaser.Physics.Arcade.FACING_LEFT) {
+      this.tweens.add({
+        targets: target,
+        angle: { from: 1, to: -1 },
+        duration: 200,
+        yoyo: true,
+      });
+    }
+
+    this.time.delayedCall(500, () => (target.isAttacked = false));
+
+    if (target.getBounds().right >= this.config.width) {
+      attacker.setPosition(attacker.x - 20, attacker.y);
+    } else if (target.getBounds().left <= 0) {
+      attacker.setPosition(attacker.x + 20, attacker.y);
+    } else if (target.x > attacker.x) {
+      target.setPosition(target.x + 20, target.y);
+    } else {
+      target.setPosition(target.x - 20, target.y);
+    }
+
+    target.setImmune(true);
+    this.time.delayedCall(500, () => {
+      target.setImmune(false);
+    });
   }
 
   update() {
@@ -96,23 +118,25 @@ class PlayScene extends Phaser.Scene {
   }
 
   detectWin(char1, char2) {
-    console.log("Healthbar is " + char2.healthBar.healthValue);
-    if ((char1.healthBar.healthValue <= 0) || (char2.healthBar.healthValue <= 0)) {
+    if (char1.healthBar.healthValue <= 0 || char2.healthBar.healthValue <= 0) {
       this.physics.disableUpdate();
       this.KOImage = this.add.image(400, 100, "KO");
       this.KOImage.setScale(0.8);
-      //this.KO = this.add.text(300, 50, 'K.O.', 
-      //{ font: '90px Interstate Bold', fill: '#8B0000' });        
+      //this.KO = this.add.text(300, 50, 'K.O.',
+      //{ font: '90px Interstate Bold', fill: '#8B0000' });
       if (char1.healthBar.healthValue <= 0) {
-        this.winner2 = this.add.text(200, 180, 'Player 2 Wins!',
-          { font: '70px Interstate Bold', fill: '#000000' });        
+        this.winner2 = this.add.text(200, 180, "Player 2 Wins!", {
+          font: "70px Interstate Bold",
+          fill: "#000000",
+        });
       }
       if (char2.healthBar.healthValue <= 0) {
-        this.winner1 = this.add.text(200, 180, 'Player 1 Wins!',
-        { font: '70px Interstate Bold', fill: '#000000' });        
+        this.winner1 = this.add.text(200, 180, "Player 1 Wins!", {
+          font: "70px Interstate Bold",
+          fill: "#000000",
+        });
       }
-      this.time.delayedCall(5300, () => (
-      this.scene.start("EndScene")));
+      this.time.delayedCall(5300, () => this.scene.start("EndScene"));
     }
   }
 
@@ -135,9 +159,7 @@ class PlayScene extends Phaser.Scene {
     this.background.setScale(1.6);
   }
 
-  createPlayer() {
-
-  }
+  createPlayer() {}
 
   createElmo() {
     let healthBar = new HealthBar(
@@ -147,13 +169,13 @@ class PlayScene extends Phaser.Scene {
       this.config,
       "elmoProfile"
     );
-    this.leftPlayer = new Player(this, 100, 200, leftPlayerKey, healthBar)
-      .setOrigin(1)
-      .setSize(80, 230)
-      .setOffset(100, 40);
-
+    this.leftPlayer = new Player(this, 100, 200, leftPlayerKey, healthBar);
     this.leftPlayer.setCollideWorldBounds(true);
-    this.leftPlayerControl = new HandleInputs(this, charLeftControl, this.leftPlayer);
+    this.leftPlayerControl = new HandleInputs(
+      this,
+      charLeftControl,
+      this.leftPlayer
+    );
   }
 
   createCookieMonster() {
@@ -164,11 +186,13 @@ class PlayScene extends Phaser.Scene {
       this.config,
       "cookieMonsterProfile"
     );
-    this.rightPlayer = new Player(this, 1050, 200, rightPlayerKey, healthBar)
-      .setOrigin(1)
-      .setSize(100, 230)
-      .setOffset(100, 40)
-      .setFlipX(true);
+    this.rightPlayer = new Player(
+      this,
+      1050,
+      200,
+      rightPlayerKey,
+      healthBar
+    ).setFlipX(true);
     this.rightPlayer.setCollideWorldBounds(true);
     this.rightPlayerControl = new HandleInputs(
       this,

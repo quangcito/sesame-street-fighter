@@ -16,18 +16,16 @@ class CharacterSelectScene extends Phaser.Scene{
         this.add.image(this.config.width / 2, this.config.height / 2, "selection");
         this.createCharacterIcon();
         this.createCursor();
-        // leftPlayerKey = this.elmoIcon.characterKey;
-        // rightPlayerKey = this.cookieIcon.characterKey;
     }
 
     createCharacterIcon() {
-        this.elmoIcon = new CharacterIcon(this, 
-            this.config.width/2 - 100, 
-            this.config.height/2 + 70, 
+        this.elmoIcon = new CharacterIcon(this,
+            this.config.width/2 - 100,
+            this.config.height/2 + 70,
             "elmoSelectionIcon", elmo);
-        this.cookieIcon = new CharacterIcon(this, 
-            this.config.width/2 + 100, 
-            this.config.height/2 + 70, 
+        this.cookieIcon = new CharacterIcon(this,
+            this.config.width/2 + 100,
+            this.config.height/2 + 70,
             "cookieSelectionIcon", cookie);
         this.iconArray = [this.elmoIcon, this.cookieIcon];
     }
@@ -53,7 +51,7 @@ class CharacterSelectScene extends Phaser.Scene{
         if (leftPlayerKey != null && rightPlayerKey != null) {
             this.scene.start('MapSelectScene');
         } else {
-            alert("Please each choose a character!");
+            // alert("Please each choose a character!");
         }
     }
 }
@@ -62,14 +60,24 @@ const elmo = {
     defaultImage: 'Elmo',
     displayName: "Elmo",
     punchAnim: 'elmopunch',
-    kickAnim: 'elmokick'
+    kickAnim: 'elmokick',
+    size: [80, 230],
+    //maybe like this:
+    punch: {
+        anim: 'elmopunch',
+        delay: 175,
+        size: [50, 20],
+        position: [100, 200],
+        damage: 20,
+    }
 }
 
 const cookie = {
     defaultImage: 'CookieMonster',
     displayName: "Cookie Monster",
     punchAnim: 'cookiepunch',
-    kickAnim: 'cookiekick'
+    kickAnim: 'cookiekick',
+    size: [100, 230]
 }
 
 const charRightControl = {
@@ -78,7 +86,7 @@ const charRightControl = {
     down: Phaser.Input.Keyboard.KeyCodes.DOWN,
     right: Phaser.Input.Keyboard.KeyCodes.RIGHT,
   };
-  
+
   const charLeftControl = {
     up: Phaser.Input.Keyboard.KeyCodes.W,
     left: Phaser.Input.Keyboard.KeyCodes.A,

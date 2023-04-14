@@ -7,11 +7,16 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     scene.physics.add.existing(this);
     scene.add.existing(this);
 
+    this.characterKey = characterKey;
+
+    this.setOrigin(0.5, 1)
+      .setSize(characterKey.size[0], characterKey.size[1])
+      .setOffset(100, 40);
+
     this.healthBar = healthBar;
     this.healthBar.setName(characterKey.displayName);
 
     this.timeFromPreviousAttack = null;
-    this.attacking = false;
     this.immune = false;
     this.isAttacked = false;
     this.blocking = false;
@@ -21,24 +26,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.attackCooldown = 500;
     this.scene = scene;
-
-    this.on(Phaser.Animations.Events.ANIMATION_START, () => {
-      if (this.body.facing == Phaser.Physics.Arcade.FACING_RIGHT) {
-        scene.time.delayedCall(175, () => {
-          console.log("delayed");
-          this.setSize(130, 230), this.setOffset(90, 40);
-        });
-        // this.setSize(80, 230), this.setOffset(100, 40);
-      } else if (this.body.facing == Phaser.Physics.Arcade.FACING_LEFT) {
-        scene.time.delayedCall(175, () => {
-          this.setSize(130, 230), this.setOffset(70, 40);
-        });
-      }
-    });
-    this.on(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
-      this.setSize(80, 230).setOffset(100, 40);
-      this.attacking = false;
-    });
   }
 
   punch() {
@@ -50,8 +37,29 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     this.timeFromPreviousAttack = new Date().getTime();
-    this.attacking = true;
     this.play(this.punchAnim);
+
+    // What if you change your direction while punching??
+    this.scene.time.delayedCall(175, () => {
+      // 175 here might belong in constructor params / character config
+      if (!this.flipX) {
+        console.log("right: " + this.flipX);
+        // compute fist position
+        let fistPosition = {
+          x: this.x + 90,
+          y: this.y - 180,
+        };
+        this.attackCallback(fistPosition);
+      } else {
+        // ??????????????
+        console.log("left: " + this.flipX);
+        let fistPosition = {
+          x: this.x - 90,
+          y: this.y - 180,
+        };
+        this.attackCallback(fistPosition);
+      }
+    });
   }
 
   kick() {
@@ -62,17 +70,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       return;
     } else {
       this.timeFromPreviousAttack = new Date().getTime();
-      this.attacking = true;
       this.play(this.kickAnim);
     }
-  }
-
-  isAttacking() {
-    return this.attacking;
-  }
-
-  setAttacking(attacking) {
-    this.attacking = attacking;
   }
 
   setImmune(immune) {
@@ -98,8 +97,20 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.blocking = blocking;
   }
 
-  getAttacked() {
-    return this.isAttacked;
+  getFrame() {
+    return {
+      width: this.characterKey.size[0],
+      height: this.characterKey.size[1],
+      x: this.x,
+      topLeft: {
+        x: this.x - 40,
+        y: this.y - 230,
+      },
+      botRight: {
+        x: this.x + 40,
+        y: this.y,
+      },
+    };
   }
 }
 
