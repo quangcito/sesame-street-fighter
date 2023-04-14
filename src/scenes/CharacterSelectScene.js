@@ -60,6 +60,7 @@ const elmo = {
     defaultImage: 'Elmo',
     displayName: "Elmo",
     size: [80, 230],
+    blood: 0xFF0000,
     //maybe like this:
     punch: {
         anim: 'elmopunch',
@@ -78,6 +79,7 @@ const cookie = {
     defaultImage: 'CookieMonster',
     displayName: "Cookie Monster",
     size: [100, 230],
+    blood: 0x0000FF,
     punch: {
         anim: 'cookiepunch',
         delay: 175,

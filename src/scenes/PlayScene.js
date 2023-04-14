@@ -35,15 +35,6 @@ class PlayScene extends Phaser.Scene {
         this.attack(this.rightPlayer, this.leftPlayer);
       }
     };
-
-    let particles = this.add.particles("pixel");
-    this.emitter = particles.createEmitter({
-      quantity: 15,
-      speed: { min: -150, max: 150 },
-      scale: { start: 2, end: 0.1 },
-      lifespan: 800,
-      on: false,
-    });
   }
 
   checkOverlap(attackCoord, targetCoord) {
@@ -72,8 +63,7 @@ class PlayScene extends Phaser.Scene {
     console.log("elmo hit!");
     target.isAttacked = true;
 
-    this.emitter.setPosition(target.x, target.y - 200);
-    this.emitter.explode();
+    this.createEmitter(target.characterKey.blood).setPosition(target.x, target.y - 200).explode();
 
     if (attacker.body.facing == Phaser.Physics.Arcade.FACING_RIGHT) {
       this.tweens.add({
@@ -109,6 +99,20 @@ class PlayScene extends Phaser.Scene {
     this.time.delayedCall(500, () => {
       target.setImmune(false);
     });
+  }
+
+  createEmitter(color) {
+    let particles = this.add.particles("pixel");
+    this.emitter = particles.createEmitter({
+      quantity: 15,
+      speed: { min: -150, max: 150 },
+      scale: { start: 2, end: 0.1 },
+      lifespan: 800,
+      on: false,
+    });
+    this.emitter.setTint(color)
+    console.log(color)
+    return this.emitter;
   }
 
   update() {
