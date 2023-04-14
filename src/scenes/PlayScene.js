@@ -165,7 +165,7 @@ class PlayScene extends Phaser.Scene {
       "Player 1",
       true,
       this.config,
-      "elmoProfile"
+      null
     );
     this.leftPlayer = new Player(this, 100, 200, leftPlayerKey, healthBar);
     this.leftPlayer.setCollideWorldBounds(true);
@@ -182,7 +182,7 @@ class PlayScene extends Phaser.Scene {
       "Player 2",
       false,
       this.config,
-      "cookieMonsterProfile"
+      null
     );
     this.rightPlayer = new Player(
       this,

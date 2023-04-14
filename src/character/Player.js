@@ -14,6 +14,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       .setOffset(100, 40);
 
     this.healthBar = healthBar;
+    this.healthBar.setProfile(characterKey.profilePicture);
     this.healthBar.setName(characterKey.displayName);
 
     this.timeFromPreviousAttack = null;
