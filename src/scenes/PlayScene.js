@@ -44,11 +44,20 @@ class PlayScene extends Phaser.Scene {
 
     this.leftCollider = this.physics.add.collider(
       this.leftPlayer,
-      this.layers.platforms
+      this.layers.platformsColliders
     );
     this.rightCollider = this.physics.add.collider(
       this.rightPlayer,
-      this.layers.platforms
+      this.layers.platformsColliders
+    );
+
+    this.leftFloorCollider = this.physics.add.collider(
+      this.leftPlayer,
+      this.layers.floor
+    );
+    this.rightFloorCollider = this.physics.add.collider(
+      this.rightPlayer,
+      this.layers.floor
     );
 
     let particles = this.add.particles("pixel");
@@ -96,13 +105,22 @@ class PlayScene extends Phaser.Scene {
 
   platformCheck(player, collider) {
     //retrieves the tile at the feet of the player
+<<<<<<< Updated upstream
     const tile = this.layers.platforms.getTileAtWorldXY(player.x, player.y);
     if (!tile) {
       this.time.delayedCall(500, () => (collider.active = false));
+=======
+    const tile = this.layers.platformsColliders.getTileAtWorldXY(
+      player.x,
+      player.y
+    );
+    if (!tile && player.) {
+      // collider.active = false;
+>>>>>>> Stashed changes
     } else {
       collider.active = true;
       //ensures that the player can jump onto a platform that is above the platform that the player is currently on.
-      player.body.checkCollision.up = false;
+      // player.body.checkCollision.up = false;
     }
   }
 
@@ -229,11 +247,13 @@ class PlayScene extends Phaser.Scene {
   createLayers(map) {
     const tileset = map.getTileset("Dungeon");
     const floor = map.createLayer("floor", tileset);
+    const platformsColliders = map.createLayer("platforms_colliders", tileset);
     const platforms = map.createLayer("platforms", tileset);
     const spawns = map.getObjectLayer("spawn_points");
 
-    platforms.setCollisionByExclusion(-1, true);
-    return { floor, platforms, spawns };
+    floor.setCollisionByExclusion(-1, true);
+    platformsColliders.setCollisionByExclusion(-1, true);
+    return { floor, platforms, spawns, platformsColliders };
   }
 
   createElmo(x, y) {
