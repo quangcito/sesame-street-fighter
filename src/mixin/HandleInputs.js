@@ -23,14 +23,7 @@ class HandleInputs {
     }
 
     if (this.keyDown.isDown) {
-<<<<<<< Updated upstream
       this.character.setVelocityY(1000);
-=======
-      this.character.setVelocityY(800);
-      // this.character.setBlocking(true);
-    } else {
-      this.character.setBlocking(false);
->>>>>>> Stashed changes
     }
 
     if (this.keyLeft.isDown) {

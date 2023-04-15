@@ -24,37 +24,37 @@ class PlayScene extends Phaser.Scene {
       this.layers.spawns.objects[0].x,
       this.layers.spawns.objects[0].y
     );
-    this.createElmo(
-      this.layers.spawns.objects[1].x,
-      this.layers.spawns.objects[1].y
-    );
+    // this.createElmo(
+    //   this.layers.spawns.objects[1].x,
+    //   this.layers.spawns.objects[1].y
+    // );
     initAnims(this.anims);
     // console.log("offset: " + this.offset);
     // console.log("map: " + this.map.widthInPixels);
     // console.log("config: " + this.config.width);
 
-    this.physics.add.collider(this.leftPlayer, this.rightPlayer, () => {
-      if (this.leftPlayer.isAttacking()) {
-        this.attack(this.leftPlayer, this.rightPlayer);
-      }
-      if (this.rightPlayer.isAttacking()) {
-        this.attack(this.rightPlayer, this.leftPlayer);
-      }
-    });
+    // this.physics.add.collider(this.leftPlayer, this.rightPlayer, () => {
+    //   if (this.leftPlayer.isAttacking()) {
+    //     this.attack(this.leftPlayer, this.rightPlayer);
+    //   }
+    //   if (this.rightPlayer.isAttacking()) {
+    //     this.attack(this.rightPlayer, this.leftPlayer);
+    //   }
+    // });
 
-    this.leftCollider = this.physics.add.collider(
-      this.leftPlayer,
-      this.layers.platformsColliders
-    );
+    // this.leftCollider = this.physics.add.collider(
+    //   this.leftPlayer,
+    //   this.layers.platformsColliders
+    // );
     this.rightCollider = this.physics.add.collider(
       this.rightPlayer,
       this.layers.platformsColliders
     );
 
-    this.leftFloorCollider = this.physics.add.collider(
-      this.leftPlayer,
-      this.layers.floor
-    );
+    // this.leftFloorCollider = this.physics.add.collider(
+    //   this.leftPlayer,
+    //   this.layers.floor
+    // );
     this.rightFloorCollider = this.physics.add.collider(
       this.rightPlayer,
       this.layers.floor
@@ -101,26 +101,61 @@ class PlayScene extends Phaser.Scene {
     // .setScroll(0, 0)
     // .clampX(0, map.widthInPixels);
     // .clampY(0, map.heightInPixels);
+    // console.log(this.rightPlayer.getBottomCenter());
   }
 
   platformCheck(player, collider) {
     //retrieves the tile at the feet of the player
-<<<<<<< Updated upstream
-    const tile = this.layers.platforms.getTileAtWorldXY(player.x, player.y);
-    if (!tile) {
-      this.time.delayedCall(500, () => (collider.active = false));
-=======
-    const tile = this.layers.platformsColliders.getTileAtWorldXY(
-      player.x,
-      player.y
+
+    // console.log(player.displayWidth);
+
+    const tileAtFeet = this.layers.platformsColliders.getTilesWithinWorldXY(
+      player.getBottomLeft().x + 50,
+      player.getBottomLeft().y - 15,
+      player.displayWidth / 3,
+      -1
     );
-    if (!tile && player.) {
-      // collider.active = false;
->>>>>>> Stashed changes
-    } else {
+
+    // const tileAtHead = this.layers.platformsColliders.getTilesWithinWorldXY(
+    //   player.getTopLeft().x + 50,
+    //   player.getTopLeft().y + 25,
+    //   player.displayWidth / 3,
+    //   0.1
+    // );
+
+    const graphics = this.add.graphics();
+    const rect = new Phaser.Geom.Rectangle(
+      player.getBottomLeft().x + 50,
+      player.getBottomLeft().y - 15,
+      player.displayWidth / 3,
+      -1
+    );
+
+    graphics.lineStyle(5, 0xfff);
+    graphics.strokeRectShape(rect);
+
+    // setInterval(() => {
+    //   console.log(player.getTop.x);
+    //   console.log(tileAtFeet);
+    // }, 3000);
+    // // if (
+    // //   !tileAtFeet ||
+    // //   tileAtHead ||
+    // //   (Phaser.Input.Keyboard.JustDown(this.rightPlayerControl.keyDown) &&
+    // //     player.body.onFloor())
+    // // ) {
+    // //   collider.active = false;
+    // // } else {
+    // //   collider.active = true;
+
+    // if (!tileAtHead) {
+    //   collider.active = false;
+    //   player.body.checkCollision.up = false;
+    //   setTimeout(() => (player.body.checkCollision.up = true), 1000);
+    // } else
+    if (tileAtFeet) {
+      console.log(tileAtFeet);
       collider.active = true;
-      //ensures that the player can jump onto a platform that is above the platform that the player is currently on.
-      // player.body.checkCollision.up = false;
     }
   }
 
@@ -175,8 +210,6 @@ class PlayScene extends Phaser.Scene {
   }
 
   cameraUpdate() {
-    // console.log("leftPlayer.x: " + this.leftPlayer.x);
-    // console.log("rightPlayer.x: " + this.rightPlayer.x);
     if (
       this.leftPlayer.x > this.mapOffset ||
       this.rightPlayer.x > this.mapOffset
@@ -201,10 +234,10 @@ class PlayScene extends Phaser.Scene {
   update() {
     this.cloud.tilePositionX += 0.5;
     this.handleControls();
-    this.detectWin(this.leftPlayer, this.rightPlayer);
-    this.platformCheck(this.leftPlayer, this.leftCollider);
+    // this.detectWin(this.leftPlayer, this.rightPlayer);
+    // this.platformCheck(this.leftPlayer, this.leftCollider);
     this.platformCheck(this.rightPlayer, this.rightCollider);
-    this.cameraUpdate();
+    // this.cameraUpdate();
 
     // this.time.delayedCall(1000, () => {
     //   console.log("body: " + this.rightPlayer.y);
@@ -303,7 +336,7 @@ class PlayScene extends Phaser.Scene {
   }
 
   handleControls() {
-    this.leftPlayerControl.characterControls();
+    // this.leftPlayerControl.characterControls();
     this.rightPlayerControl.characterControls();
   }
 }
