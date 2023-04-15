@@ -153,8 +153,8 @@ class PlayScene extends Phaser.Scene {
     //   player.body.checkCollision.up = false;
     //   setTimeout(() => (player.body.checkCollision.up = true), 1000);
     // } else
-    if (tileAtFeet) {
-      console.log(tileAtFeet);
+    if (tileAtFeet.length > 0) {
+      console.log(tileAtFeet.forEach((tile) => tile.y));
       collider.active = true;
     }
   }
