@@ -3,7 +3,8 @@ class HandleInputs {
     this.scene = scene;
     this.createKeys(charKey);
     this.character = character;
-    this.maxJump = 1;
+    //Maximum number of jumps allowed after the first jump
+    this.additionalJumps = 1;
     this.jumpCount = 0;
   }
 
@@ -23,16 +24,6 @@ class HandleInputs {
 
     if (this.keyDown.isDown) {
       this.character.setVelocityY(1000);
-      // this.character.setBlocking(true);
-      console.log("blocking!");
-    } else {
-      this.character.setBlocking(false);
-    }
-
-    if (this.character.getBlocking()) {
-      //character has other controls disabled if blocking
-      // this.character.setVelocityX(0);
-      return;
     }
 
     if (this.keyLeft.isDown) {
@@ -41,12 +32,8 @@ class HandleInputs {
       this.character.setVelocityX(500).setFlipX(false);
     } else this.character.setVelocityX(0);
 
-    // if (this.keyDown.isDown) {
-    //   this.character.setVelocityY(800);
-    // }
-
     const justDown = Phaser.Input.Keyboard.JustDown(this.keyUp);
-    if (justDown && this.jumpCount < this.maxJump) {
+    if (justDown && this.jumpCount < this.additionalJumps) {
       console.log(this.jumpCount);
       this.character.setVelocityY(-800);
       this.jumpCount++;

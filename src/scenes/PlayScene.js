@@ -98,7 +98,7 @@ class PlayScene extends Phaser.Scene {
     //retrieves the tile at the feet of the player
     const tile = this.layers.platforms.getTileAtWorldXY(player.x, player.y);
     if (!tile) {
-      collider.active = false;
+      this.time.delayedCall(500, () => (collider.active = false));
     } else {
       collider.active = true;
       //ensures that the player can jump onto a platform that is above the platform that the player is currently on.
