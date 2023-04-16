@@ -8,8 +8,28 @@ class ResultsScene extends Phaser.Scene{
     }
 
     create(){
-
+        this.label = this.add.text(this.config.width/2, this.config.height/2, '')
+            .setWordWrapWidth(300)
+            .setColor(0x101010)
+            .setScale(2);
+        this.typingEffect("YOU WIN THIS TIME ><")
     }
+
+    typingEffect(text) {
+        const lines = this.label.getWrappedText(text);
+        const wrappedText = lines.join('\n');
+    
+        const length = wrappedText.length;
+        let i = 0;
+        this.time.addEvent({
+          callback: () => {
+            this.label.text += wrappedText[i];
+            ++i;
+          },
+          repeat: length - 1,
+          delay: 140
+        });
+      }
 }
 
 export default ResultsScene
