@@ -29,9 +29,6 @@ class PlayScene extends Phaser.Scene {
     //   this.layers.spawns.objects[1].y
     // );
     initAnims(this.anims);
-    // console.log("offset: " + this.offset);
-    // console.log("map: " + this.map.widthInPixels);
-    // console.log("config: " + this.config.width);
 
     // this.physics.add.collider(this.leftPlayer, this.rightPlayer, () => {
     //   if (this.leftPlayer.isAttacking()) {
@@ -42,19 +39,11 @@ class PlayScene extends Phaser.Scene {
     //   }
     // });
 
-    // this.leftCollider = this.physics.add.collider(
-    //   this.leftPlayer,
-    //   this.layers.platformsColliders
-    // );
     this.rightCollider = this.physics.add.collider(
       this.rightPlayer,
       this.layers.platformsColliders
     );
 
-    // this.leftFloorCollider = this.physics.add.collider(
-    //   this.leftPlayer,
-    //   this.layers.floor
-    // );
     this.rightFloorCollider = this.physics.add.collider(
       this.rightPlayer,
       this.layers.floor
@@ -70,6 +59,7 @@ class PlayScene extends Phaser.Scene {
     });
 
     this.setUpCamera();
+    console.log(this.rightPlayer);
   }
 
   setUpCamera() {
@@ -104,59 +94,48 @@ class PlayScene extends Phaser.Scene {
     // console.log(this.rightPlayer.getBottomCenter());
   }
 
-  platformCheck(player, collider) {
-    //retrieves the tile at the feet of the player
-
-    // console.log(player.displayWidth);
-
-    const tileAtFeet = this.layers.platformsColliders.getTilesWithinWorldXY(
-      player.getBottomLeft().x + 50,
-      player.getBottomLeft().y - 15,
-      player.displayWidth / 3,
-      -1
+  platformCheck(player, collideLayer) {
+    let tileAtBottomLeft = this.layers.platformsColliders.hasTileAtWorldXY(
+      player.getBottomLeft().x + player.displayWidth,
+      player.getBottomLeft().y
     );
 
-    // const tileAtHead = this.layers.platformsColliders.getTilesWithinWorldXY(
-    //   player.getTopLeft().x + 50,
-    //   player.getTopLeft().y + 25,
-    //   player.displayWidth / 3,
-    //   0.1
-    // );
+    let tileAtBottomRight = this.layers.platformsColliders.hasTileAtWorldXY(
+      player.getBottomRight().x,
+      player.getBottomRight().y
+    );
+
+    let tileAtTopLeft = this.layers.platformsColliders.hasTileAtWorldXY(
+      player.getTopLeft().x,
+      player.getTopLeft().y
+    );
+
+    let tileAtTopRight = this.layers.platformsColliders.hasTileAtWorldXY(
+      player.getTopRight().x,
+      player.getTopRight().y
+    );
+
+    if (
+      tileAtBottomLeft ||
+      (tileAtBottomRight && tileAtTopLeft) ||
+      tileAtTopRight
+    ) {
+    }
+    if (tileAtBottomLeft || tileAtBottomRight) {
+      collideLayer.active = true;
+    } else if (tileAtTopLeft || tileAtTopRight) {
+      collideLayer.active = false;
+    }
 
     const graphics = this.add.graphics();
     const rect = new Phaser.Geom.Rectangle(
-      player.getBottomLeft().x + 50,
-      player.getBottomLeft().y - 15,
-      player.displayWidth / 3,
-      -1
+      player.getBottomLeft().x + player.displayWidth / 4,
+      player.getBottomLeft().y,
+      1,
+      1
     );
-
     graphics.lineStyle(5, 0xfff);
     graphics.strokeRectShape(rect);
-
-    // setInterval(() => {
-    //   console.log(player.getTop.x);
-    //   console.log(tileAtFeet);
-    // }, 3000);
-    // // if (
-    // //   !tileAtFeet ||
-    // //   tileAtHead ||
-    // //   (Phaser.Input.Keyboard.JustDown(this.rightPlayerControl.keyDown) &&
-    // //     player.body.onFloor())
-    // // ) {
-    // //   collider.active = false;
-    // // } else {
-    // //   collider.active = true;
-
-    // if (!tileAtHead) {
-    //   collider.active = false;
-    //   player.body.checkCollision.up = false;
-    //   setTimeout(() => (player.body.checkCollision.up = true), 1000);
-    // } else
-    if (tileAtFeet.length > 0) {
-      console.log(tileAtFeet.forEach((tile) => tile.y));
-      collider.active = true;
-    }
   }
 
   attack(char1, char2) {
