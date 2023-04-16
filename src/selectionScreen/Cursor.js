@@ -24,6 +24,7 @@ class Cursor extends Phaser.Physics.Arcade.Image{
         if (Phaser.Input.Keyboard.JustDown(this.keyUp)) {
             this.chosenIcon = null;
             this.setTint();
+            this.removeImage();
         }
         if (this.chosenIcon != null) {
             return;
@@ -33,13 +34,14 @@ class Cursor extends Phaser.Physics.Arcade.Image{
                 this.selectedIconIndex = (this.selectedIconIndex - 1);
             } else {
                 this.selectedIconIndex = this.iconArray.length - 1;
-            }
+            }         
         if (Phaser.Input.Keyboard.JustDown(this.keyRight)) {
             this.selectedIconIndex = (this.selectedIconIndex + 1) % this.iconArray.length
         }
         if (Phaser.Input.Keyboard.JustDown(this.keyDown)) {
             this.chosenIcon = this.iconArray[this.selectedIconIndex];
             this.setTint("#101010");
+            this.addImage(this.chosenIcon.characterKey.defaultImage);
         }
     }
 
