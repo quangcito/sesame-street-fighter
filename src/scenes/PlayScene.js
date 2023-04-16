@@ -140,7 +140,7 @@ class PlayScene extends Phaser.Scene {
           fill: "#000000",
         });
       }
-      this.time.delayedCall(5300, () => this.scene.start("EndScene"));
+      this.time.delayedCall(5300, () => this.scene.start("ResultsScene"));
     }
   }
 

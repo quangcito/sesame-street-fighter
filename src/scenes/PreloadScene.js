@@ -13,7 +13,8 @@ class PreloadScene extends Phaser.Scene {
     this.load.image("selection", "src/assets/selectionScreen.png");
     this.load.image("cloud", "src/assets/cloud.png");
     this.load.image("KO", "src/assets/KO.png");
-    this.load.image("hand", "src/assets/hand.png")
+    this.load.image("hand", "src/assets/hand.png");
+    this.load.image("dialogue", "src/assets/dialogueBox.png");
 
     this.load.image("elmoSelectionIcon", "src/assets/elmoselection.png");
     this.load.image("cookieSelectionIcon", "src/assets/cookiemonsterselection.png")

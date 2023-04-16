@@ -8,11 +8,12 @@ class ResultsScene extends Phaser.Scene{
     }
 
     create(){
-        this.label = this.add.text(this.config.width/2, this.config.height/2, '')
+        this.add.image(this.config.width/2, this.config.height/2, 'dialogue')
+        this.label = this.add.text(62, this.config.height/2, '')
             .setWordWrapWidth(300)
             .setColor(0x101010)
             .setScale(2);
-        this.typingEffect("YOU WIN THIS TIME ><")
+        this.typingEffect("YOU WIN THIS TIME >< BUT I'LL WIN NEXT TIME")
     }
 
     typingEffect(text) {
