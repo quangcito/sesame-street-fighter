@@ -16,6 +16,7 @@ class PlayScene extends Phaser.Scene {
     this.mapOffset = Math.abs(this.map.widthInPixels - this.config.width) / 2;
     this.layers = this.createLayers(this.map);
 
+    console.log(this.layers.spawns);
     this.createLeftPlayer();
     this.createRightPlayer();
     initAnims(this.anims);
@@ -161,7 +162,7 @@ class PlayScene extends Phaser.Scene {
       const graphics = this.add.graphics();
       const rect = new Phaser.Geom.Rectangle(
         player.getFrame().topRight.x,
-        player.getFrame().topRight.y,
+        player.getFrame().topRight.y - 12,
         1,
         1
       );
@@ -188,44 +189,52 @@ class PlayScene extends Phaser.Scene {
 
   //checks if there is atile at either the top left or top right of the bounding box.
   checkTopOfBoundingBox(player) {
-    let tileAtTopLeft = this.layers.platformsColliders.hasTileAtWorldXY(
+    let tileAtTopLeft = this.layers.platformsColliders.getTileAtWorldXY(
       player.getFrame().topLeft.x,
-      player.getFrame().topLeft.y
+      player.getFrame().topLeft.y - 16
     );
 
-    let tileAtTopRight = this.layers.platformsColliders.hasTileAtWorldXY(
+    let tileAtTopRight = this.layers.platformsColliders.getTileAtWorldXY(
       player.getFrame().topRight.x,
-      player.getFrame().topRight.y
+      player.getFrame().topRight.y - 16
     );
 
     if (tileAtTopLeft || tileAtTopRight) {
-      console.log(tileAtTopLeft);
-      console.log("player: " + player.getFrame().topLeft.x);
+      // console.log("tile: " + tileAtTopLeft.pixelY);
+      // console.log("player: " + player.getFrame().topLeft.y);
+      console.log(player.body.velocity.y);
       return true;
     }
   }
 
   platformCheck(player, collideLayer) {
+    const debug = player == this.rightPlayer ? console.log : () => {};
+
     // console.log(player.controls.keyDown.isDown);
     if (
       !player.body.onFloor() &&
       Phaser.Input.Keyboard.JustDown(player.controls.keyDown)
     ) {
       collideLayer.active = true;
+      debug("------> 0");
     } else if (
       this.checkBottomOfBoundingBox(player) &&
       Phaser.Input.Keyboard.JustDown(player.controls.keyDown)
     ) {
       collideLayer.active = false;
-    } else if (this.checkBottomOfBoundingBox(player)) {
+      debug("------> 1");
+    } else if (
+      this.checkBottomOfBoundingBox(player) ||
+      player.body.velocity.y >= 0
+    ) {
       collideLayer.active = true;
+      debug("------> 2");
+    } else if (player.body.velocity.y < 0) {
+      collideLayer.active = false;
+      console.log(player.body.touching.left);
+
+      debug("------> 3");
     }
-    // else if (
-    //   this.checkTopOfBoundingBox(player) &&
-    //   player.body.velocity.y < 0
-    // ) {
-    //   collideLayer.active = false;
-    //   // setTimeout(() => (collideLayer.active = true), 500);
     // }
   }
 
@@ -244,6 +253,10 @@ class PlayScene extends Phaser.Scene {
     const tileset = map.getTileset("Dungeon");
     const floor = map.createLayer("floor", tileset);
     const platformsColliders = map.createLayer("platforms_colliders", tileset);
+    // console.log(tileset);
+    // platformsColliders.forEachTile((tile) => {
+    //   console.log(tile);
+    // }, platformsColliders);
 
     const platforms = map.createLayer("platforms", tileset);
     const spawns = map.getObjectLayer("spawn_points");
@@ -304,7 +317,12 @@ class PlayScene extends Phaser.Scene {
   }
 
   createLeftPlayer() {
-    this.leftPlayer = new Player(this, 100, 200, leftPlayerKey);
+    this.leftPlayer = new Player(
+      this,
+      this.layers.spawns.objects[0].x,
+      this.layers.spawns.objects[0].y,
+      leftPlayerKey
+    );
     this.leftPlayer.healthBar = new HealthBar(
       this,
       true,
@@ -320,9 +338,12 @@ class PlayScene extends Phaser.Scene {
   }
 
   createRightPlayer() {
-    this.rightPlayer = new Player(this, 1050, 200, rightPlayerKey).setFlipX(
-      true
-    );
+    this.rightPlayer = new Player(
+      this,
+      this.layers.spawns.objects[1].x,
+      this.layers.spawns.objects[1].y,
+      rightPlayerKey
+    ).setFlipX(true);
     console.log(this.rightPlayer);
     this.rightPlayer.healthBar = new HealthBar(
       this,
