@@ -125,6 +125,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.blocking = blocking;
   }
 
+  disableAttack() {
+    this.immune = true;
+  }
+
   getFrame() {
     return {
       width: this.characterKey.size[0],

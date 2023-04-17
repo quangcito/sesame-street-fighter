@@ -142,12 +142,15 @@ class PlayScene extends Phaser.Scene {
   KOsound(char1, char2) {
     if (char1.healthBar.healthValue <= 0 || char2.healthBar.healthValue <= 0) {
       this.KOSound.play(this.soundConfig);
+      
     }
   }
 
   detectWin(char1, char2) {
     if (char1.healthBar.healthValue <= 0 || char2.healthBar.healthValue <= 0) {
       this.physics.disableUpdate();
+      char1.disableAttack();
+      char2.disableAttack();
       this.KOImage = this.add.image(550, 100, "KO");
       this.KOImage.setScale(0.8);
 
