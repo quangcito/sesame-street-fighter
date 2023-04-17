@@ -28,7 +28,6 @@ class PreloadScene extends Phaser.Scene {
 
     this.load.image("healthbar", "src/assets/HealthbarV1.png");
     this.load.image("pixel", "src/assets/pixel.png");
-    this.load.image("bluePixel", "src/assets/bluePixel.png");
     this.load.image("elmoProfile", "src/assets/elmoProfile.png");
     this.load.image(
       "cookieMonsterProfile",
@@ -43,12 +42,20 @@ class PreloadScene extends Phaser.Scene {
       frameWidth: 300,
       frameHeight: 300,
     });
+    this.load.spritesheet("cookieBlock", "src/assets/cookie_blocking_full.png", {
+      frameWidth: 300,
+      frameHeight: 300,
+    });
 
     this.load.spritesheet("elmoPunch", "src/assets/elmo_punching_full.png", {
       frameWidth: 300,
       frameHeight: 300,
     });
     this.load.spritesheet("elmoKick", "src/assets/elmo_kicking_full.png", {
+      frameWidth: 300,
+      frameHeight: 300,
+    });
+    this.load.spritesheet("elmoBlock", "src/assets/elmo_blocking_full.png", {
       frameWidth: 300,
       frameHeight: 300,
     });

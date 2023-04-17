@@ -24,6 +24,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.punchAnim = characterKey.punch.anim;
     this.kickAnim = characterKey.kick.anim;
+    this.blockAnim = characterKey.block.anim;
 
     this.attackCooldown = 500;
     this.scene = scene;
@@ -65,6 +66,22 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
   kick() {
     this.doAttack(this.characterKey.kick);
+  }
+
+  block() {
+    if(this.body.onFloor()) {
+      this.blocking = true;
+      this.anims.play(this.blockAnim, true)
+    }
+  }
+
+  unblock() {
+    if(this.body.onFloor()) {
+      if (this.blocking) {
+        this.blocking = false;
+        this.anims.currentAnim.getFrameByProgress(0);
+      }
+    }
   }
 
   setImmune(immune) {

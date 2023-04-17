@@ -22,7 +22,7 @@ class CharacterSelectScene extends Phaser.Scene{
         this.leftCursor.addImage = (defaultImage) => {
             leftPlayerImage = this.add.image(this.config.width*0.2, this.config.height*0.7,defaultImage);
             this.leftHand.setVisible(false);
-        } 
+        }
 
         this.leftCursor.removeImage = () => {
             leftPlayerImage.destroy();
@@ -114,6 +114,9 @@ const elmo = {
         anim: 'elmokick',
         delay: 175,
         position: [90, 210],
+    },
+    block: {
+        anim: 'elmoblock',
     }
 }
 
@@ -133,6 +136,9 @@ const cookie = {
         anim: 'cookiekick',
         delay: 175,
         position: [90, 210]
+    },
+    block: {
+        anim: 'cookieblock'
     }
 }
 
