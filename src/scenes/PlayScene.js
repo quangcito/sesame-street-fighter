@@ -160,14 +160,14 @@ class PlayScene extends Phaser.Scene {
     setInterval(() => {
       const graphics = this.add.graphics();
       const rect = new Phaser.Geom.Rectangle(
-        player.getFrame().botLeft.x,
-        player.getFrame().botLeft.y,
-        Math.abs(player.getFrame().botLeft.x - player.getFrame().botRight.x),
+        player.getFrame().topRight.x,
+        player.getFrame().topRight.y,
+        1,
         1
       );
       graphics.lineStyle(5, 0xfff);
       graphics.strokeRectShape(rect);
-    }, 3000);
+    }, 2000);
   }
 
   //Checks if there is a tile at either the bottom left or bottom right of the bounding box.
@@ -199,15 +199,31 @@ class PlayScene extends Phaser.Scene {
     );
 
     if (tileAtTopLeft || tileAtTopRight) {
+      console.log("hit top of bounding box");
       return true;
     }
   }
 
   platformCheck(player, collideLayer) {
-    if (this.checkBottomOfBoundingBox(player)) {
+    // console.log(player.controls.keyDown.isDown);
+    if (
+      !player.body.onFloor() &&
+      Phaser.Input.Keyboard.JustDown(player.controls.keyDown)
+    ) {
       collideLayer.active = true;
-    } else if (this.checkTopOfBoundingBox(player)) {
+    } else if (
+      this.checkBottomOfBoundingBox(player) &&
+      Phaser.Input.Keyboard.JustDown(player.controls.keyDown)
+    ) {
       collideLayer.active = false;
+    } else if (this.checkBottomOfBoundingBox(player)) {
+      collideLayer.active = true;
+    } else if (
+      this.checkTopOfBoundingBox(player) &&
+      player.body.velocity.y < 0
+    ) {
+      collideLayer.active = false;
+      // setTimeout(() => (collideLayer.active = true), 500);
     }
   }
 
@@ -294,7 +310,7 @@ class PlayScene extends Phaser.Scene {
       this.leftPlayer
     );
     this.leftPlayer.setCollideWorldBounds(true);
-    this.leftPlayerControl = new HandleInputs(
+    this.leftPlayer.controls = new HandleInputs(
       this,
       charLeftControl,
       this.leftPlayer
@@ -313,7 +329,7 @@ class PlayScene extends Phaser.Scene {
       this.rightPlayer
     );
     this.rightPlayer.setCollideWorldBounds(true);
-    this.rightPlayerControl = new HandleInputs(
+    this.rightPlayer.controls = new HandleInputs(
       this,
       charRightControl,
       this.rightPlayer
@@ -321,8 +337,8 @@ class PlayScene extends Phaser.Scene {
   }
 
   handleControls() {
-    this.leftPlayerControl.characterControls();
-    this.rightPlayerControl.characterControls();
+    this.leftPlayer.controls.characterControls();
+    this.rightPlayer.controls.characterControls();
   }
 }
 
