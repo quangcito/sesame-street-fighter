@@ -62,7 +62,8 @@ class PlayScene extends Phaser.Scene {
     );
     this.setUpCamera();
 
-    this.cameras.main.startFollow(this.rightPlayer);
+    // this.cameras.main.startFollow(this.rightPlayer);
+    this.cameras.main.startFollow(this.middlePoint);
   }
 
   setUpCamera() {
@@ -77,7 +78,8 @@ class PlayScene extends Phaser.Scene {
       .setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels)
       .setSize(this.config.width, this.config.height)
       .fadeIn(2000, 0, 0, 0)
-      .centerOn(this.map.widthInPixels / 2, this.map.heightInPixels / 2).z;
+      .centerOn(this.map.widthInPixels / 2, this.map.heightInPixels / 2);
+
     //zoomTo method changes the zoom scale over a duration. In camera class
   }
   checkOverlap(attackCoord, targetCoord) {
@@ -291,12 +293,31 @@ class PlayScene extends Phaser.Scene {
         this.map.heightInPixels / 2,
         500
       );
+
+    let distanceBetweenPlayers = Math.abs(
+      this.leftPlayer.x - this.rightPlayer.x
+    );
+
+    if (distanceBetweenPlayers < 500) {
+      this.zoomMultiplier = 1.5;
+    } else if (distanceBetweenPlayers < 800) {
+      this.zoomMultiplier = 1;
+    } else {
+      this.zoomMultiplier = 0.5;
+    }
+
+    this.cameras.main.zoomTo(this.zoomMultiplier);
   }
 
   update() {
     this.handleControls();
     this.detectWin(this.leftPlayer, this.rightPlayer);
     // this.checkCoords(this.rightPlayer);
+    this.middlePoint = new Phaser.GameObjects.Ellipse(
+      this,
+      Math.abs(this.leftPlayer.x - this.rightPlayer.x),
+      Math.abs(this.leftPlayer.y - this.rightPlayer.y)
+    );
     this.platformCheck(this.rightPlayer, this.rightCollider);
     this.platformCheck(this.leftPlayer, this.leftCollider);
     this.cameraUpdate();
