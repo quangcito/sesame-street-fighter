@@ -14,6 +14,7 @@ class PlayScene extends Phaser.Scene {
   create() {
     this.map = this.createMap();
     this.mapOffset = Math.abs(this.map.widthInPixels - this.config.width) / 2;
+    console.log(this.mapOffset);
     this.layers = this.createLayers(this.map);
 
     this.createLeftPlayer();
@@ -65,6 +66,7 @@ class PlayScene extends Phaser.Scene {
   }
 
   setUpCamera() {
+    this.zoomMultiplier = 1.5;
     this.physics.world.setBounds(
       0,
       0,
@@ -74,7 +76,9 @@ class PlayScene extends Phaser.Scene {
     this.cameras.main
       .setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels)
       .setSize(this.config.width, this.config.height)
-      .fadeIn(2000, 0, 0, 0);
+      .fadeIn(2000, 0, 0, 0)
+      .centerOn(this.map.widthInPixels / 2, this.map.heightInPixels / 2).z;
+    //zoomTo method changes the zoom scale over a duration. In camera class
   }
   checkOverlap(attackCoord, targetCoord) {
     let distanceX =
@@ -253,12 +257,49 @@ class PlayScene extends Phaser.Scene {
     return { floor, platforms, spawns, platformsColliders };
   }
 
+  cameraUpdate() {
+    if (
+      this.leftPlayer.x > this.map.widthInPixels / 2 + this.mapOffset ||
+      this.rightPlayer.x > this.map.widthInPixels / 2 + this.mapOffset
+    ) {
+      this.cameras.main.pan(
+        this.map.widthInPixels - this.config.width / 2,
+        this.map.heightInPixels / 2,
+        500
+      );
+    }
+
+    if (
+      this.leftPlayer.x < this.mapOffset ||
+      this.rightPlayer.x < this.mapOffset
+    ) {
+      this.cameras.main.pan(
+        this.config.width / 2,
+        this.map.heightInPixels / 2,
+        500
+      );
+    }
+
+    if (
+      (this.leftPlayer.x < this.mapOffset &&
+        this.leftPlayer.x > this.map.widthInPixels / 2 + this.mapOffset) ||
+      (this.rightPlayer.x < this.mapOffset &&
+        this.rightPlayer.x > this.map.widthInPixels / 2 + this.mapOffset)
+    )
+      this.cameras.main.pan(
+        this.map.widthInPixels / 2,
+        this.map.heightInPixels / 2,
+        500
+      );
+  }
+
   update() {
     this.handleControls();
     this.detectWin(this.leftPlayer, this.rightPlayer);
     // this.checkCoords(this.rightPlayer);
     this.platformCheck(this.rightPlayer, this.rightCollider);
     this.platformCheck(this.leftPlayer, this.leftCollider);
+    this.cameraUpdate();
   }
 
   detectWin(char1, char2) {
