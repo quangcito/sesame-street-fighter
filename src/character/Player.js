@@ -2,7 +2,7 @@ import Phaser from "phaser";
 import HealthBar from "../hud/HealthBar";
 
 class Player extends Phaser.Physics.Arcade.Sprite {
-  constructor(scene, x, y, characterKey, healthBar) {
+  constructor(scene, x, y, characterKey) {
     super(scene, x, y, characterKey.defaultImage);
     scene.physics.add.existing(this);
     scene.add.existing(this);
@@ -11,11 +11,12 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.setOrigin(0.5, 1)
       .setSize(characterKey.size[0], characterKey.size[1])
-      .setOffset(100, 40);
+      .setOffset(100, 40)
+      .setScale(0.5);
 
-    this.healthBar = healthBar;
-    this.healthBar.setProfile(characterKey.profilePicture);
-    this.healthBar.setName(characterKey.displayName);
+    this.healthBar = null;
+    // this.healthBar.setProfile(characterKey.profilePicture);
+    // this.healthBar.setName(characterKey.displayName);
 
     this.timeFromPreviousAttack = null;
     this.immune = false;
@@ -92,16 +93,24 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
   getFrame() {
     return {
-      width: this.characterKey.size[0],
-      height: this.characterKey.size[1],
+      width: this.characterKey.size[0] / 2,
+      height: this.characterKey.size[1] / 2,
       x: this.x,
       topLeft: {
-        x: this.x - this.characterKey.size[0]/2,
-        y: this.y - this.characterKey.size[1],
+        x: this.x - this.characterKey.size[0] / 4,
+        y: this.y - this.characterKey.size[1] / 2 - 15,
+      },
+      topRight: {
+        x: this.x + this.characterKey.size[0] / 4,
+        y: this.y - this.characterKey.size[1] / 2 - 15,
+      },
+      botLeft: {
+        x: this.x - this.characterKey.size[0] / 4,
+        y: this.y - 15,
       },
       botRight: {
-        x: this.x + this.characterKey.size[0]/2,
-        y: this.y,
+        x: this.x + this.characterKey.size[0] / 4,
+        y: this.y - 15,
       },
     };
   }

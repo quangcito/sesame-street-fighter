@@ -12,8 +12,10 @@ class PlayScene extends Phaser.Scene {
   }
 
   create() {
-    this.createCloud();
-    this.createBackground();
+    this.map = this.createMap();
+    this.mapOffset = Math.abs(this.map.widthInPixels - this.config.width) / 2;
+    this.layers = this.createLayers(this.map);
+
     this.createLeftPlayer();
     this.createRightPlayer();
     initAnims(this.anims);
@@ -23,6 +25,8 @@ class PlayScene extends Phaser.Scene {
     this.leftPlayer.attackCallback = (attackPosition) => {
       // this.add.circle(attackPosition.x, attackPosition.y, 10, 0x6666ff);
       let targetChoord = this.rightPlayer.getFrame();
+      console.log(targetChoord);
+      console.log("atk: " + attackPosition);
       if (this.checkOverlap(attackPosition, targetChoord)) {
         this.attack(this.leftPlayer, this.rightPlayer);
       }
@@ -35,8 +39,43 @@ class PlayScene extends Phaser.Scene {
         this.attack(this.rightPlayer, this.leftPlayer);
       }
     };
+
+    this.leftCollider = this.physics.add.collider(
+      this.leftPlayer,
+      this.layers.platformsColliders
+    );
+
+    this.leftFloorCollider = this.physics.add.collider(
+      this.leftPlayer,
+      this.layers.floor
+    );
+
+    this.rightCollider = this.physics.add.collider(
+      this.rightPlayer,
+      this.layers.platformsColliders
+    );
+
+    this.rightFloorCollider = this.physics.add.collider(
+      this.rightPlayer,
+      this.layers.floor
+    );
+    this.setUpCamera();
+
+    this.cameras.main.startFollow(this.rightPlayer);
   }
 
+  setUpCamera() {
+    this.physics.world.setBounds(
+      0,
+      0,
+      this.map.widthInPixels,
+      this.config.height
+    );
+    this.cameras.main
+      .setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels)
+      .setSize(this.config.width, this.config.height)
+      .fadeIn(2000, 0, 0, 0);
+  }
   checkOverlap(attackCoord, targetCoord) {
     let distanceX =
       Math.abs(targetCoord.topLeft.x - attackCoord.x) +
@@ -63,7 +102,9 @@ class PlayScene extends Phaser.Scene {
     console.log("elmo hit!");
     target.isAttacked = true;
 
-    this.createEmitter(target.characterKey.blood).setPosition(target.x, target.y - 200).explode();
+    this.createEmitter(target.characterKey.blood)
+      .setPosition(target.x, target.y - 200)
+      .explode();
 
     if (attacker.body.facing == Phaser.Physics.Arcade.FACING_RIGHT) {
       this.tweens.add({
@@ -110,15 +151,96 @@ class PlayScene extends Phaser.Scene {
       lifespan: 800,
       on: false,
     });
-    this.emitter.setTint(color)
-    console.log(color)
+    this.emitter.setTint(color);
+    console.log(color);
     return this.emitter;
   }
 
+  checkCoords(player) {
+    setInterval(() => {
+      const graphics = this.add.graphics();
+      const rect = new Phaser.Geom.Rectangle(
+        player.getFrame().botLeft.x,
+        player.getFrame().botLeft.y,
+        Math.abs(player.getFrame().botLeft.x - player.getFrame().botRight.x),
+        1
+      );
+      graphics.lineStyle(5, 0xfff);
+      graphics.strokeRectShape(rect);
+    }, 3000);
+  }
+
+  //Checks if there is a tile at either the bottom left or bottom right of the bounding box.
+  checkBottomOfBoundingBox(player) {
+    let tileAtBottomLeft = this.layers.platformsColliders.hasTileAtWorldXY(
+      player.getFrame().botLeft.x,
+      player.getFrame().botLeft.y
+    );
+
+    let tileAtBottomRight = this.layers.platformsColliders.hasTileAtWorldXY(
+      player.getFrame().botRight.x,
+      player.getFrame().botRight.y
+    );
+    if (tileAtBottomLeft || tileAtBottomRight) {
+      return true;
+    }
+  }
+
+  //checks if there is atile at either the top left or top right of the bounding box.
+  checkTopOfBoundingBox(player) {
+    let tileAtTopLeft = this.layers.platformsColliders.hasTileAtWorldXY(
+      player.getFrame().topLeft.x,
+      player.getFrame().topLeft.y
+    );
+
+    let tileAtTopRight = this.layers.platformsColliders.hasTileAtWorldXY(
+      player.getFrame().topRight.x,
+      player.getFrame().topRight.y
+    );
+
+    if (tileAtTopLeft || tileAtTopRight) {
+      return true;
+    }
+  }
+
+  platformCheck(player, collideLayer) {
+    if (this.checkBottomOfBoundingBox(player)) {
+      collideLayer.active = true;
+    } else if (this.checkTopOfBoundingBox(player)) {
+      collideLayer.active = false;
+    }
+  }
+
+  //creates TileMap and images from JSON file.
+  createMap() {
+    //adds tilemap to background
+    const map = this.make.tilemap({ key: "map1" });
+    //first parameter is name of png file in Tiled. second parameter is key of loaded image
+    map.addTilesetImage("Dungeon", "tiles-1");
+
+    return map;
+  }
+
+  //creates layers in Tiled.
+  createLayers(map) {
+    const tileset = map.getTileset("Dungeon");
+    const floor = map.createLayer("floor", tileset);
+    const platformsColliders = map.createLayer("platforms_colliders", tileset);
+
+    const platforms = map.createLayer("platforms", tileset);
+    const spawns = map.getObjectLayer("spawn_points");
+
+    floor.setCollisionByExclusion(-1, true);
+    platformsColliders.setCollisionByExclusion(-1, true);
+    return { floor, platforms, spawns, platformsColliders };
+  }
+
   update() {
-    this.cloud.tilePositionX += 0.5;
     this.handleControls();
     this.detectWin(this.leftPlayer, this.rightPlayer);
+    // this.checkCoords(this.rightPlayer);
+    this.platformCheck(this.rightPlayer, this.rightCollider);
+    this.platformCheck(this.leftPlayer, this.leftCollider);
   }
 
   detectWin(char1, char2) {
@@ -164,14 +286,13 @@ class PlayScene extends Phaser.Scene {
   }
 
   createLeftPlayer() {
-    let healthBar = new HealthBar(
+    this.leftPlayer = new Player(this, 100, 200, leftPlayerKey);
+    this.leftPlayer.healthBar = new HealthBar(
       this,
-      "Player 1",
       true,
       this.config,
-      null
+      this.leftPlayer
     );
-    this.leftPlayer = new Player(this, 100, 200, leftPlayerKey, healthBar);
     this.leftPlayer.setCollideWorldBounds(true);
     this.leftPlayerControl = new HandleInputs(
       this,
@@ -181,20 +302,16 @@ class PlayScene extends Phaser.Scene {
   }
 
   createRightPlayer() {
-    let healthBar = new HealthBar(
+    this.rightPlayer = new Player(this, 1050, 200, rightPlayerKey).setFlipX(
+      true
+    );
+    console.log(this.rightPlayer);
+    this.rightPlayer.healthBar = new HealthBar(
       this,
-      "Player 2",
       false,
       this.config,
-      null
+      this.rightPlayer
     );
-    this.rightPlayer = new Player(
-      this,
-      1050,
-      200,
-      rightPlayerKey,
-      healthBar
-    ).setFlipX(true);
     this.rightPlayer.setCollideWorldBounds(true);
     this.rightPlayerControl = new HandleInputs(
       this,
