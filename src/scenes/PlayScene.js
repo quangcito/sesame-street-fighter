@@ -16,6 +16,11 @@ class PlayScene extends Phaser.Scene {
     this.createBackground();
     this.createLeftPlayer();
     this.createRightPlayer();
+    this.attackSound = this.sound.add('attack');
+    // this.KOSound = this.sound.add("KOsound");
+    // this.soundConfig = {
+    //   volume: 10,
+    // }
     initAnims(this.anims);
 
     this.physics.add.collider(this.leftPlayer, this.rightPlayer);
@@ -58,8 +63,13 @@ class PlayScene extends Phaser.Scene {
     ) {
       return;
     }
-
+    this.attackSound.play();
     target.healthBar.decreaseHealth(10);
+
+    // if (target.healthBar.healthValue <= 0) {
+    //   this.KOSound.play(this.soundConfig);
+    // }
+
     console.log("elmo hit!");
     target.isAttacked = true;
 
@@ -123,9 +133,11 @@ class PlayScene extends Phaser.Scene {
 
   detectWin(char1, char2) {
     if (char1.healthBar.healthValue <= 0 || char2.healthBar.healthValue <= 0) {
+      // this.KOSound.play(this.soundConfig);
       this.physics.disableUpdate();
       this.KOImage = this.add.image(400, 100, "KO");
       this.KOImage.setScale(0.8);
+
       //this.KO = this.add.text(300, 50, 'K.O.',
       //{ font: '90px Interstate Bold', fill: '#8B0000' });
       if (char1.healthBar.healthValue <= 0) {

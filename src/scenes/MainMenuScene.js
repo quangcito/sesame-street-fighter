@@ -10,6 +10,7 @@ class MainMenuScene extends Phaser.Scene{
         this.createBackground();
         this.createFighterLabel();
         this.createSpaceLabel();
+
         this.tweens.add({
             targets: this.fighterLabel,
             y: 300,

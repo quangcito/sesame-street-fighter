@@ -13,7 +13,12 @@ class PreloadScene extends Phaser.Scene {
     this.load.image("selection", "src/assets/selectionScreen.png");
     this.load.image("cloud", "src/assets/cloud.png");
     this.load.image("KO", "src/assets/KO.png");
-    this.load.image("hand", "src/assets/hand.png")
+    this.load.image("hand", "src/assets/hand.png");
+
+    this.load.audio('soundtrack', ['src/assets/Sesame-Street-Fighter-theme.ogg', 'src/assets/Sesame Street Fighter theme.mp3']);
+    this.load.audio('attack', ['src/assets/attack.ogg', 'src/assets/attack.mp3']);
+    this.load.audio('jump', ['src/assets/SFX_Jump_09.ogg', 'src/assets/SFX_Jump_09.mp3']);
+    this.load.audio('KOsound', ['src/assets/KO_isaiah.ogg', 'src/assets/KO_isaiah.mp3']);
 
     this.load.image("elmoSelectionIcon", "src/assets/elmoselection.png");
     this.load.image("cookieSelectionIcon", "src/assets/cookiemonsterselection.png")
@@ -71,8 +76,20 @@ class PreloadScene extends Phaser.Scene {
     this.loadLabel.setText('loading\n' + percentage);
   }
 
+  create() {
+    this.soundtrack = this.sound.add('soundtrack');
+    var musicConfig = {
+        mute: 0,
+        volume: 0.1,
+        seek: 0,
+        loop: true,
+        delay: 0
+    }
+    this.soundtrack.play(musicConfig);
+  }
+
   update() {
-    this.scene.start("MainMenuScene");
+    this.scene.start("MainMenuScene", { music: this.soundtrack });
   }
 
 

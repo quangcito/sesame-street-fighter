@@ -7,6 +7,12 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     scene.physics.add.existing(this);
     scene.add.existing(this);
 
+    // this.KOSound = scene.sound.add("KOsound");
+    // this.soundConfig = {
+    //   volume: 10,
+    //   delay: 0,
+    // }
+
     this.characterKey = characterKey;
 
     this.setOrigin(0.5, 1)
@@ -25,9 +31,13 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.punchAnim = characterKey.punch.anim;
     this.kickAnim = characterKey.kick.anim;
     this.blockAnim = characterKey.block.anim;
+    this.jumpSound = scene.sound.add('jump');
 
     this.attackCooldown = 500;
     this.scene = scene;
+    // if (this.healthBar.healthValue < 0) {
+    //   this.KOSound.play(this.soundConfig);
+    // }
   }
 
   doAttack(attackKey) {
@@ -82,6 +92,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.anims.currentAnim.getFrameByProgress(0);
       }
     }
+  }
+
+  jump() {
+    this.jumpSound.play();
   }
 
   setImmune(immune) {
