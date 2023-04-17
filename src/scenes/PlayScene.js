@@ -219,13 +219,14 @@ class PlayScene extends Phaser.Scene {
       collideLayer.active = false;
     } else if (this.checkBottomOfBoundingBox(player)) {
       collideLayer.active = true;
-    } else if (
-      this.checkTopOfBoundingBox(player) &&
-      player.body.velocity.y < 0
-    ) {
-      collideLayer.active = false;
-      // setTimeout(() => (collideLayer.active = true), 500);
     }
+    // else if (
+    //   this.checkTopOfBoundingBox(player) &&
+    //   player.body.velocity.y < 0
+    // ) {
+    //   collideLayer.active = false;
+    //   // setTimeout(() => (collideLayer.active = true), 500);
+    // }
   }
 
   //creates TileMap and images from JSON file.
