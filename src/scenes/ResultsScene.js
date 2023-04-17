@@ -8,13 +8,18 @@ class ResultsScene extends Phaser.Scene{
     }
 
     create(){
+      this.add.image(
+        this.config.width/2,
+        this.config.height/2-350,
+        "background"
+      ).setScale(3.6);
       this.add.image(this.config.width*0.2, this.config.height/2, winnerPlayer.characterKey.defaultImage)
         .setScale(2.5);
       this.add.image(this.config.width/2, this.config.height/2, 'dialogue');
       this.label = this.add.text(120, this.config.height/2-70, '')
-          .setWordWrapWidth(400)
-          .setColor("#FFFFFF")
-          .setStroke("#DCB8A3", 3)
+          .setWordWrapWidth(600)
+          .setColor("#E3E3E3")
+          .setStroke("#0E0E0E", 3)
           .setScale(1.3)
           .setFontFamily("'8BIT WONDER', sans-serif")
       this.typingEffect("Looks like you need to learn some new moves!");
