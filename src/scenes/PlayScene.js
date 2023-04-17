@@ -5,6 +5,8 @@ import HealthBar from "../hud/HealthBar";
 import initAnims from "../character/Animation";
 import { leftPlayerKey, rightPlayerKey } from "./CharacterSelectScene";
 
+export let winnerPlayer;
+
 class PlayScene extends Phaser.Scene {
   constructor(config) {
     super("PlayScene");
@@ -129,12 +131,14 @@ class PlayScene extends Phaser.Scene {
       //this.KO = this.add.text(300, 50, 'K.O.',
       //{ font: '90px Interstate Bold', fill: '#8B0000' });
       if (char1.healthBar.healthValue <= 0) {
+        winnerPlayer = char2;
         this.winner2 = this.add.text(200, 180, "Player 2 Wins!", {
           font: "70px Interstate Bold",
           fill: "#000000",
         });
       }
       if (char2.healthBar.healthValue <= 0) {
+        winnerPlayer = char1;
         this.winner1 = this.add.text(200, 180, "Player 1 Wins!", {
           font: "70px Interstate Bold",
           fill: "#000000",
