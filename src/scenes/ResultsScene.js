@@ -20,7 +20,7 @@ class ResultsScene extends Phaser.Scene{
           .setWordWrapWidth(600)
           .setColor("#E3E3E3")
           .setStroke("#0E0E0E", 3)
-          .setScale(1.6)
+          .setScale(1.2)
           .setFontFamily("'8BIT WONDER', sans-serif")
       this.typingEffect("Looks like you need to learn some new moves!");
       this.time.delayedCall(7000, () => this.scene.start("EndScene"));
@@ -38,7 +38,7 @@ class ResultsScene extends Phaser.Scene{
           ++i;
         },
         repeat: length - 1,
-        delay: 90
+        delay: 40
       });
     }
 }
