@@ -1,7 +1,6 @@
 import BaseScene from "./BaseScene";
 import CharacterIcon from "../selectionScreen/CharacterIcon";
 import Cursor from "../selectionScreen/Cursor";
-import { elmo, cookie } from "../character/CharacterData";
 
 export let leftPlayerKey = null;
 export let rightPlayerKey = null;
@@ -144,6 +143,45 @@ const charLeftControl = {
   left: Phaser.Input.Keyboard.KeyCodes.A,
   down: Phaser.Input.Keyboard.KeyCodes.S,
   right: Phaser.Input.Keyboard.KeyCodes.D,
+};
+
+const elmo = {
+  defaultImage: "Elmo",
+  displayName: "Elmo",
+  profilePicture: "elmoProfile",
+  size: [80, 230],
+  blood: 0xff0000,
+  //maybe like this:
+  punch: {
+    anim: "elmopunch",
+    delay: 175,
+    position: [90 / 2, 180 / 2],
+    damage: 20,
+  },
+  kick: {
+    anim: "elmokick",
+    delay: 175,
+    position: [90 / 2, 210 / 2],
+  },
+};
+
+const cookie = {
+  defaultImage: "CookieMonster",
+  displayName: "Cookie Monster",
+  size: [100, 230],
+  blood: 0x0000ff,
+  profilePicture: "cookieMonsterProfile",
+  punch: {
+    anim: "cookiepunch",
+    delay: 175,
+    position: [90 / 2, 180 / 2],
+    damage: 20,
+  },
+  kick: {
+    anim: "cookiekick",
+    delay: 175,
+    position: [90 / 2, 210 / 2],
+  },
 };
 
 export default CharacterSelectScene;

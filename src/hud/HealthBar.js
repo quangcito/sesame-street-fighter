@@ -52,7 +52,6 @@ class HealthBar extends Phaser.GameObjects.Container {
     this.add(this.text);
     //creates the healtbar based on how much health the character has.
     this.updateHealthBar(); //draws the healthbar and changes color based on how much health the character has left.
- 
   }
 
   updateHealthBar() {
@@ -82,7 +81,7 @@ class HealthBar extends Phaser.GameObjects.Container {
   decreaseHealth(amount) {
     this.currentWidth -= (initialWidth / 100) * amount;
     this.createVertices(0, this.y);
-    this.updateGraphic();
+    this.updateHealthBar();
     this.healthValue -= amount;
   }
 

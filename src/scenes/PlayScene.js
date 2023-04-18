@@ -25,7 +25,7 @@ class PlayScene extends Phaser.Scene {
     this.physics.add.collider(this.leftPlayer, this.rightPlayer);
 
     this.leftPlayer.attackCallback = (attackPosition) => {
-      // this.add.circle(attackPosition.x, attackPosition.y, 10, 0x6666ff);
+      this.add.circle(attackPosition.x, attackPosition.y, 10, 0x6666ff);
       let targetChoord = this.rightPlayer.getFrame();
       console.log(targetChoord);
       console.log("atk: " + attackPosition);
@@ -35,7 +35,7 @@ class PlayScene extends Phaser.Scene {
     };
     // ^ maybe should be this.rightPlayer.receiveAttack(attackPosition)
     this.rightPlayer.attackCallback = (attackPosition) => {
-      // this.add.circle(attackPosition.x, attackPosition.y, 10, 0x6666ff);
+      this.add.circle(attackPosition.x, attackPosition.y, 10, 0x6666ff);
       let targetChoord = this.leftPlayer.getFrame();
       if (this.checkOverlap(attackPosition, targetChoord)) {
         this.attack(this.rightPlayer, this.leftPlayer);
@@ -79,6 +79,9 @@ class PlayScene extends Phaser.Scene {
       .fadeIn(2000, 0, 0, 0);
   }
   checkOverlap(attackCoord, targetCoord) {
+    // this.add.circle(attackCoord.x, attackCoord.y, "#BDBDBD");
+    // this.add.circle(targetCoord.topLeft.x, targetCoord.topLeft.y, "#00FFFF");
+    // this.add.circle(targetCoord.botRight.x, targetCoord.botRight.y, "#00FFFF");
     let distanceX =
       Math.abs(targetCoord.topLeft.x - attackCoord.x) +
       Math.abs(targetCoord.botRight.x - attackCoord.x);
@@ -105,7 +108,7 @@ class PlayScene extends Phaser.Scene {
     target.isAttacked = true;
 
     this.createEmitter(target.characterKey.blood)
-      .setPosition(target.x, target.y - 200)
+      .setPosition(target.x, target.y - 200 / 2)
       .explode();
 
     if (attacker.body.facing == Phaser.Physics.Arcade.FACING_RIGHT) {
@@ -273,7 +276,7 @@ class PlayScene extends Phaser.Scene {
     // this.checkCoords(this.rightPlayer);
     this.platformCheck(this.rightPlayer, this.rightCollider);
     this.platformCheck(this.leftPlayer, this.leftCollider);
-    !player.body.blocked && player.body.touching.left;
+    // !player.body.blocked && player.body.touching.left;
   }
 
   detectWin(char1, char2) {
