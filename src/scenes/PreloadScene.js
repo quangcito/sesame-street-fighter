@@ -13,7 +13,13 @@ class PreloadScene extends Phaser.Scene {
     this.load.image("selection", "src/assets/selectionScreen.png");
     this.load.image("cloud", "src/assets/cloud.png");
     this.load.image("KO", "src/assets/KO.png");
-    this.load.image("hand", "src/assets/hand.png")
+    this.load.image("hand", "src/assets/hand.png");
+    this.load.image("dialogue", "src/assets/dialogueBox.png");
+
+    this.load.audio('soundtrack', ['src/assets/Sesame-Street-Fighter-theme.ogg', 'src/assets/Sesame Street Fighter theme.mp3']);
+    this.load.audio('attack', ['src/assets/attack.ogg', 'src/assets/attack.mp3']);
+    this.load.audio('jump', ['src/assets/SFX_Jump_09.ogg', 'src/assets/SFX_Jump_09.mp3']);
+    this.load.audio('KOsound', ['src/assets/KO_isaiah.ogg', 'src/assets/KO_isaiah.mp3']);
 
     this.load.image("elmoSelectionIcon", "src/assets/elmoselection.png");
     this.load.image("cookieSelectionIcon", "src/assets/cookiemonsterselection.png")
@@ -28,7 +34,6 @@ class PreloadScene extends Phaser.Scene {
 
     this.load.image("healthbar", "src/assets/HealthbarV1.png");
     this.load.image("pixel", "src/assets/pixel.png");
-    this.load.image("bluePixel", "src/assets/bluePixel.png");
     this.load.image("elmoProfile", "src/assets/elmoProfile.png");
     this.load.image(
       "cookieMonsterProfile",
@@ -43,12 +48,20 @@ class PreloadScene extends Phaser.Scene {
       frameWidth: 300,
       frameHeight: 300,
     });
+    this.load.spritesheet("cookieBlock", "src/assets/cookie_blocking_full.png", {
+      frameWidth: 300,
+      frameHeight: 300,
+    });
 
     this.load.spritesheet("elmoPunch", "src/assets/elmo_punching_full.png", {
       frameWidth: 300,
       frameHeight: 300,
     });
     this.load.spritesheet("elmoKick", "src/assets/elmo_kicking_full.png", {
+      frameWidth: 300,
+      frameHeight: 300,
+    });
+    this.load.spritesheet("elmoBlock", "src/assets/elmo_blocking_full.png", {
       frameWidth: 300,
       frameHeight: 300,
     });
@@ -64,8 +77,20 @@ class PreloadScene extends Phaser.Scene {
     this.loadLabel.setText('loading\n' + percentage);
   }
 
+  create() {
+    this.soundtrack = this.sound.add('soundtrack');
+    var musicConfig = {
+        mute: 0,
+        volume: 0.1,
+        seek: 0,
+        loop: true,
+        delay: 0
+    }
+    this.soundtrack.play(musicConfig);
+  }
+
   update() {
-    this.scene.start("MainMenuScene");
+    this.scene.start("MainMenuScene", { music: this.soundtrack });
   }
 
 

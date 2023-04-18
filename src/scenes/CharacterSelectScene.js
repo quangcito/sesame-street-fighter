@@ -22,11 +22,15 @@ class CharacterSelectScene extends Phaser.Scene{
         this.leftCursor.addImage = (defaultImage) => {
             leftPlayerImage = this.add.image(this.config.width*0.2, this.config.height*0.7,defaultImage);
             this.leftHand.setVisible(false);
-        } 
+        }
 
         this.leftCursor.removeImage = () => {
-            leftPlayerImage.destroy();
-            this.leftHand.setVisible(true);
+            try {
+                leftPlayerImage.destroy();
+                this.leftHand.setVisible(true); 
+            } finally {
+                return;
+            }            
         }
 
         this.rightCursor.addImage = (defaultImage) => {
@@ -35,8 +39,12 @@ class CharacterSelectScene extends Phaser.Scene{
         }
 
         this.rightCursor.removeImage = () => {
-            rightPlayerImage.destroy();
-            this.rightHand.setVisible(true);
+            try {
+                rightPlayerImage.destroy();
+                this.rightHand.setVisible(true); 
+            } finally{
+                return;
+            }
         }
     }
 
@@ -90,10 +98,8 @@ class CharacterSelectScene extends Phaser.Scene{
 
     toNextScene() {
         if (leftPlayerKey != null && rightPlayerKey != null) {
-            this.scene.start('MapSelectScene');
-        } else {
-            // alert("Please each choose a character!");
-        }
+            this.scene.start('PlayScene');
+        } 
     }
 }
 
@@ -103,7 +109,6 @@ const elmo = {
     profilePicture:"elmoProfile",
     size: [80, 230],
     blood: 0xFF0000,
-    //maybe like this:
     punch: {
         anim: 'elmopunch',
         delay: 175,
@@ -114,6 +119,9 @@ const elmo = {
         anim: 'elmokick',
         delay: 175,
         position: [90, 210],
+    },
+    block: {
+        anim: 'elmoblock',
     }
 }
 
@@ -133,6 +141,9 @@ const cookie = {
         anim: 'cookiekick',
         delay: 175,
         position: [90, 210]
+    },
+    block: {
+        anim: 'cookieblock'
     }
 }
 
