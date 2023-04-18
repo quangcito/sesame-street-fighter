@@ -16,9 +16,10 @@ class PlayScene extends Phaser.Scene {
     this.mapOffset = Math.abs(this.map.widthInPixels - this.config.width) / 2;
     this.layers = this.createLayers(this.map);
 
-    console.log(this.layers.spawns);
     this.createLeftPlayer();
     this.createRightPlayer();
+
+    console.log(!this.rightPlayer.body.blocked.left);
     initAnims(this.anims);
 
     this.physics.add.collider(this.leftPlayer, this.rightPlayer);
@@ -200,9 +201,6 @@ class PlayScene extends Phaser.Scene {
     );
 
     if (tileAtTopLeft || tileAtTopRight) {
-      // console.log("tile: " + tileAtTopLeft.pixelY);
-      // console.log("player: " + player.getFrame().topLeft.y);
-      console.log(player.body.velocity.y);
       return true;
     }
   }
@@ -211,7 +209,10 @@ class PlayScene extends Phaser.Scene {
     const debug = player == this.rightPlayer ? console.log : () => {};
 
     // console.log(player.controls.keyDown.isDown);
-    if (
+    if (!player.body.blocked && player.body.touching.left) {
+      console.log("left");
+      collideLayer.active = false;
+    } else if (
       !player.body.onFloor() &&
       Phaser.Input.Keyboard.JustDown(player.controls.keyDown)
     ) {
@@ -228,10 +229,10 @@ class PlayScene extends Phaser.Scene {
       player.body.velocity.y >= 0
     ) {
       collideLayer.active = true;
+
       debug("------> 2");
     } else if (player.body.velocity.y < 0) {
       collideLayer.active = false;
-      console.log(player.body.touching.left);
 
       debug("------> 3");
     }
@@ -272,6 +273,7 @@ class PlayScene extends Phaser.Scene {
     // this.checkCoords(this.rightPlayer);
     this.platformCheck(this.rightPlayer, this.rightCollider);
     this.platformCheck(this.leftPlayer, this.leftCollider);
+    !player.body.blocked && player.body.touching.left;
   }
 
   detectWin(char1, char2) {
@@ -344,7 +346,6 @@ class PlayScene extends Phaser.Scene {
       this.layers.spawns.objects[1].y,
       rightPlayerKey
     ).setFlipX(true);
-    console.log(this.rightPlayer);
     this.rightPlayer.healthBar = new HealthBar(
       this,
       false,
