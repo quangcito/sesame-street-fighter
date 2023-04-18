@@ -61,9 +61,6 @@ class PlayScene extends Phaser.Scene {
       this.layers.floor
     );
     this.setUpCamera();
-
-    // this.cameras.main.startFollow(this.rightPlayer);
-    this.cameras.main.startFollow(this.middlePoint);
   }
 
   setUpCamera() {
@@ -294,19 +291,19 @@ class PlayScene extends Phaser.Scene {
         500
       );
 
-    let distanceBetweenPlayers = Math.abs(
-      this.leftPlayer.x - this.rightPlayer.x
-    );
+    // let distanceBetweenPlayers = Math.abs(
+    //   this.leftPlayer.x - this.rightPlayer.x
+    // );
 
-    if (distanceBetweenPlayers < 500) {
-      this.zoomMultiplier = 1.5;
-    } else if (distanceBetweenPlayers < 800) {
-      this.zoomMultiplier = 1;
-    } else {
-      this.zoomMultiplier = 0.5;
-    }
+    // if (distanceBetweenPlayers < 500) {
+    //   this.zoomMultiplier = 1.5;
+    // } else if (distanceBetweenPlayers < 800) {
+    //   this.zoomMultiplier = 1;
+    // } else {
+    //   this.zoomMultiplier = 0.5;
+    // }
 
-    this.cameras.main.zoomTo(this.zoomMultiplier);
+    // this.cameras.main.zoomTo(this.zoomMultiplier);
   }
 
   update() {
@@ -318,6 +315,7 @@ class PlayScene extends Phaser.Scene {
       Math.abs(this.leftPlayer.x - this.rightPlayer.x),
       Math.abs(this.leftPlayer.y - this.rightPlayer.y)
     );
+    this.cameras.main.startFollow(this.middlePoint);
     this.platformCheck(this.rightPlayer, this.rightCollider);
     this.platformCheck(this.leftPlayer, this.leftCollider);
     this.cameraUpdate();
