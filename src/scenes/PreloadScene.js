@@ -14,6 +14,7 @@ class PreloadScene extends Phaser.Scene {
     this.load.image("cloud", "src/assets/cloud.png");
     this.load.image("KO", "src/assets/KO.png");
     this.load.image("hand", "src/assets/hand.png");
+    this.load.image("dialogue", "src/assets/dialogueBox.png");
 
     this.load.audio('soundtrack', ['src/assets/Sesame-Street-Fighter-theme.ogg', 'src/assets/Sesame Street Fighter theme.mp3']);
     this.load.audio('attack', ['src/assets/attack.ogg', 'src/assets/attack.mp3']);
