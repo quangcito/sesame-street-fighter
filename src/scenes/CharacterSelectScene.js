@@ -25,8 +25,12 @@ class CharacterSelectScene extends Phaser.Scene{
         }
 
         this.leftCursor.removeImage = () => {
-            leftPlayerImage.destroy();
-            this.leftHand.setVisible(true);
+            try {
+                leftPlayerImage.destroy();
+                this.leftHand.setVisible(true); 
+            } finally {
+                return;
+            }            
         }
 
         this.rightCursor.addImage = (defaultImage) => {
@@ -35,8 +39,12 @@ class CharacterSelectScene extends Phaser.Scene{
         }
 
         this.rightCursor.removeImage = () => {
-            rightPlayerImage.destroy();
-            this.rightHand.setVisible(true);
+            try {
+                rightPlayerImage.destroy();
+                this.rightHand.setVisible(true); 
+            } finally{
+                return;
+            }
         }
     }
 
@@ -91,9 +99,7 @@ class CharacterSelectScene extends Phaser.Scene{
     toNextScene() {
         if (leftPlayerKey != null && rightPlayerKey != null) {
             this.scene.start('PlayScene');
-        } else {
-            // alert("Please each choose a character!");
-        }
+        } 
     }
 }
 
@@ -103,7 +109,6 @@ const elmo = {
     profilePicture:"elmoProfile",
     size: [80, 230],
     blood: 0xFF0000,
-    //maybe like this:
     punch: {
         anim: 'elmopunch',
         delay: 175,
