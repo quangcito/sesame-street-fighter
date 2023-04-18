@@ -25,7 +25,7 @@ class PlayScene extends Phaser.Scene {
     this.physics.add.collider(this.leftPlayer, this.rightPlayer);
 
     this.leftPlayer.attackCallback = (attackPosition) => {
-      this.add.circle(attackPosition.x, attackPosition.y, 10, 0x6666ff);
+      // this.add.circle(attackPosition.x, attackPosition.y, 10, 0x6666ff);
       let targetChoord = this.rightPlayer.getFrame();
       console.log(targetChoord);
       console.log("atk: " + attackPosition);
@@ -35,7 +35,7 @@ class PlayScene extends Phaser.Scene {
     };
     // ^ maybe should be this.rightPlayer.receiveAttack(attackPosition)
     this.rightPlayer.attackCallback = (attackPosition) => {
-      this.add.circle(attackPosition.x, attackPosition.y, 10, 0x6666ff);
+      // this.add.circle(attackPosition.x, attackPosition.y, 10, 0x6666ff);
       let targetChoord = this.leftPlayer.getFrame();
       if (this.checkOverlap(attackPosition, targetChoord)) {
         this.attack(this.rightPlayer, this.leftPlayer);
@@ -191,31 +191,11 @@ class PlayScene extends Phaser.Scene {
     }
   }
 
-  //checks if there is atile at either the top left or top right of the bounding box.
-  checkTopOfBoundingBox(player) {
-    let tileAtTopLeft = this.layers.platformsColliders.getTileAtWorldXY(
-      player.getFrame().topLeft.x,
-      player.getFrame().topLeft.y - 16
-    );
-
-    let tileAtTopRight = this.layers.platformsColliders.getTileAtWorldXY(
-      player.getFrame().topRight.x,
-      player.getFrame().topRight.y - 16
-    );
-
-    if (tileAtTopLeft || tileAtTopRight) {
-      return true;
-    }
-  }
-
   platformCheck(player, collideLayer) {
     const debug = player == this.rightPlayer ? console.log : () => {};
 
     // console.log(player.controls.keyDown.isDown);
-    if (!player.body.blocked && player.body.touching.left) {
-      console.log("left");
-      collideLayer.active = false;
-    } else if (
+    if (
       !player.body.onFloor() &&
       Phaser.Input.Keyboard.JustDown(player.controls.keyDown)
     ) {
@@ -324,8 +304,8 @@ class PlayScene extends Phaser.Scene {
   createLeftPlayer() {
     this.leftPlayer = new Player(
       this,
-      this.layers.spawns.objects[0].x,
-      this.layers.spawns.objects[0].y,
+      this.layers.spawns.objects[1].x,
+      this.layers.spawns.objects[1].y,
       leftPlayerKey
     );
     this.leftPlayer.healthBar = new HealthBar(
@@ -345,8 +325,8 @@ class PlayScene extends Phaser.Scene {
   createRightPlayer() {
     this.rightPlayer = new Player(
       this,
-      this.layers.spawns.objects[1].x,
-      this.layers.spawns.objects[1].y,
+      this.layers.spawns.objects[0].x,
+      this.layers.spawns.objects[0].y,
       rightPlayerKey
     ).setFlipX(true);
     this.rightPlayer.healthBar = new HealthBar(
