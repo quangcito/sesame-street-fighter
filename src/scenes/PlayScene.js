@@ -32,7 +32,6 @@ class PlayScene extends Phaser.Scene {
         this.attack(this.leftPlayer, this.rightPlayer);
       }
     };
-    // ^ maybe should be this.rightPlayer.receiveAttack(attackPosition)
     this.rightPlayer.attackCallback = (attackPosition) => {
       // this.add.circle(attackPosition.x, attackPosition.y, 10, 0x6666ff);
       let targetChoord = this.leftPlayer.getFrame();
@@ -81,7 +80,7 @@ class PlayScene extends Phaser.Scene {
 
     this.createEmitter(target.characterKey.blood).setPosition(target.x, target.y - 200).explode();
 
-    if (attacker.body.facing == Phaser.Physics.Arcade.FACING_RIGHT) {
+    if (!attacker.flipX) {
       this.tweens.add({
         targets: target,
         angle: { from: -1, to: 1 },
@@ -90,7 +89,7 @@ class PlayScene extends Phaser.Scene {
       });
     }
 
-    if (attacker.body.facing == Phaser.Physics.Arcade.FACING_LEFT) {
+    if (attacker.flipX) {
       this.tweens.add({
         targets: target,
         angle: { from: 1, to: -1 },
