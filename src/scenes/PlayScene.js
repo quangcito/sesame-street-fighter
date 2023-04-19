@@ -14,7 +14,6 @@ class PlayScene extends Phaser.Scene {
   create() {
     this.map = this.createMap();
     this.mapOffset = Math.abs(this.map.widthInPixels - this.config.width) / 2;
-    console.log(this.mapOffset);
     this.layers = this.createLayers(this.map);
 
     this.createLeftPlayer();
@@ -61,7 +60,10 @@ class PlayScene extends Phaser.Scene {
       this.rightPlayer,
       this.layers.floor
     );
+    this.createSecondCamera();
     this.setUpCamera();
+    const list = new Phaser.GameObjects.DisplayList(this);
+    console.log(list.getChildren());
   }
 
   setUpCamera() {
@@ -76,10 +78,9 @@ class PlayScene extends Phaser.Scene {
     // console.log("height: " + this.map.heightInPixels);
     this.cameras.main
       .setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels)
-      .setViewport(0, 0, this.map.widthInPixels, this.map.heightInPixels)
+      // .setViewport(0, 0, this.map.widthInPixels, this.map.heightInPixels)
       .setSize(this.config.width, this.config.height)
       .fadeIn(2000, 0, 0, 0);
-    // .setOrigin(0.5)
     // .centerOn((this.config.width / 3) * 2, (this.config.height / 3) * 2);
   }
   checkOverlap(attackCoord, targetCoord) {
@@ -258,6 +259,27 @@ class PlayScene extends Phaser.Scene {
     platformsColliders.setCollisionByExclusion(-1, true);
     return { floor, platforms, spawns, platformsColliders };
   }
+
+  createSecondCamera() {
+    this.cameras.main.ignore([
+      this.leftPlayer.healthBar,
+      this.rightPlayer.healthBar,
+    ]);
+    const HUDCamera = this.cameras.add(
+      0,
+      0,
+      this.config.width,
+      this.config.height
+    );
+    HUDCamera.ignore([
+      this.layers.floor,
+      this.layers.platforms,
+      this.layers.platformsColliders,
+      this.leftPlayer,
+      this.rightPlayer,
+    ]);
+  }
+
   cameraZoom() {
     let xDistanceBetweenPlayers = Math.abs(
       this.leftPlayer.x - this.rightPlayer.x
@@ -266,13 +288,13 @@ class PlayScene extends Phaser.Scene {
     let yDistanceBetweenPlayers = Math.abs(
       this.leftPlayer.y - this.rightPlayer.y
     );
-    // console.log(distanceBetweenPlayers);
+
     if (
       xDistanceBetweenPlayers > this.config.width ||
-      yDistanceBetweenPlayers > this.config.height
+      yDistanceBetweenPlayers > this.config.height / 3
     ) {
       this.cameraZoomMultiplier = 0.667;
-      this.healthBarZoomMultiplier = 1.5;
+      this.healthBarZoomMultiplier = 1.333;
     } else if (
       xDistanceBetweenPlayers > this.config.width / 2 ||
       yDistanceBetweenPlayers > this.config.height / 2
@@ -281,38 +303,24 @@ class PlayScene extends Phaser.Scene {
       this.healthBarZoomMultiplier = 1;
     } else {
       this.cameraZoomMultiplier = 1.333;
-      this.healthBarZoomMultiplier = 0.5;
+      this.healthBarZoomMultiplier = 0.667;
     }
-
-    // this.updateZoom();
-    // this.leftPlayer.healthBar.setScale(this.cameraZoomMultiplier);
-    // this.rightPlayer.healthBar.setScale(this.cameraZoomMultiplier);
-    // this.cameras.main.on("ZOOM_START", () => {});
-    this.cameras.main.zoomTo(this.cameraZoomMultiplier);
-    // this.updateZoom();
-  }
-
-  updateZoom() {
-    this.tweens.add({
-      targets: [this.rightPlayer.healthBar, this.leftPlayer.healthBar],
-      duration: 1,
-      scale: this.healthBarZoomMultiplier,
-    });
+    this.cameras.main.zoomTo(this.cameraZoomMultiplier, 300);
   }
 
   cameraPan() {
     this.cameras.main.pan(
       Math.abs(this.leftPlayer.x + this.rightPlayer.x) / 2,
       Math.abs(this.leftPlayer.y + this.rightPlayer.y) / 2,
-      500,
+      400,
       Phaser.Math.Easing.Linear
     );
   }
 
   update() {
-    this.handleControls();
-    this.cameraZoom();
     this.cameraPan();
+    this.cameraZoom();
+    this.handleControls();
     this.detectWin(this.leftPlayer, this.rightPlayer);
     // this.checkCoords(this.rightPlayer);
 
@@ -382,7 +390,6 @@ class PlayScene extends Phaser.Scene {
     this.rightPlayer = new Player(this, 1050, 200, rightPlayerKey).setFlipX(
       true
     );
-    console.log(this.rightPlayer);
     this.rightPlayer.healthBar = new HealthBar(
       this,
       false,
