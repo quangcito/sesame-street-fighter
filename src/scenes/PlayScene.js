@@ -192,34 +192,29 @@ class PlayScene extends Phaser.Scene {
   }
 
   platformCheck(player, collideLayer) {
-    const debug = player == this.rightPlayer ? console.log : () => {};
-
-    // console.log(player.controls.keyDown.isDown);
+    //When fast falling player can't go under platform
     if (
       !player.body.onFloor() &&
       Phaser.Input.Keyboard.JustDown(player.controls.keyDown)
     ) {
       collideLayer.active = true;
-      debug("------> 0");
+      //Player can go under platform if they are standing on a platform.
     } else if (
       this.checkBottomOfBoundingBox(player) &&
       Phaser.Input.Keyboard.JustDown(player.controls.keyDown)
     ) {
       collideLayer.active = false;
-      debug("------> 1");
-    } else if (
+    }
+    //player can fall onto a platform after going under a different platform
+    else if (
       this.checkBottomOfBoundingBox(player) ||
       player.body.velocity.y >= 0
     ) {
       collideLayer.active = true;
-
-      debug("------> 2");
+      //Players can jump onto platforms
     } else if (player.body.velocity.y < 0) {
       collideLayer.active = false;
-
-      debug("------> 3");
     }
-    // }
   }
 
   //creates TileMap and images from JSON file.
