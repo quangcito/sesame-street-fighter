@@ -61,9 +61,8 @@ class PlayScene extends Phaser.Scene {
       this.rightPlayer,
       this.layers.floor
     );
+    this.createSecondCamera();
     this.setUpCamera();
-
-    this.cameras.main.startFollow(this.rightPlayer);
   }
 
   setUpCamera() {
@@ -71,7 +70,7 @@ class PlayScene extends Phaser.Scene {
       0,
       0,
       this.map.widthInPixels,
-      this.config.height
+      this.map.heightInPixels
     );
     this.cameras.main
       .setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels)
@@ -244,8 +243,66 @@ class PlayScene extends Phaser.Scene {
     platformsColliders.setCollisionByExclusion(-1, true);
     return { floor, platforms, spawns, platformsColliders };
   }
+  createSecondCamera() {
+    this.cameras.main.ignore([
+      this.leftPlayer.healthBar,
+      this.rightPlayer.healthBar,
+    ]);
+    const HUDCamera = this.cameras.add(
+      0,
+      0,
+      this.config.width,
+      this.config.height
+    );
+    HUDCamera.ignore([
+      this.layers.floor,
+      this.layers.platforms,
+      this.layers.platformsColliders,
+      this.leftPlayer,
+      this.rightPlayer,
+    ]);
+  }
+
+  cameraZoom() {
+    let xDistanceBetweenPlayers = Math.abs(
+      this.leftPlayer.x - this.rightPlayer.x
+    );
+
+    let yDistanceBetweenPlayers = Math.abs(
+      this.leftPlayer.y - this.rightPlayer.y
+    );
+
+    if (
+      xDistanceBetweenPlayers > this.config.width ||
+      yDistanceBetweenPlayers > (this.config.height / 4) * 3
+    ) {
+      this.cameraZoomMultiplier = 0.667;
+    } else if (
+      xDistanceBetweenPlayers > this.config.width / 2 ||
+      yDistanceBetweenPlayers > this.config.height / 2
+    ) {
+      this.cameraZoomMultiplier = 1;
+    } else {
+      this.cameraZoomMultiplier = 1.333;
+    }
+    this.cameras.main.zoomTo(this.cameraZoomMultiplier, 400, "Linear", true);
+  }
+
+  cameraPan() {
+    this.cameras.main.pan(
+      Math.abs(this.leftPlayer.x + this.rightPlayer.x) / 2,
+      Math.abs(this.leftPlayer.y + this.rightPlayer.y) / 2,
+      300,
+      Phaser.Math.Easing.Linear,
+      true
+    );
+    if ((this.cameras.main.dirty = true)) {
+      this.cameraZoom();
+    }
+  }
 
   update() {
+    this.cameraPan();
     this.handleControls();
     this.detectWin(this.leftPlayer, this.rightPlayer);
     // this.checkCoords(this.rightPlayer);
