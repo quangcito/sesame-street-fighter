@@ -291,35 +291,35 @@ class PlayScene extends Phaser.Scene {
 
     if (
       xDistanceBetweenPlayers > this.config.width ||
-      yDistanceBetweenPlayers > this.config.height / 3
+      yDistanceBetweenPlayers > (this.config.height / 4) * 3
     ) {
       this.cameraZoomMultiplier = 0.667;
-      this.healthBarZoomMultiplier = 1.333;
     } else if (
       xDistanceBetweenPlayers > this.config.width / 2 ||
       yDistanceBetweenPlayers > this.config.height / 2
     ) {
       this.cameraZoomMultiplier = 1;
-      this.healthBarZoomMultiplier = 1;
     } else {
       this.cameraZoomMultiplier = 1.333;
-      this.healthBarZoomMultiplier = 0.667;
     }
-    this.cameras.main.zoomTo(this.cameraZoomMultiplier, 300);
+    this.cameras.main.zoomTo(this.cameraZoomMultiplier, 400, "Linear", true);
   }
 
   cameraPan() {
     this.cameras.main.pan(
       Math.abs(this.leftPlayer.x + this.rightPlayer.x) / 2,
       Math.abs(this.leftPlayer.y + this.rightPlayer.y) / 2,
-      400,
-      Phaser.Math.Easing.Linear
+      300,
+      Phaser.Math.Easing.Linear,
+      true
     );
+    if ((this.cameras.main.dirty = true)) {
+      this.cameraZoom();
+    }
   }
 
   update() {
     this.cameraPan();
-    this.cameraZoom();
     this.handleControls();
     this.detectWin(this.leftPlayer, this.rightPlayer);
     // this.checkCoords(this.rightPlayer);
