@@ -109,6 +109,7 @@ const elmo = {
     profilePicture:"elmoProfile",
     size: [80, 230],
     blood: 0xFF0000,
+    quote: "Elmo thinks you should keep praticing, because you can't keep living like a loser like that.",
     punch: {
         anim: 'elmopunch',
         delay: 175,
@@ -128,9 +129,10 @@ const elmo = {
 const cookie = {
     defaultImage: 'CookieMonster',
     displayName: "Cookie Monster",
+    profilePicture:"cookieMonsterProfile",
     size: [100, 230],
     blood: 0x0000FF,
-    profilePicture:"cookieMonsterProfile",
+    quote: "Om nom nom nom. C is for cookie, and B is for you, you little Bitch.",
     punch: {
         anim: 'cookiepunch',
         delay: 175,
