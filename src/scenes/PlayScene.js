@@ -20,6 +20,7 @@ class PlayScene extends Phaser.Scene {
     this.createLeftPlayer();
     this.createRightPlayer();
     initAnims(this.anims);
+    this.healthBarZoomMultiplier = 1;
 
     this.physics.add.collider(this.leftPlayer, this.rightPlayer);
 
@@ -75,13 +76,6 @@ class PlayScene extends Phaser.Scene {
       .setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels)
       .setSize(this.config.width, this.config.height)
       .fadeIn(2000, 0, 0, 0).useBounds = true;
-
-    console.log(this.cameras.main);
-
-    this.tweens.add({
-      targets: [this.rightPlayer.healthBar, this.leftPlayer.healthBar],
-      duration: 1000,
-    });
   }
   checkOverlap(attackCoord, targetCoord) {
     let distanceX =
@@ -267,35 +261,50 @@ class PlayScene extends Phaser.Scene {
     if (distanceBetweenPlayers < 500) {
       console.log("1.5");
       this.cameraZoomMultiplier = 1.5;
-      this.healthBarZoomMultiplier = 0.5;
+      // this.healthBarZoomMultiplier = 0.5;
     } else if (distanceBetweenPlayers < 800) {
       console.log("1");
       this.cameraZoomMultiplier = 1;
+      // this.healthBarZoomMultiplier = 1;
     } else {
       console.log("0.5");
       this.cameraZoomMultiplier = 0.5;
+      // this.healthBarZoomMultiplier = 1.5;
     }
-    this.leftPlayer.healthBar.setScale(this.cameraZoomMultiplier);
-    this.rightPlayer.healthBar.setScale(this.cameraZoomMultiplier);
+
+    // this.updateZoom();
+    // this.leftPlayer.healthBar.setScale(this.cameraZoomMultiplier);
+    // this.rightPlayer.healthBar.setScale(this.cameraZoomMultiplier);
+    this.cameras.main.on("ZOOM_START", () => {});
     this.cameras.main.setOrigin(0.5, 0.5).zoomTo(this.cameraZoomMultiplier);
   }
+
+  updateZoom() {
+    this.tweens.add({
+      targets: [this.rightPlayer.healthBar, this.leftPlayer.healthBar],
+      duration: 1000,
+      scale: this.healthBarZoomMultiplier,
+    });
+  }
+
   cameraPan() {
     this.cameras.main.pan(
-      Math.abs(this.leftPlayer.x - this.rightPlayer.x),
-      Math.abs(this.leftPlayer.y),
-      1000
+      Math.abs(this.leftPlayer.x + this.rightPlayer.x) / 2,
+      Math.abs(this.leftPlayer.y + this.rightPlayer.y) / 2,
+      500,
+      Phaser.Math.Easing.Linear
     );
   }
 
   update() {
+    this.cameraPan();
     this.handleControls();
     this.detectWin(this.leftPlayer, this.rightPlayer);
     // this.checkCoords(this.rightPlayer);
 
     this.platformCheck(this.rightPlayer, this.rightCollider);
     this.platformCheck(this.leftPlayer, this.leftCollider);
-    this.cameraZoom();
-    this.cameraPan();
+    // this.cameraZoom();
   }
 
   detectWin(char1, char2) {
