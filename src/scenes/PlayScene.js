@@ -65,17 +65,22 @@ class PlayScene extends Phaser.Scene {
   }
 
   setUpCamera() {
-    this.cameraZoomMultiplier = 1.5;
     this.physics.world.setBounds(
       0,
       0,
       this.map.widthInPixels,
       this.map.heightInPixels
     );
+
+    // console.log("width: " + this.map.widthInPixels);
+    // console.log("height: " + this.map.heightInPixels);
     this.cameras.main
       .setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels)
+      .setViewport(0, 0, this.map.widthInPixels, this.map.heightInPixels)
       .setSize(this.config.width, this.config.height)
-      .fadeIn(2000, 0, 0, 0).useBounds = true;
+      .fadeIn(2000, 0, 0, 0);
+    // .setOrigin(0.5)
+    // .centerOn((this.config.width / 3) * 2, (this.config.height / 3) * 2);
   }
   checkOverlap(attackCoord, targetCoord) {
     let distanceX =
@@ -254,35 +259,43 @@ class PlayScene extends Phaser.Scene {
     return { floor, platforms, spawns, platformsColliders };
   }
   cameraZoom() {
-    let distanceBetweenPlayers = Math.abs(
+    let xDistanceBetweenPlayers = Math.abs(
       this.leftPlayer.x - this.rightPlayer.x
     );
+
+    let yDistanceBetweenPlayers = Math.abs(
+      this.leftPlayer.y - this.rightPlayer.y
+    );
     // console.log(distanceBetweenPlayers);
-    if (distanceBetweenPlayers < 500) {
-      console.log("1.5");
-      this.cameraZoomMultiplier = 1.5;
-      // this.healthBarZoomMultiplier = 0.5;
-    } else if (distanceBetweenPlayers < 800) {
-      console.log("1");
+    if (
+      xDistanceBetweenPlayers > this.config.width ||
+      yDistanceBetweenPlayers > this.config.height
+    ) {
+      this.cameraZoomMultiplier = 0.667;
+      this.healthBarZoomMultiplier = 1.5;
+    } else if (
+      xDistanceBetweenPlayers > this.config.width / 2 ||
+      yDistanceBetweenPlayers > this.config.height / 2
+    ) {
       this.cameraZoomMultiplier = 1;
-      // this.healthBarZoomMultiplier = 1;
+      this.healthBarZoomMultiplier = 1;
     } else {
-      console.log("0.5");
-      this.cameraZoomMultiplier = 0.5;
-      // this.healthBarZoomMultiplier = 1.5;
+      this.cameraZoomMultiplier = 1.333;
+      this.healthBarZoomMultiplier = 0.5;
     }
 
     // this.updateZoom();
     // this.leftPlayer.healthBar.setScale(this.cameraZoomMultiplier);
     // this.rightPlayer.healthBar.setScale(this.cameraZoomMultiplier);
-    this.cameras.main.on("ZOOM_START", () => {});
-    this.cameras.main.setOrigin(0.5, 0.5).zoomTo(this.cameraZoomMultiplier);
+    // this.cameras.main.on("ZOOM_START", () => {});
+    this.cameras.main.zoomTo(this.cameraZoomMultiplier);
+    // this.updateZoom();
   }
 
   updateZoom() {
     this.tweens.add({
       targets: [this.rightPlayer.healthBar, this.leftPlayer.healthBar],
-      duration: 1000,
+      duration: 1,
       scale: this.healthBarZoomMultiplier,
     });
   }
@@ -297,14 +310,14 @@ class PlayScene extends Phaser.Scene {
   }
 
   update() {
-    this.cameraPan();
     this.handleControls();
+    this.cameraZoom();
+    this.cameraPan();
     this.detectWin(this.leftPlayer, this.rightPlayer);
     // this.checkCoords(this.rightPlayer);
 
     this.platformCheck(this.rightPlayer, this.rightCollider);
     this.platformCheck(this.leftPlayer, this.leftCollider);
-    // this.cameraZoom();
   }
 
   detectWin(char1, char2) {
