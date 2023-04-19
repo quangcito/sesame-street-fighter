@@ -132,7 +132,7 @@ const cookie = {
     profilePicture:"cookieMonsterProfile",
     size: [100, 230],
     blood: 0x0000FF,
-    quote: "Om nom nom nom. C is for cookie, and B is for you, you little Bitch.",
+    quote: "Om nom nom nom. C is for cookie, and B is for you, you little B****.",
     punch: {
         anim: 'cookiepunch',
         delay: 175,
