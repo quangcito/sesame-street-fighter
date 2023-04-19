@@ -278,21 +278,31 @@ class PlayScene extends Phaser.Scene {
     // ) {
     //   this.cameraZoomMultiplier = 0.667;
     // } else if (
-    //   xDistanceBetweenPlayers > this.config.width / 2 ||
+    //   xDistanceBetwenPlayers > this.config.width / 2 ||
     //   yDistanceBetweenPlayers > this.config.height / 2
     // ) {
     //   this.cameraZoomMultiplier = 1;
     // } else {
     //   this.cameraZoomMultiplier = 1.333;
     // }
+
     if (
-      xDistanceBetweenPlayers > this.config.width ||
-      yDistanceBetweenPlayers > this.config.height
+      xDistanceBetweenPlayers > (this.config.width / 3) * 2 ||
+      yDistanceBetweenPlayers > (this.config.height / 3) * 2
     ) {
-      this.cameraZoomMultiplier = 0.667;
-    } else {
       this.cameraZoomMultiplier = 1;
+    } else {
+      this.cameraZoomMultiplier = 1.333;
     }
+
+    // if (
+    //   xDistanceBetweenPlayers > this.config.width ||
+    //   yDistanceBetweenPlayers > this.config.height
+    // ) {
+    //   this.cameraZoomMultiplier = 0.667;
+    // } else {
+    //   this.cameraZoomMultiplier = 1;
+    // }
 
     this.cameras.main.zoomTo(this.cameraZoomMultiplier, 700, "Linear", true);
   }
