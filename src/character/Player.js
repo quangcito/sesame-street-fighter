@@ -11,7 +11,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.setOrigin(0.5, 1)
       .setSize(characterKey.size[0], characterKey.size[1])
-      .setOffset(100, 40)
+      .setOffset(100, 30)
       .setScale(0.5);
 
     this.healthBar = null;

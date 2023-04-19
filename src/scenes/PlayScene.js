@@ -272,20 +272,29 @@ class PlayScene extends Phaser.Scene {
       this.leftPlayer.y - this.rightPlayer.y
     );
 
+    // if (
+    //   xDistanceBetweenPlayers > this.config.width ||
+    //   yDistanceBetweenPlayers > (this.config.height / 4) * 3
+    // ) {
+    //   this.cameraZoomMultiplier = 0.667;
+    // } else if (
+    //   xDistanceBetweenPlayers > this.config.width / 2 ||
+    //   yDistanceBetweenPlayers > this.config.height / 2
+    // ) {
+    //   this.cameraZoomMultiplier = 1;
+    // } else {
+    //   this.cameraZoomMultiplier = 1.333;
+    // }
     if (
       xDistanceBetweenPlayers > this.config.width ||
-      yDistanceBetweenPlayers > (this.config.height / 4) * 3
+      yDistanceBetweenPlayers > this.config.height
     ) {
       this.cameraZoomMultiplier = 0.667;
-    } else if (
-      xDistanceBetweenPlayers > this.config.width / 2 ||
-      yDistanceBetweenPlayers > this.config.height / 2
-    ) {
-      this.cameraZoomMultiplier = 1;
     } else {
-      this.cameraZoomMultiplier = 1.333;
+      this.cameraZoomMultiplier = 1;
     }
-    this.cameras.main.zoomTo(this.cameraZoomMultiplier, 400, "Linear", true);
+
+    this.cameras.main.zoomTo(this.cameraZoomMultiplier, 700, "Linear", true);
   }
 
   cameraPan() {
@@ -293,7 +302,7 @@ class PlayScene extends Phaser.Scene {
       Math.abs(this.leftPlayer.x + this.rightPlayer.x) / 2,
       Math.abs(this.leftPlayer.y + this.rightPlayer.y) / 2,
       300,
-      Phaser.Math.Easing.Linear,
+      "Quad",
       true
     );
     if ((this.cameras.main.dirty = true)) {

@@ -25,7 +25,7 @@ class HandleInputs {
     }
 
     if (this.keyDown.isDown) {
-      this.character.setVelocityY(700);
+      this.character.setVelocityY(800);
     }
 
     if (this.keyLeft.isDown) {
@@ -39,7 +39,7 @@ class HandleInputs {
       this.jumpCount < this.additionalJumps
     ) {
       this.jumpCount++;
-      this.character.setVelocityY(-850);
+      this.character.setVelocityY(-875);
     }
 
     if (this.character.body.onFloor()) {
