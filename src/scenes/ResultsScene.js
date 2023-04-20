@@ -21,10 +21,10 @@ class ResultsScene extends Phaser.Scene{
           .setColor("#E3E3E3")
           .setStroke("#0E0E0E", 3)
           .setScale(1.2)
-          .setFontFamily("'8BIT WONDER', sans-serif")
+          .setFontFamily("'8BIT WONDER', sans-serif");
       this.quote = winnerPlayer.characterKey.quote;
       this.typingEffect(this.quote);
-      this.time.delayedCall(8500, () => this.scene.start("EndScene"));
+      this.time.delayedCall(6500, () => this.scene.start("EndScene"));
     }
 
     typingEffect(text) {
