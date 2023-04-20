@@ -19,7 +19,7 @@ class ResultsScene extends Phaser.Scene{
       this.label = this.add.text(120, this.config.height/2-70, '')
           .setWordWrapWidth(600)
           .setColor("#E3E3E3")
-          .setStroke("#0E0E0E", 3)
+          .setStroke("#0E0E0E", 5)
           .setScale(1.2)
           .setFontFamily("'8BIT WONDER', sans-serif");
       this.quote = winnerPlayer.characterKey.quote;

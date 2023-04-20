@@ -16,6 +16,7 @@ class CharacterSelectScene extends Phaser.Scene{
     create(){
         this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         this.add.image(this.config.width / 2, this.config.height / 2, "selection");
+        this.createLabel();
         this.createCharacterIcon();
         this.createCursor();
         this.createHand();
@@ -48,6 +49,14 @@ class CharacterSelectScene extends Phaser.Scene{
         }
     }
 
+    createLabel() {
+        this.label = this.add.text(this.config.width / 2 - 230, this.config.height / 2 - 165, "Select Fighter")
+            .setFontSize(35)
+            .setColor("#E3E3E3")
+            .setStroke("#0E0E0E", 10)
+            .setFontFamily("'8BIT WONDER', sans-serif");
+    }
+
     createCharacterIcon() {
         this.elmoIcon = new CharacterIcon(this,
             this.config.width/2 - 100,
@@ -74,7 +83,7 @@ class CharacterSelectScene extends Phaser.Scene{
             duration: 1000,
             yoyo: true,
             repeat: -1
-          });
+        });
         this.tweens.add({
             targets: this.rightHand,
             y: { from: this.config.height*0.7, to: this.config.height*0.5 },
