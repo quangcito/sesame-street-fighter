@@ -56,6 +56,7 @@ class PlayScene extends Phaser.Scene {
     this.createSecondCamera();
   }
 
+  //
   setUpCamera() {
     this.physics.world.setBounds(
       0,
@@ -68,6 +69,7 @@ class PlayScene extends Phaser.Scene {
       .setSize(this.config.width, this.config.height)
       .fadeIn(2000, 0, 0, 0);
   }
+
   checkOverlap(attackCoord, targetCoord) {
     // this.add.circle(attackCoord.x, attackCoord.y, "#BDBDBD");
     // this.add.circle(targetCoord.topLeft.x, targetCoord.topLeft.y, "#00FFFF");
