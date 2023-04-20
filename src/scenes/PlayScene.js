@@ -47,22 +47,13 @@ class PlayScene extends Phaser.Scene {
       this.layers.platformsColliders
     );
 
-    this.leftFloorCollider = this.physics.add.collider(
-      this.leftPlayer,
-      this.layers.floor
-    );
-
     this.rightCollider = this.physics.add.collider(
       this.rightPlayer,
       this.layers.platformsColliders
     );
 
-    this.rightFloorCollider = this.physics.add.collider(
-      this.rightPlayer,
-      this.layers.floor
-    );
-    this.createSecondCamera();
     this.setUpCamera();
+    this.createSecondCamera();
   }
 
   setUpCamera() {
@@ -155,6 +146,7 @@ class PlayScene extends Phaser.Scene {
       lifespan: 800,
       on: false,
     });
+    this.HUDCamera.ignore(particles);
     this.emitter.setTint(color);
     console.log(color);
     return this.emitter;
@@ -248,19 +240,39 @@ class PlayScene extends Phaser.Scene {
       this.leftPlayer.healthBar,
       this.rightPlayer.healthBar,
     ]);
-    const HUDCamera = this.cameras.add(
-      0,
-      0,
+    this.HUDCamera = this.cameras.add(
+      this.cameras.main.x,
+      this.cameras.main.y,
       this.config.width,
       this.config.height
     );
-    HUDCamera.ignore([
+    this.HUDCamera.setBounds(
+      0,
+      0,
+      this.map.widthInPixels,
+      this.map.heightInPixels
+    ).setSize(this.config.width, this.config.height);
+    // HUDCamera.scrollX = this.cameras.main.scrollX;
+    // HUDCamera.scrollY = this.cameras.main.scrollY;
+
+    this.cameras.main.on("ZOOM_START", () =>
+      HUDCamera.zoomTo(
+        this.cameraZoomMultiplier,
+        150,
+        Phaser.Math.Easing.Quadratic.InOut,
+        true
+      )
+    );
+    this.HUDCamera.ignore([
       this.layers.floor,
       this.layers.platforms,
       this.layers.platformsColliders,
       this.leftPlayer,
       this.rightPlayer,
     ]);
+    // this.leftPlayer.body.setIgnore(HUDCamera);
+    // this.rightPlayer.active = false;
+    // this.rightPlayer.visible = false;
   }
 
   cameraZoom() {
@@ -272,19 +284,19 @@ class PlayScene extends Phaser.Scene {
       this.leftPlayer.y - this.rightPlayer.y
     );
 
-    // if (
-    //   xDistanceBetweenPlayers > this.config.width ||
-    //   yDistanceBetweenPlayers > (this.config.height / 4) * 3
-    // ) {
-    //   this.cameraZoomMultiplier = 0.667;
-    // } else if (
-    //   xDistanceBetwenPlayers > this.config.width / 2 ||
-    //   yDistanceBetweenPlayers > this.config.height / 2
-    // ) {
-    //   this.cameraZoomMultiplier = 1;
-    // } else {
-    //   this.cameraZoomMultiplier = 1.333;
-    // }
+    if (
+      xDistanceBetweenPlayers > this.config.width ||
+      yDistanceBetweenPlayers > (this.config.height / 4) * 3
+    ) {
+      this.cameraZoomMultiplier = 0.667;
+    } else if (
+      xDistanceBetweenPlayers > this.config.width / 2 ||
+      yDistanceBetweenPlayers > this.config.height / 2
+    ) {
+      this.cameraZoomMultiplier = 1;
+    } else {
+      this.cameraZoomMultiplier = 1.333;
+    }
 
     // if (
     //   xDistanceBetweenPlayers > (this.config.width / 3) * 2 ||
@@ -295,14 +307,14 @@ class PlayScene extends Phaser.Scene {
     //   this.cameraZoomMultiplier = 1.333;
     // }
 
-    if (
-      xDistanceBetweenPlayers > this.config.width * 0.8 ||
-      yDistanceBetweenPlayers > this.config.height * 0.8
-    ) {
-      this.cameraZoomMultiplier = 0.667;
-    } else {
-      this.cameraZoomMultiplier = 1;
-    }
+    // if (
+    //   xDistanceBetweenPlayers > this.config.width * 0.8 ||
+    //   yDistanceBetweenPlayers > this.config.height * 0.8
+    // ) {
+    //   this.cameraZoomMultiplier = 0.667;
+    // } else {
+    //   this.cameraZoomMultiplier = 1;
+    // }
 
     this.cameras.main.zoomTo(
       this.cameraZoomMultiplier,
@@ -327,6 +339,8 @@ class PlayScene extends Phaser.Scene {
 
   update() {
     this.cameraPan();
+    // this.HUDCamera.centerOn(this.cameras.main.x, this.cameras.main.y);
+
     this.handleControls();
     this.detectWin(this.leftPlayer, this.rightPlayer);
     // this.checkCoords(this.rightPlayer);
@@ -340,6 +354,7 @@ class PlayScene extends Phaser.Scene {
       this.physics.disableUpdate();
       this.KOImage = this.add.image(400, 100, "KO");
       this.KOImage.setScale(0.8);
+      this.cameras.main.ignore(this.KOImage);
       //this.KO = this.add.text(300, 50, 'K.O.',
       //{ font: '90px Interstate Bold', fill: '#8B0000' });
       if (char1.healthBar.healthValue <= 0) {

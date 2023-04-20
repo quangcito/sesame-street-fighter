@@ -43,7 +43,6 @@ const config = {
     arcade: {
       debug: false,
       gravity: { y: 2100 },
-      iterations: 10,
     },
   },
   scene: initScenes(),
