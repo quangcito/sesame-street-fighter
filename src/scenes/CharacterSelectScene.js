@@ -50,11 +50,34 @@ class CharacterSelectScene extends Phaser.Scene{
     }
 
     createLabel() {
+        this.firstColor = Phaser.Display.Color.HexStringToColor("#FFFFFF");
+        this.secondColor = Phaser.Display.Color.HexStringToColor("#0E0E0E");
+
         this.label = this.add.text(this.config.width / 2 - 230, this.config.height / 2 - 165, "Select Fighter")
             .setFontSize(35)
             .setColor("#E3E3E3")
             .setStroke("#0E0E0E", 10)
             .setFontFamily("'8BIT WONDER', sans-serif");
+
+        this.tweens.addCounter({
+            from: 0,
+            to: 100,
+            duration: 500,
+            yoyo: true,
+            repeat: -1,
+            ease: Phaser.Math.Easing.Sine.InOut,
+            onUpdate: (tween) => {
+                let value = tween.getValue()
+                let color = Phaser.Display.Color.Interpolate.ColorWithColor(
+                    this.firstColor,
+                    this.secondColor,
+                    100,
+                    value
+                )
+                this.label.setTint(Phaser.Display.Color.GetColor(color.r, color.g, color.b));
+            }
+        });
+
     }
 
     createCharacterIcon() {
