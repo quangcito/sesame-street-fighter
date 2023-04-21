@@ -197,17 +197,16 @@ class PlayScene extends Phaser.Scene {
       Phaser.Input.Keyboard.JustDown(player.controls.keyDown)
     ) {
       collideLayer.active = false;
-    }
-    //player can fall onto a platform after going under a different platform
-    else if (
-      this.checkBottomOfBoundingBox(player) ||
-      player.body.velocity.y >= 0
-    ) {
+    } else {
       collideLayer.active = true;
-      //Players can jump onto platforms
-    } else if (player.body.velocity.y < 0) {
-      collideLayer.active = false;
     }
+
+    //player can fall onto a platform after going under a different platform
+    // else if (
+    //   this.checkBottomOfBoundingBox(player) ||
+    //   player.body.velocity.y >= 0
+    // ) {
+    //   collideLayer.active = true;
   }
 
   //creates TileMap and images from JSON file.
@@ -225,16 +224,15 @@ class PlayScene extends Phaser.Scene {
     const tileset = map.getTileset("Dungeon");
     const floor = map.createLayer("floor", tileset);
     const platformsColliders = map.createLayer("platforms_colliders", tileset);
-    // console.log(tileset);
-    // platformsColliders.forEachTile((tile) => {
-    //   console.log(tile);
-    // }, platformsColliders);
-
     const platforms = map.createLayer("platforms", tileset);
     const spawns = map.getObjectLayer("spawn_points");
 
     floor.setCollisionByExclusion(-1, true);
-    platformsColliders.setCollisionByExclusion(-1, true);
+    platformsColliders.setCollisionByExclusion(-1, true).forEachTile((tile) => {
+      tile.collideRight = false;
+      tile.collideLeft = false;
+      tile.collideDown = false;
+    });
     return { floor, platforms, spawns, platformsColliders };
   }
   createSecondCamera() {
@@ -260,7 +258,7 @@ class PlayScene extends Phaser.Scene {
     this.cameras.main.on("ZOOM_START", () =>
       HUDCamera.zoomTo(
         this.cameraZoomMultiplier,
-        150,
+        200,
         Phaser.Math.Easing.Quadratic.InOut,
         true
       )
@@ -286,19 +284,19 @@ class PlayScene extends Phaser.Scene {
       this.leftPlayer.y - this.rightPlayer.y
     );
 
-    if (
-      xDistanceBetweenPlayers > this.config.width ||
-      yDistanceBetweenPlayers > (this.config.height / 4) * 3
-    ) {
-      this.cameraZoomMultiplier = 0.667;
-    } else if (
-      xDistanceBetweenPlayers > this.config.width / 2 ||
-      yDistanceBetweenPlayers > this.config.height / 2
-    ) {
-      this.cameraZoomMultiplier = 1;
-    } else {
-      this.cameraZoomMultiplier = 1.333;
-    }
+    // if (
+    //   xDistanceBetweenPlayers > this.config.width * 0.8 ||
+    //   yDistanceBetweenPlayers > this.config.height * 0.8
+    // ) {
+    //   this.cameraZoomMultiplier = 0.667;
+    // } else if (
+    //   xDistanceBetweenPlayers > (this.config.width / 3) * 2 ||
+    //   yDistanceBetweenPlayers > (this.config.height / 3) * 2
+    // ) {
+    //   this.cameraZoomMultiplier = 1;
+    // } else {
+    //   this.cameraZoomMultiplier = 1.333;
+    // }
 
     // if (
     //   xDistanceBetweenPlayers > (this.config.width / 3) * 2 ||
@@ -309,14 +307,14 @@ class PlayScene extends Phaser.Scene {
     //   this.cameraZoomMultiplier = 1.333;
     // }
 
-    // if (
-    //   xDistanceBetweenPlayers > this.config.width * 0.8 ||
-    //   yDistanceBetweenPlayers > this.config.height * 0.8
-    // ) {
-    //   this.cameraZoomMultiplier = 0.667;
-    // } else {
-    //   this.cameraZoomMultiplier = 1;
-    // }
+    if (
+      xDistanceBetweenPlayers > this.config.width * 0.8 ||
+      yDistanceBetweenPlayers > this.config.height * 0.8
+    ) {
+      this.cameraZoomMultiplier = 0.667;
+    } else {
+      this.cameraZoomMultiplier = 1;
+    }
 
     this.cameras.main.zoomTo(
       this.cameraZoomMultiplier,
