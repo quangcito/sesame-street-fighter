@@ -3,7 +3,7 @@ class HandleInputs {
     this.scene = scene;
     this.createKeys(charKey);
     this.character = character;
-    this.maxJump = 1;
+    this.additionalJumps = 1;
     this.jumpCount = 0;
   }
 
@@ -17,7 +17,10 @@ class HandleInputs {
   }
 
   characterControls() {
-    if (this.character.isAttacked || (this.character.healthBar.healthValue <= 0)) {
+    if (
+      this.character.isAttacked ||
+      this.character.healthBar.healthValue <= 0
+    ) {
       return;
     }
 
@@ -43,13 +46,13 @@ class HandleInputs {
       this.character.setVelocityX(500).setFlipX(false);
     } else this.character.setVelocityX(0);
 
-    // if (this.keyDown.isDown) {
-    //   this.character.setVelocityY(800);
-    // }
-
-    if (this.keyUp.isDown && this.jumpCount < this.maxJump) {
+    if (
+      Phaser.Input.Keyboard.JustDown(this.keyUp) &&
+      this.jumpCount < this.additionalJumps
+    ) {
       this.jumpCount++;
-      this.character.setVelocityY(-1200);
+      this.character.setVelocityY(-875);
+
       this.character.jump();
     }
 
