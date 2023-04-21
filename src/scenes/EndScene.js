@@ -8,9 +8,17 @@ class EndScene extends BaseScene{
 
     create(){
         this.createBackground();
-        this.nameLabel = this.add.text(200, 130, 'Thanks for Playing!',
-        { font: '70px Interstate Bold', fill: '#000000' });        this.startInstruction = this.add.text(300, 400, 'Press SPACE to restart!',
-            { font: '50px Interstate Bold', fill: '#000000' });
+        this.nameLabel = this.add.text(150, 130, 'Thanks for Playing!',{
+            fontSize:"40px",
+            fill: "#E3E3E3",
+            fontFamily: "'8BIT WONDER', sans-serif",
+        }).setStroke("#0E0E0E", 10);
+
+        this.startInstruction = this.add.text(250, 400, 'Press SPACE to restart!', {
+            fontSize:"30px",
+            fill: "#E3E3E3",
+            fontFamily: "'8BIT WONDER', sans-serif",
+        }).setStroke("#0E0E0E", 10);
         this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);    }
 
     createBackground() {

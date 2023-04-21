@@ -25,12 +25,14 @@ class HealthBar {
   setName(characterName) {
     this.characterName = characterName;
      //adds character name below the frame
-     this.text = this.scene.add.text(
+    this.text = this.scene.add.text(
       this.calculate(this.x, 30),
       this.frame.y + 45,
       this.characterName,
-      { fontSize: "30px", color: "0xFFFFFF" }
+      { fontSize: "20px", color: "#E3E3E3", fontFamily: "'8BIT WONDER', sans-serif" }
     );
+
+    this.text.setStroke("#0E0E0E", 10)
     
     if (!this.isLeftPlayer) {
       this.text.setOrigin(1, 0);

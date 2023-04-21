@@ -156,17 +156,19 @@ class PlayScene extends Phaser.Scene {
 
       if (char1.healthBar.healthValue <= 0) {
         winnerPlayer = char2;
-        this.winner2 = this.add.text(300, 180, "Player 2 Wins!", {
-          font: "70px Interstate Bold",
-          fill: "#000000",
-        });
+        this.winner2 = this.add.text(230, 200, "Player 2 Wins!", {
+          fontSize:"50px",
+          fill: "#E3E3E3",
+          fontFamily: "'8BIT WONDER', sans-serif",
+        }).setStroke("#0E0E0E", 10);
       }
       if (char2.healthBar.healthValue <= 0) {
         winnerPlayer = char1;
-        this.winner1 = this.add.text(300, 180, "Player 1 Wins!", {
-          font: "70px Interstate Bold",
-          fill: "#000000",
-        });
+        this.winner1 = this.add.text(230, 200, "Player 1 Wins!", {
+          fontSize:"50px",
+          fill: "#E3E3E3",
+          fontFamily: "'8BIT WONDER', sans-serif",
+        }).setStroke("#0E0E0E", 10);
       }
       this.time.delayedCall(1500, () => this.scene.start("ResultsScene"));
     }
