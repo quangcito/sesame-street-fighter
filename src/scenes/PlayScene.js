@@ -25,7 +25,7 @@ class PlayScene extends Phaser.Scene {
     this.physics.add.collider(this.leftPlayer, this.rightPlayer);
 
     this.leftPlayer.attackCallback = (attackPosition) => {
-      // this.add.circle(attackPosition.x, attackPosition.y, 10, 0x6666ff);
+      this.add.circle(attackPosition.x, attackPosition.y, 10, 0x6666ff);
       let targetChoord = this.rightPlayer.getFrame();
       console.log(targetChoord);
       console.log("atk: " + attackPosition);
@@ -35,7 +35,7 @@ class PlayScene extends Phaser.Scene {
     };
     // ^ maybe should be this.rightPlayer.receiveAttack(attackPosition)
     this.rightPlayer.attackCallback = (attackPosition) => {
-      // this.add.circle(attackPosition.x, attackPosition.y, 10, 0x6666ff);
+      this.add.circle(attackPosition.x, attackPosition.y, 10, 0x6666ff);
       let targetChoord = this.leftPlayer.getFrame();
       if (this.checkOverlap(attackPosition, targetChoord)) {
         this.attack(this.rightPlayer, this.leftPlayer);
@@ -56,13 +56,12 @@ class PlayScene extends Phaser.Scene {
     this.createSecondCamera();
   }
 
-  //
   setUpCamera() {
     this.physics.world.setBounds(
       0,
       0,
       this.map.widthInPixels,
-      this.map.heightInPixels
+      this.map.heightInPixels - 16
     );
     this.cameras.main
       .setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels)
@@ -158,8 +157,8 @@ class PlayScene extends Phaser.Scene {
     setInterval(() => {
       const graphics = this.add.graphics();
       const rect = new Phaser.Geom.Rectangle(
-        player.getFrame().topRight.x,
-        player.getFrame().topRight.y - 12,
+        player.getFrame().botRight.x,
+        player.getFrame().botRight.y,
         1,
         1
       );
@@ -200,13 +199,6 @@ class PlayScene extends Phaser.Scene {
     } else {
       collideLayer.active = true;
     }
-
-    //player can fall onto a platform after going under a different platform
-    // else if (
-    //   this.checkBottomOfBoundingBox(player) ||
-    //   player.body.velocity.y >= 0
-    // ) {
-    //   collideLayer.active = true;
   }
 
   //creates TileMap and images from JSON file.
@@ -298,23 +290,23 @@ class PlayScene extends Phaser.Scene {
     //   this.cameraZoomMultiplier = 1.333;
     // }
 
-    // if (
-    //   xDistanceBetweenPlayers > (this.config.width / 3) * 2 ||
-    //   yDistanceBetweenPlayers > (this.config.height / 3) * 2
-    // ) {
-    //   this.cameraZoomMultiplier = 1;
-    // } else {
-    //   this.cameraZoomMultiplier = 1.333;
-    // }
-
     if (
-      xDistanceBetweenPlayers > this.config.width * 0.8 ||
-      yDistanceBetweenPlayers > this.config.height * 0.8
+      xDistanceBetweenPlayers > (this.config.width / 3) * 2 ||
+      yDistanceBetweenPlayers > (this.config.height / 3) * 2
     ) {
-      this.cameraZoomMultiplier = 0.667;
-    } else {
       this.cameraZoomMultiplier = 1;
+    } else {
+      this.cameraZoomMultiplier = 1.333;
     }
+
+    // if (
+    //   xDistanceBetweenPlayers > this.config.width * 0.8 ||
+    //   yDistanceBetweenPlayers > this.config.height * 0.8
+    // ) {
+    //   this.cameraZoomMultiplier = 0.667;
+    // } else {
+    //   this.cameraZoomMultiplier = 1;
+    // }
 
     this.cameras.main.zoomTo(
       this.cameraZoomMultiplier,
