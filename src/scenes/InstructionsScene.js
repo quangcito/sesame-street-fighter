@@ -2,19 +2,19 @@ import BaseScene from "./BaseScene"
 
 class EndScene extends BaseScene{
     constructor(config){
-        super('EndScene')
+        super('InstructionsScene')
         this.config = config
     }
 
     create(){
         this.createBackground();
-        this.nameLabel = this.add.text(150, 130, 'Thanks for Playing!',{
+        this.nameLabel = this.add.text(150, 130, 'How to Play!',{
             fontSize:"40px",
             fill: "#E3E3E3",
             fontFamily: "'8BIT WONDER', sans-serif",
         }).setStroke("#0E0E0E", 10);
 
-        this.startInstruction = this.add.text(250, 400, 'Press SPACE to restart!', {
+        this.startInstruction = this.add.text(250, 400, 'Press SPACE to continue!', {
             fontSize:"30px",
             fill: "#E3E3E3",
             fontFamily: "'8BIT WONDER', sans-serif",
@@ -25,8 +25,9 @@ class EndScene extends BaseScene{
         this.background = this.add.image(
           this.config.width/2,
           this.config.height/2,
-          "endBackground"
+          "player instructions"
         );
+        this.background.setScale(0.5);
     }
 
     update() {
