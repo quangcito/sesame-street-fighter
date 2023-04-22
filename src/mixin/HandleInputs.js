@@ -25,20 +25,20 @@ class HandleInputs {
     }
 
     if (this.keyDown.isDown) {
-      this.character.setVelocityY(1000);
-      this.character.setBlocking(true);
-      this.character.block();
-      console.log("blocking!");
+      this.character.setVelocityY(800);
+      // this.character.setBlocking(true);
+      // this.character.block();
+      // console.log("blocking!");
     } else {
-      this.character.setBlocking(false);
-      this.character.unblock();
+      // this.character.setBlocking(false);
+      // this.character.unblock();
     }
 
-    if (this.character.getBlocking()) {
-      //character has other controls disabled if blocking
-      this.character.setVelocityX(0);
-      return;
-    }
+    // if (this.character.getBlocking()) {
+    //   //character has other controls disabled if blocking
+    //   this.character.setVelocityX(0);
+    //   return;
+    // }
 
     if (this.keyLeft.isDown) {
       this.character.setVelocityX(-500).setFlipX(true);

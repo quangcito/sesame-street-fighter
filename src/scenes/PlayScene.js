@@ -13,23 +13,26 @@ class PlayScene extends Phaser.Scene {
   }
 
   create() {
+    this.createCloud();
+    this.createBackground();
     this.map = this.createMap();
     this.mapOffset = Math.abs(this.map.widthInPixels - this.config.width) / 2;
     this.layers = this.createLayers(this.map);
 
     this.createLeftPlayer();
     this.createRightPlayer();
-    this.attackSound = this.sound.add('attack');
+    this.attackSound = this.sound.add("attack");
     this.KOSound = this.sound.add("KOsound");
     this.soundConfig = {
       volume: 10,
-    }
+    };
     initAnims(this.anims);
 
     this.physics.add.collider(this.leftPlayer, this.rightPlayer);
 
     this.leftPlayer.attackCallback = (attackPosition) => {
       this.add.circle(attackPosition.x, attackPosition.y, 10, 0x6666ff);
+
       let targetChoord = this.rightPlayer.getFrame();
       console.log(targetChoord);
       console.log("atk: " + attackPosition);
@@ -57,6 +60,16 @@ class PlayScene extends Phaser.Scene {
 
     this.setUpCamera();
     this.createSecondCamera();
+  }
+
+  createBackground() {
+    this.background = this.add.image(
+      this.config.width / 2,
+      this.config.height / 2 + 60,
+      "background"
+    );
+    this.background.setScale(1.6);
+    // this.HUDCamera.ignore(this.background);
   }
 
   setUpCamera() {
@@ -102,7 +115,6 @@ class PlayScene extends Phaser.Scene {
     }
     **/
     target.healthBar.decreaseHealth(10);
-
 
     if (target.healthBar.healthValue <= 0) {
       this.KOSound.play(this.soundConfig);
@@ -276,6 +288,8 @@ class PlayScene extends Phaser.Scene {
       this.layers.platformsColliders,
       this.leftPlayer,
       this.rightPlayer,
+      this.cloud,
+      this.background,
     ]);
     // this.leftPlayer.body.setIgnore(HUDCamera);
     // this.rightPlayer.active = false;
@@ -346,20 +360,17 @@ class PlayScene extends Phaser.Scene {
 
   update() {
     this.cameraPan();
-    // this.HUDCamera.centerOn(this.cameras.main.x, this.cameras.main.y);
-
+    this.cloud.tilePositionX += 0.5;
     this.handleControls();
     this.detectWin(this.leftPlayer, this.rightPlayer);
     // this.checkCoords(this.rightPlayer);
     this.platformCheck(this.rightPlayer, this.rightCollider);
     this.platformCheck(this.leftPlayer, this.leftCollider);
-    // !player.body.blocked && player.body.touching.left;
   }
 
   KOsound(char1, char2) {
     if (char1.healthBar.healthValue <= 0 || char2.healthBar.healthValue <= 0) {
       this.KOSound.play(this.soundConfig);
-      
     }
   }
 
@@ -375,19 +386,25 @@ class PlayScene extends Phaser.Scene {
       //{ font: '90px Interstate Bold', fill: '#8B0000' });
       if (char1.healthBar.healthValue <= 0) {
         winnerPlayer = char2;
-        this.winner2 = this.add.text(230, 200, "Player 2 Wins!", {
-          fontSize:"50px",
-          fill: "#E3E3E3",
-          fontFamily: "'8BIT WONDER', sans-serif",
-        }).setStroke("#0E0E0E", 10);
+        this.winner2 = this.add
+          .text(230, 200, "Player 2 Wins!", {
+            fontSize: "50px",
+            fill: "#E3E3E3",
+            fontFamily: "'8BIT WONDER', sans-serif",
+          })
+          .setStroke("#0E0E0E", 10);
+        this.cameras.main.ignore(this.winner2);
       }
       if (char2.healthBar.healthValue <= 0) {
         winnerPlayer = char1;
-        this.winner1 = this.add.text(230, 200, "Player 1 Wins!", {
-          fontSize:"50px",
-          fill: "#E3E3E3",
-          fontFamily: "'8BIT WONDER', sans-serif",
-        }).setStroke("#0E0E0E", 10);
+        this.winner1 = this.add
+          .text(230, 200, "Player 1 Wins!", {
+            fontSize: "50px",
+            fill: "#E3E3E3",
+            fontFamily: "'8BIT WONDER', sans-serif",
+          })
+          .setStroke("#0E0E0E", 10);
+        this.cameras.main.ignore(this.winner1);
       }
       this.time.delayedCall(1500, () => this.scene.start("ResultsScene"));
     }
@@ -401,15 +418,7 @@ class PlayScene extends Phaser.Scene {
       500,
       "cloud"
     );
-  }
-
-  createBackground() {
-    this.background = this.add.image(
-      this.config.width / 2,
-      this.config.height / 2 + 60,
-      "background"
-    );
-    this.background.setScale(1.6);
+    // this.HUDCamera.ignore(this.cloud);
   }
 
   createLeftPlayer() {

@@ -38,7 +38,11 @@ class HealthBar extends Phaser.GameObjects.Container {
       this.calculate(this.frame.x, 60),
       this.frame.y + 45,
       this.characterName,
-      { fontSize: "20px", color: "#E3E3E3", fontFamily: "'8BIT WONDER', sans-serif" }
+      {
+        fontSize: "20px",
+        color: "#E3E3E3",
+        fontFamily: "'8BIT WONDER', sans-serif",
+      }
     );
 
     if (!this.isLeftPlayer) {
