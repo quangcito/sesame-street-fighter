@@ -3,6 +3,7 @@ import HandleInputs from "../mixin/HandleInputs";
 import Player from "../character/Player";
 import HealthBar from "../hud/HealthBar";
 import initAnims from "../character/Animation";
+import Timer from "../hud/Timer";
 import { leftPlayerKey, rightPlayerKey } from "./CharacterSelectScene";
 export let winnerPlayer;
 
@@ -58,8 +59,13 @@ class PlayScene extends Phaser.Scene {
       this.layers.platformsColliders
     );
 
+    // this.createTimer();
     this.setUpCamera();
     this.createSecondCamera();
+  }
+
+  createTimer() {
+    this.timer = new Timer(this, this.config.width / 2, 14);
   }
 
   createBackground() {
@@ -77,7 +83,7 @@ class PlayScene extends Phaser.Scene {
       0,
       0,
       this.map.widthInPixels,
-      this.map.heightInPixels - 16
+      this.map.heightInPixels - 48
     );
     this.cameras.main
       .setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels)
@@ -319,23 +325,25 @@ class PlayScene extends Phaser.Scene {
     //   this.cameraZoomMultiplier = 1.333;
     // }
 
-    if (
-      xDistanceBetweenPlayers > (this.config.width / 3) * 2 ||
-      yDistanceBetweenPlayers > (this.config.height / 3) * 2
-    ) {
-      this.cameraZoomMultiplier = 1;
-    } else {
-      this.cameraZoomMultiplier = 1.333;
-    }
-
+    //small map
     // if (
-    //   xDistanceBetweenPlayers > this.config.width * 0.8 ||
-    //   yDistanceBetweenPlayers > this.config.height * 0.8
+    //   xDistanceBetweenPlayers > (this.config.width / 3) * 2 ||
+    //   yDistanceBetweenPlayers > (this.config.height / 3) * 2
     // ) {
-    //   this.cameraZoomMultiplier = 0.667;
-    // } else {
     //   this.cameraZoomMultiplier = 1;
+    // } else {
+    //   this.cameraZoomMultiplier = 1.333;
     // }
+
+    //big map
+    if (
+      xDistanceBetweenPlayers > this.config.width * 0.8 ||
+      yDistanceBetweenPlayers > this.config.height * 0.8
+    ) {
+      this.cameraZoomMultiplier = 0.667;
+    } else {
+      this.cameraZoomMultiplier = 1;
+    }
 
     this.cameras.main.zoomTo(
       this.cameraZoomMultiplier,
@@ -365,6 +373,10 @@ class PlayScene extends Phaser.Scene {
     this.detectWin(this.leftPlayer, this.rightPlayer);
     // this.checkCoords(this.rightPlayer);
     this.platformCheck(this.rightPlayer, this.rightCollider);
+    // if (parseInt(this.timer.text) > 0) {
+    //   this.timer.updateText();
+    // }
+
     this.platformCheck(this.leftPlayer, this.leftCollider);
   }
 
