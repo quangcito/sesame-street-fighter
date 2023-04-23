@@ -1,6 +1,6 @@
-import BaseScene from "./BaseScene"
 import CharacterIcon from "../selectionScreen/CharacterIcon";
 import Cursor from "../selectionScreen/Cursor";
+import { charRightControl, charLeftControl } from "../mixin/ControlKey";
 
 export let leftPlayerKey=null;
 export let rightPlayerKey=null;
@@ -20,8 +20,8 @@ class CharacterSelectScene extends Phaser.Scene{
         this.createCharacterIcon();
         this.createCursor();
         this.createHand();
-        this.leftCursor.addImage = (defaultImage) => {
-            leftPlayerImage = this.add.image(this.config.width*0.2, this.config.height*0.7,defaultImage);
+        this.leftCursor.addImage = (chosenIcon) => {
+            leftPlayerImage = this.add.image(this.config.width*0.2, this.config.height*0.7,chosenIcon.characterKey.defaultImage);
             this.leftHand.setVisible(false);
         }
 
@@ -34,8 +34,8 @@ class CharacterSelectScene extends Phaser.Scene{
             }            
         }
 
-        this.rightCursor.addImage = (defaultImage) => {
-            rightPlayerImage = this.add.image(this.config.width*0.8, this.config.height*0.7,defaultImage).setFlipX(true);
+        this.rightCursor.addImage = (chosenIcon) => {
+            rightPlayerImage = this.add.image(this.config.width*0.8, this.config.height*0.7,chosenIcon.characterKey.defaultImage).setFlipX(true);
             this.rightHand.setVisible(false);
         }
 
@@ -53,7 +53,7 @@ class CharacterSelectScene extends Phaser.Scene{
         this.firstColor = Phaser.Display.Color.HexStringToColor("#FFFFFF");
         this.secondColor = Phaser.Display.Color.HexStringToColor("#0E0E0E");
 
-        this.label = this.add.text(this.config.width / 2 - 230, this.config.height / 2 - 165, "Select Fighter")
+        this.label = this.add.text(this.config.width / 2 - 230, this.config.height / 2 - 167, "Select Fighter")
             .setFontSize(35)
             .setColor("#E3E3E3")
             .setStroke("#0E0E0E", 10)
@@ -77,7 +77,6 @@ class CharacterSelectScene extends Phaser.Scene{
                 this.label.setTint(Phaser.Display.Color.GetColor(color.r, color.g, color.b));
             }
         });
-
     }
 
     createCharacterIcon() {
@@ -180,19 +179,5 @@ const cookie = {
         anim: 'cookieblock'
     }
 }
-
-const charRightControl = {
-    up: Phaser.Input.Keyboard.KeyCodes.UP,
-    left: Phaser.Input.Keyboard.KeyCodes.LEFT,
-    down: Phaser.Input.Keyboard.KeyCodes.DOWN,
-    right: Phaser.Input.Keyboard.KeyCodes.RIGHT,
-  };
-
-  const charLeftControl = {
-    up: Phaser.Input.Keyboard.KeyCodes.W,
-    left: Phaser.Input.Keyboard.KeyCodes.A,
-    down: Phaser.Input.Keyboard.KeyCodes.S,
-    right: Phaser.Input.Keyboard.KeyCodes.D,
-  };
 
 export default CharacterSelectScene
