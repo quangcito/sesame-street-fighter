@@ -9,18 +9,22 @@ class EndScene extends BaseScene{
     create(){
         this.createBackground();
         this.createInstructions();
-        this.nameLabel = this.add.text(270, 110, 'How to Play!',{
+        this.nameLabel = this.add.text(285, 120, 'How to Play!',{
             fontSize:"40px",
             fill: "#E3E3E3",
             fontFamily: "'8BIT WONDER', sans-serif",
         }).setStroke("#0E0E0E", 10);
 
-        this.startInstruction = this.add.text(250, 500, 'Press SPACE to continue!', {
+        this.startInstruction = this.add.text(230, 500, 'Press SPACE to continue!', {
             fontSize:"30px",
             fill: "#E3E3E3",
             fontFamily: "'8BIT WONDER', sans-serif",
         }).setStroke("#0E0E0E", 10);
-        this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);    }
+        this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);   
+
+    }
+
+        
 
     createBackground() {
         this.background = this.add.image(
@@ -33,15 +37,15 @@ class EndScene extends BaseScene{
 
     createInstructions() {
         this.instructions = this.add.image(
-            this.config.width / 2, this.config.height / 2, 
+            (this.config.width / 2) + 15, (this.config.height / 2) + 50, 
             "player instructions");
-        this.instructions.setScale(.55);
+        this.instructions.setScale(.5);
 
     }
 
     update() {
         if (this.spaceKey.isDown) {
-            this.scene.start("CharacterSelectScene");
+            this.scene.start("PlayScene");
         }
     }
     
