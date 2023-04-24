@@ -58,6 +58,7 @@ class PlayScene extends Phaser.Scene {
   }
 
   attack(attacker, target) {
+    this.attackSound.play();
     if (
       target.getImmune() ||
       Math.abs(attacker.y - target.y) >= 100 ||
@@ -65,7 +66,6 @@ class PlayScene extends Phaser.Scene {
     ) {
       return;
     }
-    this.attackSound.play();
     /**if (attacker.isPunching) {
       target.healthBar.decreaseHealth(10);
     }
@@ -143,7 +143,7 @@ class PlayScene extends Phaser.Scene {
   KOsound(char1, char2) {
     if (char1.healthBar.healthValue <= 0 || char2.healthBar.healthValue <= 0) {
       this.KOSound.play(this.soundConfig);
-      
+
     }
   }
 
