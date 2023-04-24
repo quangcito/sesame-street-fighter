@@ -8,13 +8,14 @@ class EndScene extends BaseScene{
 
     create(){
         this.createBackground();
-        this.nameLabel = this.add.text(150, 130, 'How to Play!',{
+        this.createInstructions();
+        this.nameLabel = this.add.text(270, 110, 'How to Play!',{
             fontSize:"40px",
             fill: "#E3E3E3",
             fontFamily: "'8BIT WONDER', sans-serif",
         }).setStroke("#0E0E0E", 10);
 
-        this.startInstruction = this.add.text(250, 400, 'Press SPACE to continue!', {
+        this.startInstruction = this.add.text(250, 500, 'Press SPACE to continue!', {
             fontSize:"30px",
             fill: "#E3E3E3",
             fontFamily: "'8BIT WONDER', sans-serif",
@@ -23,11 +24,19 @@ class EndScene extends BaseScene{
 
     createBackground() {
         this.background = this.add.image(
-          this.config.width/2,
-          this.config.height/2,
-          "player instructions"
+          this.config.width / 2,
+          this.config.height /2,
+          "selection"
         );
-        this.background.setScale(0.5);
+        //this.background.setScale();
+    }
+
+    createInstructions() {
+        this.instructions = this.add.image(
+            this.config.width / 2, this.config.height / 2, 
+            "player instructions");
+        this.instructions.setScale(.55);
+
     }
 
     update() {
