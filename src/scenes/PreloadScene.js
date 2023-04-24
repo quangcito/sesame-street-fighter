@@ -26,11 +26,13 @@ class PreloadScene extends Phaser.Scene {
 
     this.load.image("leftCursor", "src/assets/leftCursor.png")
     this.load.image("rightCursor", "src/assets/rightCursor.png")
+    this.load.image("mapCursor", "src/assets/mapCursor.png")
 
     this.load.image("Elmo", "src/assets/elmo.png");
     this.load.image("CookieMonster", "src/assets/cookiemonster.png");
 
     this.load.image("placeholderButton", "src/assets/placeholderButton.png");
+    this.load.image("player instructions", "src/assets/Player Controls.png");
 
     this.load.image("healthbar", "src/assets/HealthbarV1.png");
     this.load.image("pixel", "src/assets/pixel.png");

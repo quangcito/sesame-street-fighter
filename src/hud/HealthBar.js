@@ -55,7 +55,7 @@ class HealthBar {
   }
 
   updateGraphic() {
-    if (this.healthValue >= 0) {
+    if (this.healthValue > 0) {
       this.bar.clear();
       this.bar.beginPath();
 
@@ -82,7 +82,6 @@ class HealthBar {
     this.createVertices(this.x, this.y);
     this.updateGraphic();
     this.healthValue -= amount;
-
   }
 
   //adds in the four vertices that make healthbar for both players.

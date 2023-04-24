@@ -41,7 +41,7 @@ class Cursor extends Phaser.Physics.Arcade.Image{
         if (Phaser.Input.Keyboard.JustDown(this.keyDown)) {
             this.chosenIcon = this.iconArray[this.selectedIconIndex];
             this.setTint("#101010");
-            this.addImage(this.chosenIcon.characterKey.defaultImage);
+            this.addImage(this.chosenIcon);
         }
     }
 

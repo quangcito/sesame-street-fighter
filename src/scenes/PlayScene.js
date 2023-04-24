@@ -4,6 +4,7 @@ import Player from "../character/Player";
 import HealthBar from "../hud/HealthBar";
 import initAnims from "../character/Animation";
 import { leftPlayerKey, rightPlayerKey } from "./CharacterSelectScene";
+import { charRightControl, charLeftControl } from "../mixin/ControlKey";
 export let winnerPlayer;
 
 class PlayScene extends Phaser.Scene {
@@ -238,23 +239,5 @@ class PlayScene extends Phaser.Scene {
     this.rightPlayerControl.characterControls();
   }
 }
-
-const charRightControl = {
-  up: Phaser.Input.Keyboard.KeyCodes.UP,
-  left: Phaser.Input.Keyboard.KeyCodes.LEFT,
-  down: Phaser.Input.Keyboard.KeyCodes.DOWN,
-  right: Phaser.Input.Keyboard.KeyCodes.RIGHT,
-  punch: Phaser.Input.Keyboard.KeyCodes.O,
-  kick: Phaser.Input.Keyboard.KeyCodes.P,
-};
-
-const charLeftControl = {
-  up: Phaser.Input.Keyboard.KeyCodes.W,
-  left: Phaser.Input.Keyboard.KeyCodes.A,
-  down: Phaser.Input.Keyboard.KeyCodes.S,
-  right: Phaser.Input.Keyboard.KeyCodes.D,
-  punch: Phaser.Input.Keyboard.KeyCodes.C,
-  kick: Phaser.Input.Keyboard.KeyCodes.V,
-};
 
 export default PlayScene;
