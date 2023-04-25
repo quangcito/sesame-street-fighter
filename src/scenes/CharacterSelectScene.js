@@ -145,12 +145,15 @@ const elmo = {
         anim: 'elmopunch',
         delay: 175,
         position: [90, 180],
-        damage: 20,
+        damage: 10,
+        cooldown: 500
     },
     kick: {
         anim: 'elmokick',
         delay: 175,
         position: [90, 210],
+        damage: 20,
+        cooldown: 750
     },
     block: {
         anim: 'elmoblock',
@@ -168,12 +171,15 @@ const cookie = {
         anim: 'cookiepunch',
         delay: 175,
         position: [90, 180],
-        damage: 20,
+        damage: 10,
+        cooldown: 500
     },
     kick: {
         anim: 'cookiekick',
         delay: 175,
-        position: [90, 210]
+        position: [90, 210],
+        damage: 20,
+        cooldown: 750
     },
     block: {
         anim: 'cookieblock'
