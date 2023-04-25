@@ -67,7 +67,7 @@ class MainMenuScene extends Phaser.Scene{
 
 
         if (this.spaceKey.isDown) {
-            this.scene.start("InstructionsScene");
+            this.scene.start("CharacterSelectScene");
         }
     }
 
