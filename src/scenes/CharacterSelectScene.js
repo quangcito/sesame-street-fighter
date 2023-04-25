@@ -47,6 +47,13 @@ class CharacterSelectScene extends Phaser.Scene{
                 return;
             }
         }
+
+        this.startInstruction = this.add.text(210, 530, 'Press SPACE to continue!', {
+            fontSize:"30px",
+            fill: "#E3E3E3",
+            fontFamily: "'8BIT WONDER', sans-serif",
+        }).setStroke("#0E0E0E", 10);
+        this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);   
     }
 
     createLabel() {

@@ -15,7 +15,7 @@ class EndScene extends BaseScene{
             fontFamily: "'8BIT WONDER', sans-serif",
         }).setStroke("#0E0E0E", 10);
 
-        this.startInstruction = this.add.text(230, 500, 'Press SPACE to continue!', {
+        this.startInstruction = this.add.text(230, 530, 'Press SPACE to continue!', {
             fontSize:"30px",
             fill: "#E3E3E3",
             fontFamily: "'8BIT WONDER', sans-serif",
