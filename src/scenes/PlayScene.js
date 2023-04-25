@@ -27,18 +27,18 @@ class PlayScene extends Phaser.Scene {
 
     this.physics.add.collider(this.leftPlayer, this.rightPlayer);
 
-    this.leftPlayer.attackCallback = (attackPosition) => {
+    this.leftPlayer.attackCallback = (attackPosition, damage) => {
       // this.add.circle(attackPosition.x, attackPosition.y, 10, 0x6666ff);
       let targetChoord = this.rightPlayer.getFrame();
       if (this.checkOverlap(attackPosition, targetChoord)) {
-        this.attack(this.leftPlayer, this.rightPlayer);
+        this.attack(this.leftPlayer, this.rightPlayer, damage);
       }
     };
-    this.rightPlayer.attackCallback = (attackPosition) => {
+    this.rightPlayer.attackCallback = (attackPosition, damage) => {
       // this.add.circle(attackPosition.x, attackPosition.y, 10, 0x6666ff);
       let targetChoord = this.leftPlayer.getFrame();
       if (this.checkOverlap(attackPosition, targetChoord)) {
-        this.attack(this.rightPlayer, this.leftPlayer);
+        this.attack(this.rightPlayer, this.leftPlayer, damage);
       }
     };
 
@@ -57,7 +57,7 @@ class PlayScene extends Phaser.Scene {
     return false;
   }
 
-  attack(attacker, target) {
+  attack(attacker, target, damage) {
     this.attackSound.play();
     if (
       target.getImmune() ||
@@ -70,7 +70,7 @@ class PlayScene extends Phaser.Scene {
       target.healthBar.decreaseHealth(10);
     }
     **/
-    target.healthBar.decreaseHealth(10);
+    target.healthBar.decreaseHealth(damage);
 
 
     if (target.healthBar.healthValue <= 0) {

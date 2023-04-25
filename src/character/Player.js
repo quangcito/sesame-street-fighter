@@ -35,7 +35,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.blockAnim = characterKey.block.anim;
     this.jumpSound = scene.sound.add('jump');
 
-    this.attackCooldown = 500;
     this.scene = scene;
     // if (this.healthBar.healthValue < 0) {
     //   this.KOSound.play(this.soundConfig);
@@ -44,10 +43,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
   doAttack(attackKey) {
     let animation = attackKey.anim;
+    let attackCooldown = attackKey.cooldown;
 
     if (
       this.timeFromPreviousAttack && //check to see if the character has attacked atleast once
-      this.attackCooldown + this.timeFromPreviousAttack > new Date().getTime() // checks if enough time has passed for the character to attack again.
+      attackCooldown + this.timeFromPreviousAttack > new Date().getTime() // checks if enough time has passed for the character to attack again.
     ) {
       return;
     }
@@ -61,25 +61,23 @@ class Player extends Phaser.Physics.Arcade.Sprite {
           x: this.x + attackKey.position[0],
           y: this.y - attackKey.position[1],
         };
-        this.attackCallback(attackPosition);
+        this.attackCallback(attackPosition, attackKey.damage);
       } else {
         let attackPosition = {
           x: this.x - attackKey.position[0],
           y: this.y - attackKey.position[1],
         };
-        this.attackCallback(attackPosition);
+        this.attackCallback(attackPosition, attackKey.damage);
       }
     });
   }
 
   punch() {
     this.doAttack(this.characterKey.punch);
-    //this.isPunching = false;
   }
 
   kick() {
     this.doAttack(this.characterKey.kick);
-    //this.isKicking = false;
   }
 
   block() {
