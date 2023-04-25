@@ -17,6 +17,7 @@ class CharacterSelectScene extends Phaser.Scene{
         this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         this.add.image(this.config.width / 2, this.config.height / 2, "selection");
         this.createLabel();
+        this.createInstructions();
         this.createCharacterIcon();
         this.createCursor();
         this.createHand();
@@ -53,7 +54,8 @@ class CharacterSelectScene extends Phaser.Scene{
             fill: "#E3E3E3",
             fontFamily: "'8BIT WONDER', sans-serif",
         }).setStroke("#0E0E0E", 10);
-        this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);   
+        this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);  
+        this.startInstruction.setVisible(false); 
     }
 
     createLabel() {
@@ -84,6 +86,13 @@ class CharacterSelectScene extends Phaser.Scene{
                 this.label.setTint(Phaser.Display.Color.GetColor(color.r, color.g, color.b));
             }
         });
+    }
+
+    createInstructions() {
+        this.instructions = this.add.image(
+            (this.config.width / 2) , (this.config.height / 2) + 190, 
+            "select controls");
+        this.instructions.setScale(.8);
     }
 
     createCharacterIcon() {
@@ -128,6 +137,14 @@ class CharacterSelectScene extends Phaser.Scene{
 
         leftPlayerKey = this.leftCursor.chosenCharacterOrNull();
         rightPlayerKey = this.rightCursor.chosenCharacterOrNull();
+
+        if (leftPlayerKey!= null && rightPlayerKey != null) {
+            this.startInstruction.setVisible(true);
+            this.instructions.setVisible(false);
+        } else {
+            this.startInstruction.setVisible(false);
+            this.instructions.setVisible(true);
+        }
 
         if (this.spaceKey.isDown) {
             this.toNextScene();

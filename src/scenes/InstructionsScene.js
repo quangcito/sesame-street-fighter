@@ -66,7 +66,6 @@ class EndScene extends BaseScene{
             (this.config.width / 2) + 15, (this.config.height / 2) + 50, 
             "player instructions");
         this.instructions.setScale(.5);
-
     }
 
     update() {
