@@ -1,69 +1,84 @@
 import Cursor from "../selectionScreen/Cursor";
 import { charRightControl, charLeftControl } from "../mixin/ControlKey";
 
-class MapSelectScene extends Phaser.Scene{
-    constructor(config){
-        super('MapSelectScene')
-        this.config = config
-    }
-    create(){
-        this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-        this.add.image(this.config.width / 2, this.config.height / 2, "selection");
-        this.createLabel();
-        
-    }
+class MapSelectScene extends Phaser.Scene {
+  constructor(config) {
+    super("MapSelectScene");
+    this.config = config;
+  }
+  create() {
+    this.spaceKey = this.input.keyboard.addKey(
+      Phaser.Input.Keyboard.KeyCodes.SPACE
+    );
+    this.add.image(this.config.width / 2, this.config.height / 2, "selection");
+    this.createLabel();
+    this.createMap();
+    this.setUpCamera();
+    this.createSecondCamera();
+  }
 
-    createLabel() {
-        this.firstColor = Phaser.Display.Color.HexStringToColor("#FFFFFF");
-        this.secondColor = Phaser.Display.Color.HexStringToColor("#0E0E0E");
+  createLabel() {
+    this.firstColor = Phaser.Display.Color.HexStringToColor("#FFFFFF");
+    this.secondColor = Phaser.Display.Color.HexStringToColor("#0E0E0E");
 
-        this.label = this.add.text(this.config.width / 2 - 175, this.config.height / 2 - 167, "Select Map")
-            .setFontSize(35)
-            .setColor("#E3E3E3")
-            .setStroke("#0E0E0E", 10)
-            .setFontFamily("'8BIT WONDER', sans-serif");
+    this.label = this.add
+      .text(
+        this.config.width / 2 - 175,
+        this.config.height / 2 - 167,
+        "Select Map"
+      )
+      .setFontSize(35)
+      .setColor("#E3E3E3")
+      .setStroke("#0E0E0E", 10)
+      .setFontFamily("'8BIT WONDER', sans-serif");
 
-        this.tweens.addCounter({
-            from: 0,
-            to: 100,
-            duration: 500,
-            yoyo: true,
-            repeat: -1,
-            ease: Phaser.Math.Easing.Sine.InOut,
-            onUpdate: (tween) => {
-                let value = tween.getValue()
-                let color = Phaser.Display.Color.Interpolate.ColorWithColor(
-                    this.firstColor,
-                    this.secondColor,
-                    100,
-                    value
-                )
-                this.label.setTint(Phaser.Display.Color.GetColor(color.r, color.g, color.b));
-            }
-        });
+    this.tweens.addCounter({
+      from: 0,
+      to: 100,
+      duration: 500,
+      yoyo: true,
+      repeat: -1,
+      ease: Phaser.Math.Easing.Sine.InOut,
+      onUpdate: (tween) => {
+        let value = tween.getValue();
+        let color = Phaser.Display.Color.Interpolate.ColorWithColor(
+          this.firstColor,
+          this.secondColor,
+          100,
+          value
+        );
+        this.label.setTint(
+          Phaser.Display.Color.GetColor(color.r, color.g, color.b)
+        );
+      },
+    });
+  }
+
+  update() {
+    if (this.spaceKey.isDown) {
+      this.toNextScene();
     }
+  }
 
-    update() {
-        if (this.spaceKey.isDown) {
-            this.toNextScene();
-        }
-    }
-    createMap() {
-        //adds tilemap to background
-        const map = this.make.tilemap({ key: "map1" });
-        //first parameter is name of png file in Tiled. second parameter is key of loaded image
-        map.addTilesetImage("Dungeon", "tiles-1");
-    
-        return map;
-    }
+  createMap() {
+    //adds tilemap to background
+    const map = this.make.tilemap({ key: "map1" });
+    //first parameter is name of png file in Tiled. second parameter is key of loaded image
+    map.addTilesetImage("Dungeon", "tiles-1");
 
-    //creates layers in Tiled.
+    return map;
+  }
+
+  //creates layers in Tiled.
   createLayers(map) {
     const tileset = map.getTileset("Dungeon");
     const floor = map.createLayer("floor", tileset);
+    const environment = map.createLayer("environment", tileset);
+    const misc = map.createLayer("misc", tileset);
+    const characters = map.createLayer("characters", tileset);
     const platformsColliders = map.createLayer("platforms_colliders", tileset);
     const platforms = map.createLayer("platforms", tileset);
-    const spawns = map.getObjectLayer("spawn_points");
+    // const spawns = map.getObjectLayer("spawn_points");
 
     floor.setCollisionByExclusion(-1, true);
     platformsColliders.setCollisionByExclusion(-1, true).forEachTile((tile) => {
@@ -71,7 +86,15 @@ class MapSelectScene extends Phaser.Scene{
       tile.collideLeft = false;
       tile.collideDown = false;
     });
-    return { floor, platforms, spawns, platformsColliders };
+    return {
+      floor,
+      platforms,
+      spawns,
+      platformsColliders,
+      environment,
+      misc,
+      characters,
+    };
   }
   createSecondCamera() {
     this.cameras.main.ignore([
@@ -178,14 +201,10 @@ class MapSelectScene extends Phaser.Scene{
       this.cameraZoom();
     }
   }
-    toNextScene() {
-        this.scene.start('InstructionsScene'); 
-    }
-    this.setUpCamera();
-    this.createSecondCamera();
-    const smallMap = {
-        layers
-    }
+
+  toNextScene() {
+    this.scene.start("InstructionsScene");
+  }
 }
 
-export default MapSelectScene
+export default MapSelectScene;
