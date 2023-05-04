@@ -10,6 +10,7 @@ class MapSelectScene extends Phaser.Scene{
         this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         this.add.image(this.config.width / 2, this.config.height / 2, "selection");
         this.createLabel();
+        
     }
 
     createLabel() {
@@ -47,9 +48,143 @@ class MapSelectScene extends Phaser.Scene{
             this.toNextScene();
         }
     }
+    createMap() {
+        //adds tilemap to background
+        const map = this.make.tilemap({ key: "map1" });
+        //first parameter is name of png file in Tiled. second parameter is key of loaded image
+        map.addTilesetImage("Dungeon", "tiles-1");
+    
+        return map;
+    }
 
+    //creates layers in Tiled.
+  createLayers(map) {
+    const tileset = map.getTileset("Dungeon");
+    const floor = map.createLayer("floor", tileset);
+    const platformsColliders = map.createLayer("platforms_colliders", tileset);
+    const platforms = map.createLayer("platforms", tileset);
+    const spawns = map.getObjectLayer("spawn_points");
+
+    floor.setCollisionByExclusion(-1, true);
+    platformsColliders.setCollisionByExclusion(-1, true).forEachTile((tile) => {
+      tile.collideRight = false;
+      tile.collideLeft = false;
+      tile.collideDown = false;
+    });
+    return { floor, platforms, spawns, platformsColliders };
+  }
+  createSecondCamera() {
+    this.cameras.main.ignore([
+      this.leftPlayer.healthBar,
+      this.rightPlayer.healthBar,
+    ]);
+    this.HUDCamera = this.cameras.add(
+      this.cameras.main.x,
+      this.cameras.main.y,
+      this.config.width,
+      this.config.height
+    );
+    this.HUDCamera.setBounds(
+      0,
+      0,
+      this.map.widthInPixels,
+      this.map.heightInPixels
+    ).setSize(this.config.width, this.config.height);
+    // HUDCamera.scrollX = this.cameras.main.scrollX;
+    // HUDCamera.scrollY = this.cameras.main.scrollY;
+
+    this.cameras.main.on("ZOOM_START", () =>
+      HUDCamera.zoomTo(
+        this.cameraZoomMultiplier,
+        200,
+        Phaser.Math.Easing.Quadratic.InOut,
+        true
+      )
+    );
+    this.HUDCamera.ignore([
+      this.layers.floor,
+      this.layers.platforms,
+      this.layers.platformsColliders,
+      this.leftPlayer,
+      this.rightPlayer,
+      this.cloud,
+      this.background,
+    ]);
+    // this.leftPlayer.body.setIgnore(HUDCamera);
+    // this.rightPlayer.active = false;
+    // this.rightPlayer.visible = false;
+  }
+
+  cameraZoom() {
+    let xDistanceBetweenPlayers = Math.abs(
+      this.leftPlayer.x - this.rightPlayer.x
+    );
+
+    let yDistanceBetweenPlayers = Math.abs(
+      this.leftPlayer.y - this.rightPlayer.y
+    );
+
+    // if (
+    //   xDistanceBetweenPlayers > this.config.width * 0.8 ||
+    //   yDistanceBetweenPlayers > this.config.height * 0.8
+    // ) {
+    //   this.cameraZoomMultiplier = 0.667;
+    // } else if (
+    //   xDistanceBetweenPlayers > (this.config.width / 3) * 2 ||
+    //   yDistanceBetweenPlayers > (this.config.height / 3) * 2
+    // ) {
+    //   this.cameraZoomMultiplier = 1;
+    // } else {
+    //   this.cameraZoomMultiplier = 1.333;
+    // }
+
+    //small map
+    // if (
+    //   xDistanceBetweenPlayers > (this.config.width / 3) * 2 ||
+    //   yDistanceBetweenPlayers > (this.config.height / 3) * 2
+    // ) {
+    //   this.cameraZoomMultiplier = 1;
+    // } else {
+    //   this.cameraZoomMultiplier = 1.333;
+    // }
+
+    //big map
+    if (
+      xDistanceBetweenPlayers > this.config.width * 0.8 ||
+      yDistanceBetweenPlayers > this.config.height * 0.8
+    ) {
+      this.cameraZoomMultiplier = 0.667;
+    } else {
+      this.cameraZoomMultiplier = 1;
+    }
+
+    this.cameras.main.zoomTo(
+      this.cameraZoomMultiplier,
+      150,
+      Phaser.Math.Easing.Quadratic.InOut,
+      true
+    );
+  }
+
+  cameraPan() {
+    this.cameras.main.pan(
+      Math.abs(this.leftPlayer.x + this.rightPlayer.x) / 2,
+      Math.abs(this.leftPlayer.y + this.rightPlayer.y) / 2,
+      300,
+      "Quad",
+      true
+    );
+    if ((this.cameras.main.dirty = true)) {
+      this.cameraZoom();
+    }
+  }
     toNextScene() {
-        this.scene.start('PlayScene'); 
+        this.scene.start('InstructionsScene'); 
+    }
+    this.setUpCamera();
+    this.createSecondCamera();
+    const smallMap = {
+        layers
     }
 }
 
