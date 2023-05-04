@@ -14,11 +14,12 @@ class PlayScene extends Phaser.Scene {
   }
 
   create() {
-    this.createCloud();
-    this.createBackground();
+    // this.createCloud();
+    // this.createBackground();
     this.map = this.createMap();
     this.mapOffset = Math.abs(this.map.widthInPixels - this.config.width) / 2;
     this.layers = this.createLayers(this.map);
+    console.log(this.layers);
 
     this.createLeftPlayer();
     this.createRightPlayer();
@@ -83,7 +84,7 @@ class PlayScene extends Phaser.Scene {
       0,
       0,
       this.map.widthInPixels,
-      this.map.heightInPixels - 48
+      this.map.heightInPixels - 16
     );
     this.cameras.main
       .setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels)
@@ -239,21 +240,23 @@ class PlayScene extends Phaser.Scene {
     //adds tilemap to background
     const map = this.make.tilemap({ key: "map1" });
     //first parameter is name of png file in Tiled. second parameter is key of loaded image
-    map.addTilesetImage("Dungeon", "tiles-1");
+    map.addTilesetImage("MumfordCastle", "tiles-1");
 
     return map;
   }
 
   //creates layers in Tiled.
   createLayers(map) {
-    const tileset = map.getTileset("Dungeon");
-    const floor = map.createLayer("floor", tileset);
-    const environment = map.createLayer("environment", tileset);
-    const misc = map.createLayer("misc", tileset);
+    const tileset = map.getTileset("MumfordCastle");
     const characters = map.createLayer("characters", tileset);
+
+    const spawns = map.getObjectLayer("spawn_points");
+    const misc = map.createLayer("misc", tileset);
+    const environment = map.createLayer("environment", tileset);
+    const floor = map.createLayer("floor", tileset);
+
     const platformsColliders = map.createLayer("platforms_colliders", tileset);
     const platforms = map.createLayer("platforms", tileset);
-    const spawns = map.getObjectLayer("spawn_points");
 
     floor.setCollisionByExclusion(-1, true);
     platformsColliders.setCollisionByExclusion(-1, true).forEachTile((tile) => {
@@ -303,10 +306,11 @@ class PlayScene extends Phaser.Scene {
       this.layers.floor,
       this.layers.platforms,
       this.layers.platformsColliders,
+      this.layers.characters,
+      this.layers.environment,
+      this.layers.misc,
       this.leftPlayer,
       this.rightPlayer,
-      this.cloud,
-      this.background,
     ]);
     // this.leftPlayer.body.setIgnore(HUDCamera);
     // this.rightPlayer.active = false;
@@ -379,7 +383,7 @@ class PlayScene extends Phaser.Scene {
 
   update() {
     this.cameraPan();
-    this.cloud.tilePositionX += 0.5;
+    // this.cloud.tilePositionX += 0.5;
     this.handleControls();
     this.detectWin(this.leftPlayer, this.rightPlayer);
     // this.checkCoords(this.rightPlayer);
