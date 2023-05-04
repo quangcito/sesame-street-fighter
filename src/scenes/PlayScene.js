@@ -248,10 +248,9 @@ class PlayScene extends Phaser.Scene {
   createLayers(map) {
     const tileset = map.getTileset("Dungeon");
     const floor = map.createLayer("floor", tileset);
-    const floor = map.createLayer("floor", tileset);
-    const floor = map.createLayer("floor", tileset);
-    const floor = map.createLayer("floor", tileset);
-    const floor = map.createLayer("floor", tileset);
+    const environment = map.createLayer("environment", tileset);
+    const misc = map.createLayer("misc", tileset);
+    const characters = map.createLayer("characters", tileset);
     const platformsColliders = map.createLayer("platforms_colliders", tileset);
     const platforms = map.createLayer("platforms", tileset);
     const spawns = map.getObjectLayer("spawn_points");
@@ -262,7 +261,15 @@ class PlayScene extends Phaser.Scene {
       tile.collideLeft = false;
       tile.collideDown = false;
     });
-    return { floor, platforms, spawns, platformsColliders };
+    return {
+      floor,
+      platforms,
+      spawns,
+      platformsColliders,
+      environment,
+      misc,
+      characters,
+    };
   }
   createSecondCamera() {
     this.cameras.main.ignore([
