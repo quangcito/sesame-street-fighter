@@ -248,6 +248,10 @@ class PlayScene extends Phaser.Scene {
   createLayers(map) {
     const tileset = map.getTileset("Dungeon");
     const floor = map.createLayer("floor", tileset);
+    const floor = map.createLayer("floor", tileset);
+    const floor = map.createLayer("floor", tileset);
+    const floor = map.createLayer("floor", tileset);
+    const floor = map.createLayer("floor", tileset);
     const platformsColliders = map.createLayer("platforms_colliders", tileset);
     const platforms = map.createLayer("platforms", tileset);
     const spawns = map.getObjectLayer("spawn_points");
