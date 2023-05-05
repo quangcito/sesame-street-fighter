@@ -279,7 +279,7 @@ class CharacterSelectScene extends Phaser.Scene {
 
   toNextScene() {
     if (leftPlayerKey != null && rightPlayerKey != null) {
-      this.scene.start("PlayScene");
+      this.scene.start("MapSelectScene");
     }
   }
 }

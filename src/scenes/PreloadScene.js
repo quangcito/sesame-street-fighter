@@ -11,6 +11,9 @@ class PreloadScene extends Phaser.Scene {
     this.load.image("castlesTiles", "src/assets/castlesTilesetImage.png");
     this.load.image("birdlandTiles", "src/assets/birdlandTilesetImage.png");
 
+    this.load.image("birdlandIcon", "src/assets/birdlandIcon.png");
+    this.load.image("castlesIcon", "src/assets/castlesIcon.png");
+
     this.load.image("background", "src/assets/background.png");
     this.load.image("menuBackground", "src/assets/sesame-street.jpg");
     this.load.image("endBackground", "src/assets/endArt.jpg");

@@ -5,6 +5,7 @@ import HealthBar from "../hud/HealthBar";
 import initAnims from "../character/Animation";
 import Timer from "../hud/Timer";
 import { leftPlayerKey, rightPlayerKey } from "./CharacterSelectScene";
+import { mapData } from "./MapSelectScene";
 export let winnerPlayer;
 
 class PlayScene extends Phaser.Scene {
@@ -16,6 +17,7 @@ class PlayScene extends Phaser.Scene {
   create() {
     // this.createCloud();
     // this.createBackground();
+    console.log(mapData);
     this.map = this.createMap();
     this.mapOffset = Math.abs(this.map.widthInPixels - this.config.width) / 2;
     this.layers = this.createLayers(this.map);
@@ -238,9 +240,9 @@ class PlayScene extends Phaser.Scene {
   //creates TileMap and images from JSON file.
   createMap() {
     //adds tilemap to background
-    const map = this.make.tilemap({ key: "birdland" });
+    const map = this.make.tilemap({ key: mapData.data });
     //first parameter is name of png file in Tiled. second parameter is key of loaded image
-    map.addTilesetImage("birdlandTilesetImage", "birdlandTiles");
+    map.addTilesetImage(mapData.tilesetName, mapData.image);
 
     return map;
   }
