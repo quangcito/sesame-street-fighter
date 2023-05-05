@@ -2,6 +2,8 @@ import Phaser from "phaser";
 import Cursor from "../selectionGraphics/Cursor";
 import { charRightControl, charLeftControl } from "../mixin/KeyBinding";
 
+export let mapKey=null;
+
 class MapSelectScene extends Phaser.Scene{
     constructor(config){
         super('MapSelectScene')
