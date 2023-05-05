@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import Cursor from "../selectionScreen/Cursor";
+import Cursor from "../selectionGraphics/Cursor";
 import { charRightControl, charLeftControl } from "../mixin/KeyBinding";
 
 class MapSelectScene extends Phaser.Scene{

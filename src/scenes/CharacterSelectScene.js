@@ -1,6 +1,6 @@
 import Phaser from "phaser";
-import CharacterIcon from "../selectionScreen/CharacterIcon";
-import Cursor from "../selectionScreen/Cursor";
+import SelectionIcon from "../selectionGraphics/SelectionIcon";
+import Cursor from "../selectionGraphics/Cursor";
 import { charRightControl, charLeftControl } from "../mixin/KeyBinding";
 
 export let leftPlayerKey=null;
@@ -97,11 +97,11 @@ class CharacterSelectScene extends Phaser.Scene{
     }
 
     createCharacterIcon() {
-        this.elmoIcon = new CharacterIcon(this,
+        this.elmoIcon = new SelectionIcon(this,
             this.config.width/2 - 100,
             this.config.height/2 + 70,
             "elmoSelectionIcon", elmo);
-        this.cookieIcon = new CharacterIcon(this,
+        this.cookieIcon = new SelectionIcon(this,
             this.config.width/2 + 100,
             this.config.height/2 + 70,
             "cookieSelectionIcon", cookie);
