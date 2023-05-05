@@ -1,6 +1,7 @@
+import Phaser from "phaser";
 import CharacterIcon from "../selectionScreen/CharacterIcon";
 import Cursor from "../selectionScreen/Cursor";
-import { charRightControl, charLeftControl } from "../mixin/ControlKey";
+import { charRightControl, charLeftControl } from "../mixin/KeyBinding";
 
 export let leftPlayerKey=null;
 export let rightPlayerKey=null;

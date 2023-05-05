@@ -1,4 +1,4 @@
-import BaseScene from "./BaseScene"
+import Phaser from "phaser";
 
 class MainMenuScene extends Phaser.Scene{
     constructor(config) {

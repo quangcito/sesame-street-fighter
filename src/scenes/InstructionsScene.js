@@ -1,6 +1,6 @@
-import BaseScene from "./BaseScene"
+import Phaser from "phaser";
 
-class EndScene extends BaseScene{
+class InstructionsScene extends Phaser.Scene{
     constructor(config){
         super('InstructionsScene')
         this.config = config
@@ -76,4 +76,4 @@ class EndScene extends BaseScene{
     
 }
 
-export default EndScene
+export default InstructionsScene

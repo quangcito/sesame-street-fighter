@@ -4,7 +4,7 @@ import Player from "../character/Player";
 import HealthBar from "../hud/HealthBar";
 import initAnims from "../character/Animation";
 import { leftPlayerKey, rightPlayerKey } from "./CharacterSelectScene";
-import { charRightControl, charLeftControl } from "../mixin/ControlKey";
+import { charRightControl, charLeftControl } from "../mixin/KeyBinding";
 export let winnerPlayer;
 
 class PlayScene extends Phaser.Scene {
