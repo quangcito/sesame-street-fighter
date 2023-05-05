@@ -55,5 +55,15 @@ class MapSelectScene extends Phaser.Scene{
         this.scene.start('PlayScene'); 
     }
 }
-
+const birdland = {
+    data: "birdland",
+    tilesetName: "birdlandTilesetImage",
+    image: "birdlandTiles",
+  };
+  
+  const castles = {
+    data: "castles",
+    tilesetName: "castlesTilesetImage",
+    image: "castlesTiles",
+  };
 export default MapSelectScene

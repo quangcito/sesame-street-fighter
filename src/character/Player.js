@@ -2,16 +2,10 @@ import Phaser from "phaser";
 import HealthBar from "../hud/HealthBar";
 
 class Player extends Phaser.Physics.Arcade.Sprite {
-  constructor(scene, x, y, characterKey, healthBar) {
+  constructor(scene, x, y, characterKey) {
     super(scene, x, y, characterKey.defaultImage);
     scene.physics.add.existing(this);
     scene.add.existing(this);
-
-    // this.KOSound = scene.sound.add("KOsound");
-    // this.soundConfig = {
-    //   volume: 10,
-    //   delay: 0,
-    // }
 
     this.characterKey = characterKey;
 
@@ -19,9 +13,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       .setSize(characterKey.size[0], characterKey.size[1])
       .setOffset(100, 40);
 
-    this.healthBar = healthBar;
-    this.healthBar.setProfile(characterKey.profilePicture);
-    this.healthBar.setName(characterKey.displayName);
+    this.healthBar = null;
 
     this.timeFromPreviousAttack = null;
     this.immune = false;
@@ -33,7 +25,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.punchAnim = characterKey.punch.anim;
     this.kickAnim = characterKey.kick.anim;
     this.blockAnim = characterKey.block.anim;
-    this.jumpSound = scene.sound.add('jump');
+    this.jumpSound = scene.sound.add("jump");
 
     this.scene = scene;
     // if (this.healthBar.healthValue < 0) {
@@ -81,14 +73,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   block() {
-    if(this.body.onFloor()) {
+    if (this.body.onFloor()) {
       this.blocking = true;
-      this.anims.play(this.blockAnim, true)
+      this.anims.play(this.blockAnim, true);
     }
   }
 
   unblock() {
-    if(this.body.onFloor()) {
+    if (this.body.onFloor()) {
       if (this.blocking) {
         this.blocking = false;
         this.anims.currentAnim.getFrameByProgress(0);
@@ -133,11 +125,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       height: this.characterKey.size[1],
       x: this.x,
       topLeft: {
-        x: this.x - this.characterKey.size[0]/2,
+        x: this.x - this.characterKey.size[0] / 2,
         y: this.y - this.characterKey.size[1],
       },
       botRight: {
-        x: this.x + this.characterKey.size[0]/2,
+        x: this.x + this.characterKey.size[0] / 2,
         y: this.y,
       },
     };
