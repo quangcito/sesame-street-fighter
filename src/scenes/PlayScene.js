@@ -238,9 +238,9 @@ class PlayScene extends Phaser.Scene {
   //creates TileMap and images from JSON file.
   createMap() {
     //adds tilemap to background
-    const map = this.make.tilemap({ key: "land" });
+    const map = this.make.tilemap({ key: "birdland" });
     //first parameter is name of png file in Tiled. second parameter is key of loaded image
-    map.addTilesetImage("Birdland", "tiles-2");
+    map.addTilesetImage("birdlandTilesetImage", "birdlandTiles");
 
     return map;
   }
@@ -251,8 +251,8 @@ class PlayScene extends Phaser.Scene {
     const characters = map.createLayer("characters", tileset);
 
     const spawns = map.getObjectLayer("spawn_points");
-    const misc = map.createLayer("misc", tileset);
-    const environment = map.createLayer("environment", tileset);
+    const environmentFront = map.createLayer("environment_front", tileset);
+    const environmentBack = map.createLayer("environment_back", tileset);
     const floor = map.createLayer("floor", tileset);
 
     const platformsColliders = map.createLayer("platforms_colliders", tileset);
@@ -269,8 +269,8 @@ class PlayScene extends Phaser.Scene {
       platforms,
       spawns,
       platformsColliders,
-      environment,
-      misc,
+      environmentBack,
+      environmentFront,
       characters,
     };
   }
@@ -307,8 +307,8 @@ class PlayScene extends Phaser.Scene {
       this.layers.platforms,
       this.layers.platformsColliders,
       this.layers.characters,
-      this.layers.environment,
-      this.layers.misc,
+      this.layers.environmentBack,
+      this.layers.environmentFront,
       this.leftPlayer,
       this.rightPlayer,
     ]);

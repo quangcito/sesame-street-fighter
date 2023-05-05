@@ -6,11 +6,11 @@ class PreloadScene extends Phaser.Scene {
   }
   preload() {
     // this.load.tilemapTiledJSON("map1", "src/assets/test.json");
-    this.load.tilemapTiledJSON("castle", "src/assets/mumfordCastle.json");
-    this.load.tilemapTiledJSON("land", "src/assets/birdland.json");
+    this.load.tilemapTiledJSON("castles", "src/assets/castlesData.json");
+    this.load.tilemapTiledJSON("birdland", "src/assets/birdlandData.json");
     // this.load.image("tiles-1", "src/assets/dungeon.png");
-    this.load.image("tiles-1", "src/assets/mumfordCastle.png");
-    this.load.image("tiles-2", "src/assets/birdland.png");
+    this.load.image("castlesTiles", "src/assets/castlesTilesetImage.png");
+    this.load.image("birdlandTiles", "src/assets/birdlandTilesetImage.png");
 
     this.load.image("background", "src/assets/background.png");
     this.load.image("menuBackground", "src/assets/sesame-street.jpg");

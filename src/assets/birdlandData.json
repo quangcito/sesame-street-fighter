@@ -1,4 +1,11 @@
 { "compressionlevel":-1,
+ "editorsettings":
+    {
+     "export":
+        {
+         "target":"."
+        }
+    },
  "height":34,
  "infinite":false,
  "layers":[
@@ -131,7 +138,7 @@
         {
          "columns":90,
          "firstgid":1,
-         "image":"Birdland.png",
+         "image":"..\/..\/..\/Misc\/birdlandTilesetImage.png",
          "imageheight":800,
          "imagewidth":1440,
          "margin":0,
