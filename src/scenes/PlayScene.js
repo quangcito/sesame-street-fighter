@@ -238,16 +238,16 @@ class PlayScene extends Phaser.Scene {
   //creates TileMap and images from JSON file.
   createMap() {
     //adds tilemap to background
-    const map = this.make.tilemap({ key: "map1" });
+    const map = this.make.tilemap({ key: "land" });
     //first parameter is name of png file in Tiled. second parameter is key of loaded image
-    map.addTilesetImage("MumfordCastle", "tiles-1");
+    map.addTilesetImage("Birdland", "tiles-2");
 
     return map;
   }
 
   //creates layers in Tiled.
   createLayers(map) {
-    const tileset = map.getTileset("MumfordCastle");
+    const tileset = map.getTileset("land");
     const characters = map.createLayer("characters", tileset);
 
     const spawns = map.getObjectLayer("spawn_points");
