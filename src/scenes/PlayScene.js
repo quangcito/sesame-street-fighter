@@ -249,7 +249,7 @@ class PlayScene extends Phaser.Scene {
 
   //creates layers in Tiled.
   createLayers(map) {
-    const tileset = map.getTileset("birdlandTilesetImage");
+    const tileset = map.getTileset(mapData.tilesetName);
 
     const spawns = map.getObjectLayer("spawn_points");
     const environmentBack = map.createLayer("environment_back", tileset);
