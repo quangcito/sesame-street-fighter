@@ -114,7 +114,12 @@ class PreloadScene extends Phaser.Scene {
     this.load.on("progress", this.progress, this);
   }
 
-  // Loading progress of the game
+  /**
+   *
+   * @param {*} value
+   * Loading progress of the game from 0% to 100%
+   */
+
   progress(value) {
     let percentage = Math.round(value * 100) + "%";
     this.loadLabel.setText("loading\n" + percentage);

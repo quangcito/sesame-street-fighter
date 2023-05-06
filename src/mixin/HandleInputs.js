@@ -16,6 +16,12 @@ class HandleInputs {
     this.keyKick = this.scene.input.keyboard.addKey(charKey.kick);
   }
 
+
+  /**
+   *
+   * @returns
+   * This method bind each character control keys with the according execution
+   */
   characterControls() {
     if (
       this.character.isAttacked ||
