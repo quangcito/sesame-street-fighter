@@ -192,26 +192,27 @@ class PlayScene extends Phaser.Scene {
       this.leftPlayer.y - this.rightPlayer.y
     );
 
-    //small map
-    if (
-      xDistanceBetweenPlayers > (this.config.width / 3) * 2 ||
-      yDistanceBetweenPlayers > (this.config.height / 3) * 2
-    ) {
-      this.cameraZoomMultiplier = 1.1;
-    } else {
-      this.cameraZoomMultiplier = 1.4;
+    if (mapKey.data == "birdland") {
+      if (
+        xDistanceBetweenPlayers > (this.config.width / 3) * 2 ||
+        yDistanceBetweenPlayers > (this.config.height / 3) * 2
+      ) {
+        this.cameraZoomMultiplier = 1.1;
+      } else {
+        this.cameraZoomMultiplier = 1.4;
+      }
     }
 
-    //big map
-    // if (
-    //   xDistanceBetweenPlayers > this.config.width * 0.8 ||
-    //   yDistanceBetweenPlayers > this.config.height * 0.8
-    // ) {
-    //   this.cameraZoomMultiplier = 0.75;
-    // } else {
-    //   this.cameraZoomMultiplier = 1.1;
-    // }
-
+    if (mapKey.data == "castles") {
+      if (
+        xDistanceBetweenPlayers > this.config.width * 0.8 ||
+        yDistanceBetweenPlayers > this.config.height * 0.8
+      ) {
+        this.cameraZoomMultiplier = 0.75;
+      } else {
+        this.cameraZoomMultiplier = 1.1;
+      }
+    }
     this.cameras.main.zoomTo(
       this.cameraZoomMultiplier,
       200,

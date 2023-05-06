@@ -135,6 +135,7 @@ class MapSelectScene extends Phaser.Scene {
     }
   }
 }
+
 const birdland = {
   data: "birdland",
   tilesetName: "birdlandTilesetImage",
