@@ -28,6 +28,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.scene = scene;
   }
 
+  /**
+   *
+   * @param {*} attackKey: the keyboard key for attacking
+   * @returns
+   */
   doAttack(attackKey) {
     let animation = attackKey.anim;
     let attackCooldown = attackKey.cooldown;
@@ -97,6 +102,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.immune = true;
   }
 
+  /**
+   *
+   * @returns The data for the frame of the player's bouding box
+   */
   getFrame() {
     return {
       width: this.characterKey.size[0] / 2,

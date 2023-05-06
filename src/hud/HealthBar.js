@@ -24,6 +24,12 @@ class HealthBar extends Phaser.GameObjects.Container {
     this.setScrollFactor(0);
   }
 
+  /**
+   *
+   * @param {*} x coordinate
+   * @param {*} y coordinate
+   * Create healthbar with specifies texts and frame
+   */
   initializeHealthbar(x, y) {
     this.frame = this.scene.add.image(-this.x, 0, "healthbar").setOrigin(0); //creates healthbar frame
     this.profile = this.scene.add.image(
@@ -58,6 +64,9 @@ class HealthBar extends Phaser.GameObjects.Container {
     this.updateHealthBar(); //draws the healthbar and changes color based on how much health the character has left.
   }
 
+  /**
+   * Update health bar graphics based on the change of player's health value
+   */
   updateHealthBar() {
     if (this.healthValue > 0) {
       this.bar.clear();
@@ -81,7 +90,11 @@ class HealthBar extends Phaser.GameObjects.Container {
     }
   }
 
-  //decreases health value and updates the healthbar to have less length.
+  /**
+   *
+   * @param {*} amount of health
+   * decreases health value and updates the healthbar to have less length.
+   */
   decreaseHealth(amount) {
     this.currentWidth -= (initialWidth / 100) * amount;
     this.createVertices(0, this.y);
@@ -89,7 +102,12 @@ class HealthBar extends Phaser.GameObjects.Container {
     this.healthValue -= amount;
   }
 
-  //adds in the four vertices that make healthbar for both players.
+  /**
+   *
+   * @param {*} x
+   * @param {*} y
+   * adds in the four vertices that make healthbar for both players.
+   */
   createVertices(x, y) {
     if (!this.isLeftPlayer) {
       x = x - 45;
@@ -102,7 +120,15 @@ class HealthBar extends Phaser.GameObjects.Container {
     ];
   }
 
-  //adds or subtract numbers depending on whether or not the character spawns on the left side of screen.
+  /**
+   *
+   * @param {*} num1
+   * @param {*} num2
+   * @param {*} num3 (default value, 0)
+   * @returns
+   * adds or subtract numbers depending on whether or not the character spawns on the left side of screen.
+   */
+
   calculate(num1, num2, num3 = 0) {
     if (this.isLeftPlayer) {
       return num1 + num2 + num3;

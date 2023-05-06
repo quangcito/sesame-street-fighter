@@ -1,3 +1,6 @@
+/**
+ * Animation configuration for the game characters
+ */
 export default (anims) => {
   anims.create({
       key: "elmopunch",

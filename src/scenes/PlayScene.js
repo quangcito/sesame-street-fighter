@@ -35,7 +35,7 @@ class PlayScene extends Phaser.Scene {
         this.attack(this.leftPlayer, this.rightPlayer, damage);
       }
     };
-    
+
     this.rightPlayer.attackCallback = (attackPosition, damage) => {
       let targetChoord = this.leftPlayer.getFrame();
       if (this.checkOverlap(attackPosition, targetChoord)) {
@@ -71,6 +71,7 @@ class PlayScene extends Phaser.Scene {
       this.HUDCamera.ignore(this.background);
     }
   }
+
   setUpCamera() {
     this.cameras.main.setBackgroundColor("#000");
     this.physics.world.setBounds(
@@ -85,7 +86,12 @@ class PlayScene extends Phaser.Scene {
       .fadeIn(2000, 0, 0, 0);
   }
 
-  //Checks if there is a tile at either the bottom left or bottom right of the bounding box.
+  /**
+   *
+   * @param {*} player
+   * @returns Checks if there is a tile at either the bottom left or bottom right of the bounding box.
+   *
+   */
   checkBottomOfBoundingBox(player) {
     let tileAtBottomLeft = this.layers.platformsColliders.hasTileAtWorldXY(
       player.getFrame().botLeft.x,
@@ -101,6 +107,12 @@ class PlayScene extends Phaser.Scene {
     }
   }
 
+  /**
+   *
+   * @param {*} player
+   * @param {*} collideLayer
+   * Check if the player collides with platform to excute the collider effect
+   */
   platformCheck(player, collideLayer) {
     //When fast falling player can't go under platform
     if (
@@ -119,17 +131,23 @@ class PlayScene extends Phaser.Scene {
     }
   }
 
-  //creates TileMap and images from JSON file.
+  /**
+   *
+   * @returns This method creates TileMap and images from JSON file.
+   */
   createMap() {
     //adds tilemap to background
     const map = this.make.tilemap({ key: mapKey.data });
     //first parameter is name of png file in Tiled. second parameter is key of loaded image
     map.addTilesetImage(mapKey.tilesetName, mapKey.image);
-
     return map;
   }
 
-  //creates layers in Tiled.
+  /**
+   *
+   * @param {*} map
+   * @returns layers in of the map created in Tiled.
+   */
   createLayers(map) {
     const tileset = map.getTileset(mapKey.tilesetName);
     const platformsColliders = map.createLayer("platforms_colliders", tileset);
@@ -150,6 +168,7 @@ class PlayScene extends Phaser.Scene {
       tile.collideLeft = false;
       tile.collideDown = false;
     });
+
     return {
       floor,
       background,
@@ -161,6 +180,10 @@ class PlayScene extends Phaser.Scene {
       characters,
     };
   }
+
+  /**
+   * Create the second camera that focuses on the scene and ignore the health bar
+   */
   createSecondCamera() {
     this.cameras.main.ignore([
       this.leftPlayer.healthBar,
@@ -200,6 +223,9 @@ class PlayScene extends Phaser.Scene {
     ]);
   }
 
+  /**
+   * This method zooms the camera in and out
+   */
   cameraZoom() {
     let xDistanceBetweenPlayers = Math.abs(
       this.leftPlayer.x - this.rightPlayer.x
@@ -238,6 +264,9 @@ class PlayScene extends Phaser.Scene {
     );
   }
 
+  /**
+   * This methods expand the camera
+   */
   cameraPan() {
     this.cameras.main.pan(
       Math.abs(this.leftPlayer.x + this.rightPlayer.x) / 2,
@@ -251,6 +280,12 @@ class PlayScene extends Phaser.Scene {
     }
   }
 
+  /**
+   *
+   * @param {*} attackCoord
+   * @param {*} targetCoord
+   * @returns
+   */
   checkOverlap(attackCoord, targetCoord) {
     let distanceX =
       Math.abs(targetCoord.topLeft.x - attackCoord.x) +
@@ -264,6 +299,14 @@ class PlayScene extends Phaser.Scene {
     return false;
   }
 
+  /**
+   *
+   * @param {*} attacker
+   * @param {*} target
+   * @param {*} damage
+   * @returns
+   * This methods handle the attack mechanism in terms of both animation and game logic
+   */
   attack(attacker, target, damage) {
     this.attackSound.play();
     if (target.getImmune() || Math.abs(attacker.y - target.y) >= 100) {
@@ -279,7 +322,6 @@ class PlayScene extends Phaser.Scene {
       this.KOSound.play(this.soundConfig);
     }
 
-    console.log("elmo hit!");
     target.isAttacked = true;
 
     this.createEmitter(target.characterKey.blood)
@@ -324,6 +366,11 @@ class PlayScene extends Phaser.Scene {
     this.KOsound(this.leftPlayer, this.rightPlayer);
   }
 
+  /**
+   *
+   * @param {*} color
+   * @returns
+   */
   createEmitter(color) {
     let particles = this.add.particles("pixel");
     this.emitter = particles.createEmitter({
@@ -335,7 +382,6 @@ class PlayScene extends Phaser.Scene {
     });
     this.HUDCamera.ignore(particles);
     this.emitter.setTint(color);
-    console.log(color);
     return this.emitter;
   }
 
