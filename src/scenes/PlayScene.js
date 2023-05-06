@@ -248,11 +248,7 @@ class PlayScene extends Phaser.Scene {
 
   attack(attacker, target, damage) {
     this.attackSound.play();
-    if (
-      target.getImmune() ||
-      Math.abs(attacker.y - target.y) >= 100 ||
-      target.getBlocking()
-    ) {
+    if (target.getImmune() || Math.abs(attacker.y - target.y) >= 100) {
       return;
     }
 
@@ -266,7 +262,7 @@ class PlayScene extends Phaser.Scene {
     target.isAttacked = true;
 
     this.createEmitter(target.characterKey.blood)
-      .setPosition(target.x, target.y - 200)
+      .setPosition(target.x, target.y - 200 / 2)
       .explode();
 
     if (!attacker.flipX) {
