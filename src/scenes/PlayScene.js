@@ -61,7 +61,7 @@ class PlayScene extends Phaser.Scene {
       0,
       0,
       this.map.widthInPixels,
-      this.map.heightInPixels - 16
+      this.map.heightInPixels - 32
     );
     this.cameras.main
       .setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels)
@@ -116,10 +116,11 @@ class PlayScene extends Phaser.Scene {
   //creates layers in Tiled.
   createLayers(map) {
     const tileset = map.getTileset(mapKey.tilesetName);
-
+    const background = map.createLayer("background", tileset);
     const spawns = map.getObjectLayer("spawn_points");
-    const environmentBack = map.createLayer("environment_back", tileset);
     const characters = map.createLayer("characters", tileset);
+    const environmentBack = map.createLayer("environment_back", tileset);
+
     const environmentFront = map.createLayer("environment_front", tileset);
     const floor = map.createLayer("floor", tileset);
 
@@ -134,6 +135,7 @@ class PlayScene extends Phaser.Scene {
     });
     return {
       floor,
+      background,
       platforms,
       spawns,
       platformsColliders,
@@ -170,6 +172,7 @@ class PlayScene extends Phaser.Scene {
     );
     this.HUDCamera.ignore([
       this.layers.floor,
+      this.layers.background,
       this.layers.platforms,
       this.layers.platformsColliders,
       this.layers.characters,
@@ -178,9 +181,6 @@ class PlayScene extends Phaser.Scene {
       this.leftPlayer,
       this.rightPlayer,
     ]);
-    // this.leftPlayer.body.setIgnore(this.HUDCamera);
-    // this.rightPlayer.active = false;
-    // this.rightPlayer.visible = false;
   }
 
   cameraZoom() {
@@ -193,28 +193,28 @@ class PlayScene extends Phaser.Scene {
     );
 
     //small map
-    // if (
-    //   xDistanceBetweenPlayers > (this.config.width / 3) * 2 ||
-    //   yDistanceBetweenPlayers > (this.config.height / 3) * 2
-    // ) {
-    //   this.cameraZoomMultiplier = 1;
-    // } else {
-    //   this.cameraZoomMultiplier = 1.333;
-    // }
+    if (
+      xDistanceBetweenPlayers > (this.config.width / 3) * 2 ||
+      yDistanceBetweenPlayers > (this.config.height / 3) * 2
+    ) {
+      this.cameraZoomMultiplier = 1.1;
+    } else {
+      this.cameraZoomMultiplier = 1.4;
+    }
 
     //big map
-    if (
-      xDistanceBetweenPlayers > this.config.width * 0.8 ||
-      yDistanceBetweenPlayers > this.config.height * 0.8
-    ) {
-      this.cameraZoomMultiplier = 0.667;
-    } else {
-      this.cameraZoomMultiplier = 1;
-    }
+    // if (
+    //   xDistanceBetweenPlayers > this.config.width * 0.8 ||
+    //   yDistanceBetweenPlayers > this.config.height * 0.8
+    // ) {
+    //   this.cameraZoomMultiplier = 0.75;
+    // } else {
+    //   this.cameraZoomMultiplier = 1.1;
+    // }
 
     this.cameras.main.zoomTo(
       this.cameraZoomMultiplier,
-      150,
+      200,
       Phaser.Math.Easing.Quadratic.InOut,
       true
     );
