@@ -269,6 +269,9 @@ class PlayScene extends Phaser.Scene {
       return;
     }
 
+    if (target.healthBar.healthValue < damage) {
+      damage = target.healthBar.healthValue;
+    }
     target.healthBar.decreaseHealth(damage);
 
     if (target.healthBar.healthValue <= 0) {
