@@ -60,6 +60,7 @@ class PreloadScene extends Phaser.Scene {
 
     this.load.image("player instructions", "src/assets/Player Controls.png");
     this.load.image("select controls", "src/assets/characterSelectInstructions.png");
+    this.load.image("map select controls", "src/assets/mapSelectInstructions.png");
 
     this.load.image("healthbar", "src/assets/HealthbarV1.png");
     this.load.image("pixel", "src/assets/pixel.png");

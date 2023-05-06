@@ -97,7 +97,7 @@ class MapSelectScene extends Phaser.Scene {
     this.instructions = this.add.image(
       this.config.width / 2,
       this.config.height / 2 + 190,
-      "select controls"
+      "map select controls"
     );
     this.instructions.setScale(0.8);
 
