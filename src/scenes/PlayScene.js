@@ -29,6 +29,8 @@ class PlayScene extends Phaser.Scene {
 
     this.physics.add.collider(this.leftPlayer, this.rightPlayer);
 
+    // The callback method that checks overlap between
+    // attack position and the target body coordinate for the left player
     this.leftPlayer.attackCallback = (attackPosition, damage) => {
       let targetChoord = this.rightPlayer.getFrame();
       if (this.checkOverlap(attackPosition, targetChoord)) {
@@ -36,6 +38,8 @@ class PlayScene extends Phaser.Scene {
       }
     };
 
+    // The callback method that checks overlap between
+    // attack position and the target body coordinate for the right player
     this.rightPlayer.attackCallback = (attackPosition, damage) => {
       let targetChoord = this.leftPlayer.getFrame();
       if (this.checkOverlap(attackPosition, targetChoord)) {
@@ -325,6 +329,7 @@ class PlayScene extends Phaser.Scene {
 
     target.isAttacked = true;
 
+    // Create paricle effect based on target's blood color
     this.createEmitter(target.characterKey.blood)
       .setPosition(target.x, target.y - 200 / 2)
       .explode();
@@ -370,7 +375,8 @@ class PlayScene extends Phaser.Scene {
   /**
    *
    * @param {*} color
-   * @returns
+   * @returns the emitter that emits the particle effect that
+   * represent blood in the game when a player is attacked
    */
   createEmitter(color) {
     let particles = this.add.particles("pixel");
