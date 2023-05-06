@@ -35,6 +35,7 @@ class PlayScene extends Phaser.Scene {
         this.attack(this.leftPlayer, this.rightPlayer, damage);
       }
     };
+    
     this.rightPlayer.attackCallback = (attackPosition, damage) => {
       let targetChoord = this.leftPlayer.getFrame();
       if (this.checkOverlap(attackPosition, targetChoord)) {
