@@ -4,7 +4,7 @@
 
 
 ## Description
-This is the source code Sesame Street Fighter 2-player game that combine Sesame Street and Street Fighter.
+This is the source code for Sesame Street Fighter 2-player game that combine Sesame Street and Street Fighter.
 
 ## Tech Stack
 - PhaserJS
