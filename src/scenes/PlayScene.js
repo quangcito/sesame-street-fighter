@@ -54,8 +54,22 @@ class PlayScene extends Phaser.Scene {
 
     this.setUpCamera();
     this.createSecondCamera();
+
+    this.createBackground();
   }
 
+  createBackground() {
+    if (mapKey.data == "castles") {
+      this.background = this.add
+        .image(
+          this.map.widthInPixels / 2,
+          this.map.heightInPixels / 2,
+          "castlesBg"
+        )
+        .setDepth(-10);
+      this.HUDCamera.ignore(this.background);
+    }
+  }
   setUpCamera() {
     this.physics.world.setBounds(
       0,
