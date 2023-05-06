@@ -28,6 +28,12 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.scene = scene;
   }
 
+  /**
+   *
+   * @param {*} attackKey: the keyboard key for attacking
+   * @returns
+   * This method execute the attack implemation and attack callback function when the attack key is down
+   */
   doAttack(attackKey) {
     let animation = attackKey.anim;
     let attackCooldown = attackKey.cooldown;
@@ -97,6 +103,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.immune = true;
   }
 
+  /**
+   *
+   * @returns The data for the frame of the player's bouding box
+   */
   getFrame() {
     return {
       width: this.characterKey.size[0] / 2,
