@@ -18,6 +18,7 @@ class MapSelectScene extends Phaser.Scene {
     this.createLabel();
     this.createCharacterIcon();
     this.createCursor();
+    this.createInstructions();
     this.cursor.addImage = (chosenIcon) => {
       return;
     };
@@ -29,14 +30,14 @@ class MapSelectScene extends Phaser.Scene {
   createCharacterIcon() {
     this.birdLandIcon = new SelectionIcon(
       this,
-      this.config.width / 2 - 100,
+      this.config.width / 2 - 120,
       this.config.height / 2 + 70,
       "birdlandIcon",
       birdland
     );
     this.castlesIcon = new SelectionIcon(
       this,
-      this.config.width / 2 + 100,
+      this.config.width / 2 + 120,
       this.config.height / 2 + 70,
       "castlesIcon",
       castles
@@ -92,14 +93,39 @@ class MapSelectScene extends Phaser.Scene {
     });
   }
 
+  createInstructions() {
+    this.instructions = this.add.image(
+      this.config.width / 2,
+      this.config.height / 2 + 190,
+      "select controls"
+    );
+    this.instructions.setScale(0.8);
+
+    this.startInstruction = this.add
+      .text(210, 530, "Press SPACE to continue!", {
+        fontSize: "30px",
+        fill: "#E3E3E3",
+        fontFamily: "'8BIT WONDER', sans-serif",
+      })
+      .setStroke("#0E0E0E", 10)
+      .setVisible(false);
+  }
+
   update() {
     this.cursor.update();
 
     mapKey = this.cursor.chosenCharacterOrNull();
 
+    if (mapKey != null) {
+      this.startInstruction.setVisible(true);
+      this.instructions.setVisible(false);
+    } else {
+      this.startInstruction.setVisible(false);
+      this.instructions.setVisible(true);
+    }
+
     if (this.spaceKey.isDown) {
       this.toNextScene();
-      console.log(mapKey);
     }
   }
 

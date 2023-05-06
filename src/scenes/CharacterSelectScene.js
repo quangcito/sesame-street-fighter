@@ -124,14 +124,14 @@ class CharacterSelectScene extends Phaser.Scene {
   createCharacterIcon() {
     this.elmoIcon = new SelectionIcon(
       this,
-      this.config.width / 2 - 100,
+      this.config.width / 2 - 120,
       this.config.height / 2 + 70,
       "elmoSelectionIcon",
       elmo
     );
     this.cookieIcon = new SelectionIcon(
       this,
-      this.config.width / 2 + 100,
+      this.config.width / 2 + 120,
       this.config.height / 2 + 70,
       "cookieSelectionIcon",
       cookie
