@@ -30,14 +30,12 @@ class PlayScene extends Phaser.Scene {
     this.physics.add.collider(this.leftPlayer, this.rightPlayer);
 
     this.leftPlayer.attackCallback = (attackPosition, damage) => {
-      // this.add.circle(attackPosition.x, attackPosition.y, 10, 0x6666ff);
       let targetChoord = this.rightPlayer.getFrame();
       if (this.checkOverlap(attackPosition, targetChoord)) {
         this.attack(this.leftPlayer, this.rightPlayer, damage);
       }
     };
     this.rightPlayer.attackCallback = (attackPosition, damage) => {
-      // this.add.circle(attackPosition.x, attackPosition.y, 10, 0x6666ff);
       let targetChoord = this.leftPlayer.getFrame();
       if (this.checkOverlap(attackPosition, targetChoord)) {
         this.attack(this.rightPlayer, this.leftPlayer, damage);
@@ -161,8 +159,6 @@ class PlayScene extends Phaser.Scene {
       this.map.widthInPixels,
       this.map.heightInPixels
     ).setSize(this.config.width, this.config.height);
-    // HUDCamera.scrollX = this.cameras.main.scrollX;
-    // HUDCamera.scrollY = this.cameras.main.scrollY;
 
     this.cameras.main.on("ZOOM_START", () =>
       HUDCamera.zoomTo(
@@ -182,7 +178,7 @@ class PlayScene extends Phaser.Scene {
       this.leftPlayer,
       this.rightPlayer,
     ]);
-    // this.leftPlayer.body.setIgnore(HUDCamera);
+    // this.leftPlayer.body.setIgnore(this.HUDCamera);
     // this.rightPlayer.active = false;
     // this.rightPlayer.visible = false;
   }
@@ -195,20 +191,6 @@ class PlayScene extends Phaser.Scene {
     let yDistanceBetweenPlayers = Math.abs(
       this.leftPlayer.y - this.rightPlayer.y
     );
-
-    // if (
-    //   xDistanceBetweenPlayers > this.config.width * 0.8 ||
-    //   yDistanceBetweenPlayers > this.config.height * 0.8
-    // ) {
-    //   this.cameraZoomMultiplier = 0.667;
-    // } else if (
-    //   xDistanceBetweenPlayers > (this.config.width / 3) * 2 ||
-    //   yDistanceBetweenPlayers > (this.config.height / 3) * 2
-    // ) {
-    //   this.cameraZoomMultiplier = 1;
-    // } else {
-    //   this.cameraZoomMultiplier = 1.333;
-    // }
 
     //small map
     // if (
@@ -273,10 +255,7 @@ class PlayScene extends Phaser.Scene {
     ) {
       return;
     }
-    /**if (attacker.isPunching) {
-      target.healthBar.decreaseHealth(10);
-    }
-    **/
+
     target.healthBar.decreaseHealth(damage);
 
     if (target.healthBar.healthValue <= 0) {
@@ -337,6 +316,7 @@ class PlayScene extends Phaser.Scene {
       lifespan: 800,
       on: false,
     });
+    this.HUDCamera.ignore(particles);
     this.emitter.setTint(color);
     console.log(color);
     return this.emitter;
@@ -374,6 +354,7 @@ class PlayScene extends Phaser.Scene {
             fontFamily: "'8BIT WONDER', sans-serif",
           })
           .setStroke("#0E0E0E", 10);
+        this.cameras.main.ignore(this.winner2);
       }
       if (char2.healthBar.healthValue <= 0) {
         winnerPlayer = char1;
@@ -384,6 +365,7 @@ class PlayScene extends Phaser.Scene {
             fontFamily: "'8BIT WONDER', sans-serif",
           })
           .setStroke("#0E0E0E", 10);
+        this.cameras.main.ignore(this.winner1);
       }
       this.time.delayedCall(1500, () => this.scene.start("ResultsScene"));
     }
@@ -403,7 +385,7 @@ class PlayScene extends Phaser.Scene {
       this.leftPlayer
     );
     this.leftPlayer.setCollideWorldBounds(true);
-    this.leftPlayerControl = new HandleInputs(
+    this.leftPlayer.controls = new HandleInputs(
       this,
       charLeftControl,
       this.leftPlayer
@@ -425,7 +407,7 @@ class PlayScene extends Phaser.Scene {
       this.rightPlayer
     );
     this.rightPlayer.setCollideWorldBounds(true);
-    this.rightPlayerControl = new HandleInputs(
+    this.rightPlayer.controls = new HandleInputs(
       this,
       charRightControl,
       this.rightPlayer
@@ -433,8 +415,8 @@ class PlayScene extends Phaser.Scene {
   }
 
   handleControls() {
-    this.leftPlayerControl.characterControls();
-    this.rightPlayerControl.characterControls();
+    this.leftPlayer.controls.characterControls();
+    this.rightPlayer.controls.characterControls();
   }
 }
 

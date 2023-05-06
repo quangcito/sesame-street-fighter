@@ -1,5 +1,4 @@
 import Phaser from "phaser";
-import HealthBar from "../hud/HealthBar";
 
 class Player extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, characterKey) {
@@ -127,6 +126,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
       topLeft: {
         x: this.x - this.characterKey.size[0] / 2,
         y: this.y - this.characterKey.size[1],
+      },
+      botLeft: {
+        x: this.x - this.characterKey.size[0] / 4,
+        y: this.y - 15,
       },
       botRight: {
         x: this.x + this.characterKey.size[0] / 2,
