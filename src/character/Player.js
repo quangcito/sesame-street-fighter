@@ -10,26 +10,22 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     this.setOrigin(0.5, 1)
       .setSize(characterKey.size[0], characterKey.size[1])
-      .setOffset(100, 40);
+      .setOffset(100, 30)
+      .setScale(0.5);
 
     this.healthBar = null;
 
     this.timeFromPreviousAttack = null;
     this.immune = false;
     this.isAttacked = false;
-    this.blocking = false;
     this.isPunching = false;
     this.isHeavyAttacking = false;
 
     this.punchAnim = characterKey.punch.anim;
     this.kickAnim = characterKey.kick.anim;
-    this.blockAnim = characterKey.block.anim;
     this.jumpSound = scene.sound.add("jump");
 
     this.scene = scene;
-    // if (this.healthBar.healthValue < 0) {
-    //   this.KOSound.play(this.soundConfig);
-    // }
   }
 
   doAttack(attackKey) {
@@ -78,15 +74,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
   }
 
-  unblock() {
-    if (this.body.onFloor()) {
-      if (this.blocking) {
-        this.blocking = false;
-        this.anims.currentAnim.getFrameByProgress(0);
-      }
-    }
-  }
-
   jump() {
     this.jumpSound.play();
   }
@@ -106,34 +93,26 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     return this.immune;
   }
 
-  getBlocking() {
-    return this.blocking;
-  }
-
-  setBlocking(blocking) {
-    this.blocking = blocking;
-  }
-
   disableAttack() {
     this.immune = true;
   }
 
   getFrame() {
     return {
-      width: this.characterKey.size[0],
-      height: this.characterKey.size[1],
+      width: this.characterKey.size[0] / 2,
+      height: this.characterKey.size[1] / 2,
       x: this.x,
       topLeft: {
-        x: this.x - this.characterKey.size[0] / 2,
-        y: this.y - this.characterKey.size[1],
+        x: this.x - this.characterKey.size[0] / 4,
+        y: this.y - this.characterKey.size[1] / 2 - 15,
       },
       botLeft: {
         x: this.x - this.characterKey.size[0] / 4,
         y: this.y - 15,
       },
       botRight: {
-        x: this.x + this.characterKey.size[0] / 2,
-        y: this.y,
+        x: this.x + this.characterKey.size[0] / 4,
+        y: this.y - 15,
       },
     };
   }
