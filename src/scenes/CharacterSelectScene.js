@@ -231,6 +231,10 @@ class CharacterSelectScene extends Phaser.Scene {
     }
   }
 
+  /**
+   * This method checks if both players have selected a character,
+   * progressing to the next map.
+   */
   toNextScene() {
     if (leftPlayerKey != null && rightPlayerKey != null) {
       this.scene.start("MapSelectScene");

@@ -19,8 +19,7 @@ class MapSelectScene extends Phaser.Scene {
    * /**
    * This method creates the scene, and runs multiple methods to add the 
    * label, cursor, instructions, etc. to the scene. 
-   * Additionally this method handles the selection and unselection
-   * of characters.
+   * Create handles the selection and unselection of maps.
    */
   create() {
     this.spaceKey = this.input.keyboard.addKey(
@@ -28,7 +27,7 @@ class MapSelectScene extends Phaser.Scene {
     );
     this.add.image(this.config.width / 2, this.config.height / 2, "selection");
     this.createLabel();
-    this.createCharacterIcon();
+    this.createMapIcon();
     this.createCursor();
     this.createInstructions();
     this.cursor.addImage = (chosenIcon) => {
@@ -39,7 +38,10 @@ class MapSelectScene extends Phaser.Scene {
     };
   }
 
-  createCharacterIcon() {
+  /**
+   * This method creates and adds the selection icons for the maps displayed on screen.
+   */
+  createMapIcon() {
     this.birdLandIcon = new SelectionIcon(
       this,
       this.config.width / 2 - 120,
@@ -57,6 +59,9 @@ class MapSelectScene extends Phaser.Scene {
     this.iconArray = [this.birdLandIcon, this.castlesIcon];
   }
 
+  /**
+   * This method creates adds the map select cursor.
+   */
   createCursor() {
     this.cursor = new Cursor(
       this,
@@ -68,6 +73,9 @@ class MapSelectScene extends Phaser.Scene {
     );
   }
 
+  /**
+   * This creates and adds the flashing label to select a map on the screen.
+   */
   createLabel() {
     this.firstColor = Phaser.Display.Color.HexStringToColor("#FFFFFF");
     this.secondColor = Phaser.Display.Color.HexStringToColor("#0E0E0E");
@@ -105,6 +113,9 @@ class MapSelectScene extends Phaser.Scene {
     });
   }
 
+  /**
+   * This method creates and adds the instruction image.
+   */
   createInstructions() {
     this.instructions = this.add.image(
       this.config.width / 2,
@@ -123,6 +134,11 @@ class MapSelectScene extends Phaser.Scene {
       .setVisible(false);
   }
 
+  /**
+   * This method checks for cursor movement and updates the display on the screen depending on whether or not
+   * a map have been selected yet. Additionally this method will call the toNextScene method
+   * when the space bar is pressed.
+   */
   update() {
     this.cursor.update();
 
@@ -141,6 +157,11 @@ class MapSelectScene extends Phaser.Scene {
     }
   }
 
+  /**
+   * /**
+   * This method checks if a map has been selected,
+   * progressing to the next map.
+   */
   toNextScene() {
     if (mapKey != null) {
       this.scene.start("InstructionsScene");
