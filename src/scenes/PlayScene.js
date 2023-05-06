@@ -130,6 +130,8 @@ class PlayScene extends Phaser.Scene {
   //creates layers in Tiled.
   createLayers(map) {
     const tileset = map.getTileset(mapKey.tilesetName);
+    const platformsColliders = map.createLayer("platforms_colliders", tileset);
+
     const background = map.createLayer("background", tileset);
     const spawns = map.getObjectLayer("spawn_points");
     const characters = map.createLayer("characters", tileset);
@@ -138,7 +140,6 @@ class PlayScene extends Phaser.Scene {
     const environmentFront = map.createLayer("environment_front", tileset);
     const floor = map.createLayer("floor", tileset);
 
-    const platformsColliders = map.createLayer("platforms_colliders", tileset);
     const platforms = map.createLayer("platforms", tileset);
 
     floor.setCollisionByExclusion(-1, true);
