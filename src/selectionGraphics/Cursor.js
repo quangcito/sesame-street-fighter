@@ -11,7 +11,7 @@ class Cursor extends Phaser.Physics.Arcade.Image{
         this.createKeys();
         this.iconArray = iconArray;
         this.update();
-    }  
+    }
 
     createKeys() {
         this.keyLeft = this.scene.input.keyboard.addKey(this.controlKey.left);
@@ -20,6 +20,10 @@ class Cursor extends Phaser.Physics.Arcade.Image{
         this.keyUp = this.scene.input.keyboard.addKey(this.controlKey.up);
     }
 
+    /**
+     *
+     * @returns This method implements the logic of the key control for selecting map or character
+     */
     keyControl() {
         if (Phaser.Input.Keyboard.JustDown(this.keyUp)) {
             this.chosenIcon = null;
@@ -34,7 +38,7 @@ class Cursor extends Phaser.Physics.Arcade.Image{
                 this.selectedIconIndex = (this.selectedIconIndex - 1);
             } else {
                 this.selectedIconIndex = this.iconArray.length - 1;
-            }         
+            }
         if (Phaser.Input.Keyboard.JustDown(this.keyRight)) {
             this.selectedIconIndex = (this.selectedIconIndex + 1) % this.iconArray.length
         }
@@ -50,11 +54,21 @@ class Cursor extends Phaser.Physics.Arcade.Image{
         this.selectIcon(this.selectedIconIndex);
     }
 
+    /**
+     *
+     * @param {*} index
+     * This method selects the icon based on its index value
+     */
     selectIcon(index) {
         let selectedIcon = this.iconArray[index];
         this.setPosition(selectedIcon.x, selectedIcon.y);
     }
 
+    /**
+     * 
+     * @returns null if no icon is not chosen, or the character key if otherwise
+     * 
+     */
     chosenCharacterOrNull() {
         if (this.chosenIcon === null) {
             return null;

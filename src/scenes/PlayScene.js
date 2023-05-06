@@ -269,7 +269,7 @@ class PlayScene extends Phaser.Scene {
   }
 
   /**
-   * This methods expand the camera
+   * This method expand the camera
    */
   cameraPan() {
     this.cameras.main.pan(
@@ -309,7 +309,7 @@ class PlayScene extends Phaser.Scene {
    * @param {*} target
    * @param {*} damage
    * @returns
-   * This methods handle the attack mechanism in terms of both animation and game
+   * This method handle the attack mechanism in terms of both animation and game
    * logic when 2 players hit each other successfully
    */
   attack(attacker, target, damage) {
