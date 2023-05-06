@@ -3,7 +3,7 @@ import Phaser from "phaser";
 /**
  * This class holds the EndScene, displaying the end scene image 
  * and giving players an option to return to the player select scene.
- * This scene also comes after the Play scene and returns to the Player Select scene.
+ * This scene also comes after the Results scene and returns to the Player Select scene.
  */
 class EndScene extends Phaser.Scene{
     constructor(config){
@@ -49,7 +49,6 @@ class EndScene extends Phaser.Scene{
             this.scene.start("CharacterSelectScene");
         }
     }
-    
 }
 
 export default EndScene

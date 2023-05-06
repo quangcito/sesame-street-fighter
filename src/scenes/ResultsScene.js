@@ -1,12 +1,21 @@
 import Phaser from 'phaser';
 import { winnerPlayer } from './PlayScene';
 
+/**
+ * This class holds the Results scene, displaying the background results image 
+ * and displaying a specific win scene dialogue to each character.
+ * This scene also comes after the Play scene and before the End scene.
+ */
 class ResultsScene extends Phaser.Scene {
     constructor(config) {
       super('ResultsScene')
       this.config = config
     }
 
+    /**
+    * This method creates the scene, and runs multiple methods to add the specific win image,
+    * and proceed to the End scene after a delayed call.
+    */
     create() {
       this.add.image(
         this.config.width/2,
