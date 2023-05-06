@@ -8,12 +8,18 @@ import { charRightControl, charLeftControl } from "../mixin/KeyBinding";
 import { mapKey } from "./MapSelectScene";
 export let winnerPlayer;
 
+/**
+ * This scene handles the actual fighting gameplay of Sesame Street Fighter.
+ */
 class PlayScene extends Phaser.Scene {
   constructor(config) {
     super("PlayScene");
     this.config = config;
   }
 
+  /**
+   * This method adds the players, map, sounds, physics, etc. to run the game.
+   */
   create() {
     this.map = this.createMap();
     this.mapOffset = Math.abs(this.map.widthInPixels - this.config.width) / 2;
@@ -269,7 +275,7 @@ class PlayScene extends Phaser.Scene {
   }
 
   /**
-   * This methods expand the camera
+   * This methods expand the camera.
    */
   cameraPan() {
     this.cameras.main.pan(
@@ -392,6 +398,10 @@ class PlayScene extends Phaser.Scene {
     return this.emitter;
   }
 
+  /**
+   * Update checks for keyboard input and moves the characters around the screen, 
+   * as well as adjusting the camera and checking for a win or loss.
+   */
   update() {
     this.cameraPan();
     this.handleControls();
@@ -400,12 +410,19 @@ class PlayScene extends Phaser.Scene {
     this.platformCheck(this.leftPlayer, this.leftCollider);
   }
 
+  /**
+   * This method checks if the value if a player health bar is 0, which if that occurs will play the KO sound.
+   */
   KOsound(char1, char2) {
     if (char1.healthBar.healthValue <= 0 || char2.healthBar.healthValue <= 0) {
       this.KOSound.play(this.soundConfig);
     }
   }
 
+  /**
+   * This method checks if the value of a player health bar is 0, 
+   * which if it occurs will disable the attacks of each player, display the win image and play the Results scene.
+   */
   detectWin(char1, char2) {
     if (char1.healthBar.healthValue <= 0 || char2.healthBar.healthValue <= 0) {
       this.physics.disableUpdate();
