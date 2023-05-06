@@ -5,11 +5,23 @@ import { charRightControl, charLeftControl } from "../mixin/KeyBinding";
 
 export let mapKey = null;
 
+/**
+ * This class holds the MapSelectScene, giving players the choice between maps.
+ * This scene also comes after the Player Select scene and before the Instructions scene.
+ */
 class MapSelectScene extends Phaser.Scene {
   constructor(config) {
     super("MapSelectScene");
     this.config = config;
   }
+
+  /**
+   * /**
+   * This method creates the scene, and runs multiple methods to add the 
+   * label, cursor, instructions, etc. to the scene. 
+   * Additionally this method handles the selection and unselection
+   * of characters.
+   */
   create() {
     this.spaceKey = this.input.keyboard.addKey(
       Phaser.Input.Keyboard.KeyCodes.SPACE

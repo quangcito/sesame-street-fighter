@@ -8,12 +8,21 @@ export let rightPlayerKey = null;
 
 let leftPlayerImage, rightPlayerImage;
 
+/**
+ * This class holds the CharacterSelectScene, giving players the choice between character.
+ * This scene also comes after the Main Menu scene and before the Map Select scene.
+ */
 class CharacterSelectScene extends Phaser.Scene {
   constructor(config) {
     super("CharacterSelectScene");
     this.config = config;
   }
 
+  /**
+   * This method creates the scene, and runs multiple methods to add the instructions, 
+   * label, character icon, etc. to the scene. Additionally this method handles the selection and unselection
+   * of characters.
+   */
   create() {
     this.spaceKey = this.input.keyboard.addKey(
       Phaser.Input.Keyboard.KeyCodes.SPACE
@@ -52,7 +61,7 @@ class CharacterSelectScene extends Phaser.Scene {
         .setFlipX(true);
       this.rightHand.setVisible(false);
     };
-
+    
     this.rightCursor.removeImage = () => {
       try {
         rightPlayerImage.destroy();
@@ -75,6 +84,9 @@ class CharacterSelectScene extends Phaser.Scene {
     this.startInstruction.setVisible(false);
   }
 
+  /**
+   * This creates and adds the flashing label to select a character on the screen.
+   */
   createLabel() {
     this.firstColor = Phaser.Display.Color.HexStringToColor("#FFFFFF");
     this.secondColor = Phaser.Display.Color.HexStringToColor("#0E0E0E");
@@ -112,6 +124,9 @@ class CharacterSelectScene extends Phaser.Scene {
     });
   }
 
+  /**
+   * This method creates and adds the instruction image.
+   */
   createInstructions() {
     this.instructions = this.add.image(
       this.config.width / 2,
@@ -121,6 +136,9 @@ class CharacterSelectScene extends Phaser.Scene {
     this.instructions.setScale(0.8);
   }
 
+  /**
+   * This method creates and adds the character icons.
+   */
   createCharacterIcon() {
     this.elmoIcon = new SelectionIcon(
       this,
@@ -139,6 +157,9 @@ class CharacterSelectScene extends Phaser.Scene {
     this.iconArray = [this.elmoIcon, this.cookieIcon];
   }
 
+  /**
+   * This method creates adds the left and right cursors.
+   */
   createCursor() {
     this.leftCursor = new Cursor(
       this,
@@ -158,6 +179,9 @@ class CharacterSelectScene extends Phaser.Scene {
     );
   }
 
+  /**
+   * This method creates and adds the hand images to the screen.
+   */
   createHand() {
     this.leftHand = this.add
       .image(this.config.width * 0.2, this.config.height * 0.7, "hand")
@@ -183,6 +207,10 @@ class CharacterSelectScene extends Phaser.Scene {
     });
   }
 
+  /**
+   * This method checks for cursor movement and updates the display on the screen depending on whether or not
+   * a character/both characters have been selected yet.
+   */
   update() {
     this.leftCursor.update();
     this.rightCursor.update();
@@ -210,6 +238,7 @@ class CharacterSelectScene extends Phaser.Scene {
   }
 }
 
+//Instantiates the cookie monster character and it's variables. 
 const elmo = {
   defaultImage: "Elmo",
   displayName: "Elmo",
@@ -237,6 +266,7 @@ const elmo = {
   },
 };
 
+//Instantiates the cookie monster character and it's variables. 
 const cookie = {
   defaultImage: "CookieMonster",
   displayName: "Cookie Monster",

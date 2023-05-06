@@ -1,11 +1,19 @@
 import Phaser from "phaser";
 
+/**
+ * This class holds the InstructionsScene, displaying the instructions for Sesame Street Fighter. 
+ * This scene also comes after the Map Select scene and before the Play scene.
+ */
 class InstructionsScene extends Phaser.Scene{
     constructor(config){
         super('InstructionsScene')
         this.config = config
     }
 
+     /**
+    * This method creates the scene, and runs multiple methods to add the background, 
+    * instructions image button, and instructions label.
+    */
     create(){
         this.createBackground();
         this.createInstructions();
@@ -17,9 +25,11 @@ class InstructionsScene extends Phaser.Scene{
             fontFamily: "'8BIT WONDER', sans-serif",
         }).setStroke("#0E0E0E", 10);
         this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);   
-
     }
 
+    /**
+   * This creates and adds the flashing label for the instructions on the screen.
+   */
     createLabel() {
         this.firstColor = Phaser.Display.Color.HexStringToColor("#FFFFFF");
         this.secondColor = Phaser.Display.Color.HexStringToColor("#0E0E0E");
@@ -50,17 +60,20 @@ class InstructionsScene extends Phaser.Scene{
         });
     }
 
-        
-
+    /**
+     * This method creates and adds the backround image to the scene.
+     */
     createBackground() {
         this.background = this.add.image(
           this.config.width / 2,
           this.config.height /2,
           "selection"
         );
-        //this.background.setScale();
     }
 
+    /**
+    * This method creates and adds the instruction image.
+    */
     createInstructions() {
         this.instructions = this.add.image(
             (this.config.width / 2) + 15, (this.config.height / 2) + 50, 
@@ -68,12 +81,15 @@ class InstructionsScene extends Phaser.Scene{
         this.instructions.setScale(.5);
     }
 
+    /**
+     * This method checks if the space Key has been pressed, 
+     * which then triggers the Play Scene to start.
+     */
     update() {
         if (this.spaceKey.isDown) {
             this.scene.start("PlayScene");
         }
     }
-    
 }
 
 export default InstructionsScene
