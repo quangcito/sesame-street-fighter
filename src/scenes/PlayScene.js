@@ -71,6 +71,7 @@ class PlayScene extends Phaser.Scene {
     }
   }
   setUpCamera() {
+    this.cameras.main.setBackgroundColor("#000");
     this.physics.world.setBounds(
       0,
       0,
