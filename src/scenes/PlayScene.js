@@ -82,6 +82,9 @@ class PlayScene extends Phaser.Scene {
     }
   }
 
+  /**
+   *  Modifies the dimensions of the main camera.
+   */
   setUpCamera() {
     this.cameras.main.setBackgroundColor("#000");
     this.physics.world.setBounds(
@@ -275,7 +278,7 @@ class PlayScene extends Phaser.Scene {
   }
 
   /**
-   * This method expand the camera
+   * This method moves the camera according to the position of the players.
    */
   cameraPan() {
     this.cameras.main.pan(
@@ -399,7 +402,7 @@ class PlayScene extends Phaser.Scene {
   }
 
   /**
-   * Update checks for keyboard input and moves the characters around the screen, 
+   * Update checks for keyboard input and moves the characters around the screen,
    * as well as adjusting the camera and checking for a win or loss.
    */
   update() {
@@ -420,7 +423,7 @@ class PlayScene extends Phaser.Scene {
   }
 
   /**
-   * This method checks if the value of a player health bar is 0, 
+   * This method checks if the value of a player health bar is 0,
    * which if it occurs will disable the attacks of each player, display the win image and play the Results scene.
    */
   detectWin(char1, char2) {
