@@ -73,13 +73,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     this.doAttack(this.characterKey.kick);
   }
 
-  block() {
-    if (this.body.onFloor()) {
-      this.blocking = true;
-      this.anims.play(this.blockAnim, true);
-    }
-  }
-
   jump() {
     this.jumpSound.play();
   }

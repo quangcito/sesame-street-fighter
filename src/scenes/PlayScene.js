@@ -69,6 +69,9 @@ class PlayScene extends Phaser.Scene {
     this.createBackground();
   }
 
+  /**
+   * Creates the castles background png if the castles map is chosen
+   */
   createBackground() {
     if (mapKey.data == "castles") {
       this.background = this.add
@@ -237,7 +240,7 @@ class PlayScene extends Phaser.Scene {
   }
 
   /**
-   * This method zooms the camera in and out
+   * This method zooms the camera in and out depending on the distance between the players
    */
   cameraZoom() {
     let xDistanceBetweenPlayers = Math.abs(
@@ -294,10 +297,10 @@ class PlayScene extends Phaser.Scene {
   }
 
   /**
-   *
+   * 
    * @param {*} attackCoord
    * @param {*} targetCoord
-   * @returns
+   * @returns true if the hitbox of an attack is within the hurtbox of the other player
    */
   checkOverlap(attackCoord, targetCoord) {
     let distanceX =

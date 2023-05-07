@@ -28,7 +28,7 @@ class HealthBar extends Phaser.GameObjects.Container {
    *
    * @param {*} x coordinate
    * @param {*} y coordinate
-   * Create healthbar with specifies texts and frame
+   * Create healthbar with specified character name and frame
    */
   initializeHealthbar(x, y) {
     this.frame = this.scene.add.image(-this.x, 0, "healthbar").setOrigin(0); //creates healthbar frame
@@ -106,7 +106,7 @@ class HealthBar extends Phaser.GameObjects.Container {
    *
    * @param {*} x
    * @param {*} y
-   * adds in the four vertices that make healthbar for both players.
+   * adds in the four vertices that makes the health bar graphic.
    */
   createVertices(x, y) {
     if (!this.isLeftPlayer) {
