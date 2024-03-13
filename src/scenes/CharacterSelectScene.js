@@ -277,7 +277,7 @@ const cookie = {
   profilePicture: "cookieMonsterProfile",
   size: [100, 230],
   blood: 0x0000ff,
-  quote: "Om nom nom nom. C is for cookie, and B is for you, you little B****.",
+  quote: "Om nom nom nom. You crumble like cookie under me power.",
   punch: {
     anim: "cookiepunch",
     delay: 175,
